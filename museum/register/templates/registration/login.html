@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} 돌아오셨군요 {% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="row justify-content-center">
+    <div class="col-10 col-md-6">
+        <div class="row">
+            <div class="col">
+                <div class="text-xl">돌아오셨군요.</div>
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        <div class="row">
+            <div class="col">
+                <form method='post' class='form-group card card-body'>{% csrf_token %}
+                    <div class="row">
+                        <div class="col">
+                            {{form.username|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{form.password|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col right">
+                            <button class="btn btn-primary" type='submit'>로그인</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <div class="text-m">아직 멤버가 아니신가요? <a href="/join" class='underline'>가입하기</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function hideSelfQuesBtn() {
+        document.getElementById('self-ques-btn').style.display = 'none';
+    }
+
+    function changeForm() {
+        // label 변경
+        document.getElementsByTagName('label')[0].innerText = "아이디*";
+        document.getElementsByTagName('label')[1].innerText = "패스워드*";
+        
+        // label 사이즈 변경
+        document.getElementsByTagName('label')[0].classList.add('form-label');
+        document.getElementsByTagName('label')[1].classList.add('form-label');
+
+        // placeholder 변경
+        document.getElementById('id_username').placeholder = '';
+        document.getElementById('id_password').placeholder = '';
+    }
+
+    window.onload = hideSelfQuesBtn();
+    window.onload = changeForm();
+</script>
+
+{%endblock%}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if authenticated == "True" %}
+    <h3>프사 : <img src="{{current_userinfo.profile_image}}"/></h3>
+    <h3>소개 : {{current_userinfo.self_intro}}</h3>
+    ---------------------
+    <div><a href="/member/edit-userinfo/{{current_userinfo.slug}}">프로필 편집</a></div>
+    ---------------------
+    <h2>{{current_userinfo.real_name}}의 정답</h2>
+    <div>
+        <input type='radio' name='ques-type' id='radio-mus' checked />
+        <label for='mus'>뮤지엄이 던지는 질문</label>
+        <input type='radio' name='ques-type' id='radio-self' />
+        <label for='self'>내가 나에게 던지는 질문</label>
+    </div>
+
+    <div>
+        <div id='ans-mus' style="display:block">
+            {% for u in my_ans_from_us %}   
+            <div>질문명 : {{u.question_id.title}}</div>
+            <div>이미지 : <img src="{{u.question_id.image}}"></div>
+            <div>답변 내용 : {{u.body}}</div>
+            <div><a href="/museum-answer/{{u.id}}">링크</a></div>
+            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@<br><br>
+            {% endfor %}
+        </div>
+        ---------------------
+        <div id='ans-self' style="display:none">
+            {% for s in my_ans_from_self %}
+            <div>질문명 : {{s.question_id.title}}</div>
+            <div>이미지 : <img src="{{s.question_id.image}}"></div>
+            <div>답변 내용 : {{s.body}}</div>
+            <div><a href="/self-answer/{{s.id}}">링크</a></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% elif authenticated == "False" %}
+
+    {{message}}
+    <button onclick="location.href='/join'">가입하기</button>
+    
+    {% endif %}
+</body>
+<script>
+    function radioBtn() {
+        // Radiobutton 초기화
+        document.getElementById('radio-mus').checked = true;
+        document.getElementById('radio-self').checked = false;
+
+        var btnMuseum = document.getElementById('radio-mus')
+        var btnSelf = document.getElementById('radio-self')
+        
+        btnMuseum.addEventListener('click', clickMuseum);
+        btnSelf.addEventListener('click', clickSelf);
+
+        function clickMuseum(e) {
+            document.getElementById('ans-mus').style.display = 'block';
+            document.getElementById('ans-self').style.display = 'none';
+        }
+        
+        function clickSelf(e) {
+            document.getElementById('ans-mus').style.display = 'none';
+            document.getElementById('ans-self').style.display = 'block';
+        }   
+    }
+    radioBtn();
+</script>
+</html>

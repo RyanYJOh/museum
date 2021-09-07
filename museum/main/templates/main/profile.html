@@ -1,0 +1,385 @@
+{% extends 'main/base.html' %}
+
+{% block title %} 프로필 {% endblock %}
+
+{% block banner %}
+<div class="row banner-row justify-content-center">
+    <div class="row-h-80"></div>
+    <div class="col-10 col-md-8 my-auto">
+        <div class="row justify-content-center">
+            <div class="col center my-auto">
+                <img class='profile-img-large link' onclick="editProfile()" src='{{owner_info.profile_image.url}}'/>
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-9 text-m profile-intro center">
+                <div class="link" onclick="editProfile()">{{owner_info.self_intro}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row-h-40 pc-only"></div>
+<div class="row-h-20 mobile-only"></div>
+
+<div class="row justify-content-center">
+    <div class="col-11 col-md-12">
+        <div class="row">
+            <div class="col-8 text-l left">
+                {{owner_info.real_name}}의 정답들
+            </div>
+            {% if is_owner == 'True' %}
+            <div class="col-4 text-l right">
+                <div class='' id='my-bookmark-icon' onclick="bookmarkToggle()">
+                    <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                    </svg>
+                </div>
+            </div>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row-h-20"></div>
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-6 right">
+                <label class='radio-btn-label'>
+                    <input class="radio-btn" type='radio' name='ques-type' id='radio-mus' checked />
+                    <span class="text-m" id='radio-mus-text' style='color:black; font-weight:800;'>뮤지엄이 던지는 질문</span>
+                </label>
+                
+            </div>
+            <div class="col-6 left">
+                <label class='radio-btn-label'>
+                    <input class="radio-btn" type='radio' name='ques-type' id='radio-self' style='color:grey;' />
+                    <span class="text-m" id='radio-self-text' style='color:grey;'>나에게 던지는 질문</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 내 글 -->
+<div class="row" id='my-answers'>
+    <div class="col">
+        <div class="row ans-mus fade-in" id='' style='display:flex;'>
+            {% for u in owner_ans_us %}
+            <div class="col-12 col-md-4">
+                <div class="row align-middle">
+                    <div class="card card-body grid-card col">
+                        <a href="/museum-answer/{{u.id}}">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="text-s">Q. {{u.question_id.title}}</div>
+                                </div>
+                            </div>
+                            <div class="row list-img-container-row">
+                                <div class="col list-img-container-col">
+                                    <img class='question-img-list' src="{{u.image.url}}" alt="none">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class='text-m link textbunch truncate'>{{u.body}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-2 my-auto text-center">
+                                <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}" alt="none"></a>
+                            </div>
+                            <div class="col-8 my-auto left col-wo-padding-left">
+                                <div class='text-s'><a href='/profile/{{u.author_id.username}}'>{{u.author_id.userinfo.real_name}}</a></div>
+                            </div>
+                            <div class="col-2 my-auto text-center">
+                                {% if u.id in list__us_saved_by_user %}
+                                <div class='bookmark-mus' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                    <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                        </svg>
+                                </div>
+                                {% else %}
+                                <div class='bookmark-mus' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                    <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endfor %}
+        </div>
+        
+        <div class="row ans-self fade-in" id='' style='display:none;'>
+            {% for s in owner_ans_self %}
+            <div class="col-12 col-md-4">
+                <div class="row align-middle">
+                    <div class="card card-body grid-card col">
+                        <a href="/self-answer/{{s.id}}">
+                            <div class="row">
+                                <div class="col">
+                                    <div class='text-s'>Q. {{s.question_id.title}}</div>
+                                </div>
+                            </div>
+                            <div class="row list-img-container-row">
+                                <div class="col text-center list-img-container-col">
+                                    <img class= 'question-img-list' src="{{s.question_id.image.url}}" alt="none"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class='text-m link text-bunch truncate'>{{s.body}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-2 my-auto text-center">
+                                <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}" alt="none"></a>
+                            </div>
+                            <div class="col-8 my-auto left col-wo-padding-left">
+                                <div class='text-s'><a href='/profile/{{s.author_id.username}}'>{{s.author_id.userinfo.real_name}}</a></div>
+                            </div>
+                            <div class="col-2 my-auto text-center">
+                                {% if s.id in list__self_saved_by_user %}
+                                <div class='bookmark-self' id='self-ans-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                                    <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                    </svg>
+                                </div>
+                                {% else %}
+                                <div class='bookmark-self' id='self-ans-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                                    <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+
+<!-- 내가 북마크한 글 -->
+<div class="row" id='my-bookmarks' style="display: none;">
+    <div class="col">
+        <div class="row ans-mus fade-in" id='' style='display:flex;'>
+            {% for u in list__us_bookmarked %}
+            <div class="col-12 col-md-4">
+                <div class="row align-middle">
+                    <div class="card card-body grid-card col">
+                        <a href="/museum-answer/{{u.id}}">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="text-s">Q. {{u.question_id.title}}</div>
+                                </div>
+                            </div>
+                            <div class="row list-img-container-row">
+                                <div class="col list-img-container-col">
+                                    <img class='question-img-list' src="{{u.image.url}}" alt="none">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class='text-m link textbunch truncate'>{{u.body}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-2 my-auto text-center">
+                                <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}" alt="none"></a>
+                            </div>
+                            <div class="col-8 my-auto left col-wo-padding-left">
+                                <div class='text-s'><a href='/profile/{{u.author_id.username}}'>{{u.author_id.userinfo.real_name}}</a></div>
+                            </div>
+                            <div class="col-2 my-auto text-center">
+                                {% if u.id in list__us_saved_by_user %}
+                                <div class='bookmark-mus' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                    <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                        </svg>
+                                </div>
+                                {% else %}
+                                <div class='bookmark-mus' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                    <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endfor %}
+        </div>
+        
+        <div class="row ans-self fade-in" id='' style='display:none;'>
+            {% for s in list__self_bookmarked %}
+            <div class="col-12 col-md-4">
+                <div class="row align-middle">
+                    <div class="card card-body grid-card col">
+                        <a href="/self-answer/{{s.id}}">
+                            <div class="row">
+                                <div class="col">
+                                    <div class='text-s'>Q. {{s.question_id.title}}</div>
+                                </div>
+                            </div>
+                            <div class="row list-img-container-row">
+                                <div class="col text-center list-img-container-col">
+                                    <img class= 'question-img-list' src="{{s.question_id.image.url}}" alt="none"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p class='text-m link text-bunch truncate'>{{s.body}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-2 my-auto text-center">
+                                <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}" alt="none"></a>
+                            </div>
+                            <div class="col-8 my-auto left col-wo-padding-left">
+                                <div class='text-s'><a href='/profile/{{s.author_id.username}}'>{{s.author_id.userinfo.real_name}}</a></div>
+                            </div>
+                            <div class="col-2 my-auto text-center">
+                                {% if s.id in list__self_saved_by_user %}
+                                <div class='bookmark-self' id='bookmark-self-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                                    <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                    </svg>
+                                </div>
+                                {% else %}
+                                <div class='bookmark-self' id='bookmark-self-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                                    <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                    </svg>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    // 내가 Bookmark한 글
+    function bookmarkToggle() {
+        var bookmarkIcon = document.getElementById('my-bookmark-icon')
+        var bookmarkFilled = document.getElementById('my-bookmark-icon').getElementsByTagName('svg')[0];
+        var bookmarkFilledPath = bookmarkFilled.getElementsByTagName('path')
+        
+        var myBookmarks = document.getElementById('my-bookmarks')
+        var myAnswers = document.getElementById('my-answers')
+
+        if (bookmarkFilled.classList[2] === 'bi-bookmark-fill') {
+            bookmarkFilled.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z');
+
+            myBookmarks.style.display = 'none';
+            myAnswers.style.display = 'flex';
+            
+        } else if (bookmarkFilled.classList[2] === 'bi-bookmark') {
+            bookmarkFilled.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z');
+
+            myBookmarks.style.display = 'flex';
+            myAnswers.style.display = 'none';
+        }
+    }
+
+    // Bookmark 기능
+    function BookmarkUs(id) {
+        // ajax로 POST
+        var postData = {
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "bookmark" %}',
+            data : JSON.stringify(postData)
+        })
+
+        // 북마크 아이콘 상태 변경
+        var bookmarkIcon = document.getElementById(`${id}`)
+        var bookmarkFilled = document.getElementById(`${id}`).getElementsByTagName('svg')[0];
+        var bookmarkFilledPath = bookmarkFilled.getElementsByTagName('path')
+        
+        if (bookmarkFilled.classList[2] === 'bi-bookmark-fill') {
+            bookmarkFilled.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z');
+            
+        } else if (bookmarkFilled.classList[2] === 'bi-bookmark') {
+            bookmarkFilled.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z');
+        }
+    }
+
+    function BookmarkSelf(id) {
+        // ajax로 POST
+        var postData = {
+            ans_type : 'self',
+            ans_self_ref : id.split('id-')[1],
+            ans_us_ref: ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "bookmark" %}',
+            data : JSON.stringify(postData)
+        })
+
+        // 북마크 아이콘 상태 변경 
+        var bookmarkIcon = document.getElementById(`${id}`)
+        var bookmarkFilled = document.getElementById(`${id}`).getElementsByTagName('svg')[0];
+        var bookmarkFilledPath = bookmarkFilled.getElementsByTagName('path')
+        
+        if (bookmarkFilled.classList[2] === 'bi-bookmark-fill') {
+            bookmarkFilled.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z');
+            
+        } else if (bookmarkFilled.classList[2] === 'bi-bookmark') {
+            bookmarkFilled.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z');
+        } 
+    }
+
+    // Edit Profile
+    function editProfile() {
+        if ('{{is_owner}}' === 'True') {
+            location.href='http://127.0.0.1:8000/member/edit-userinfo/{{current_user.username}}'
+        } else {}
+    }
+    
+</script>
+{% endblock %}

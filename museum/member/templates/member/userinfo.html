@@ -1,0 +1,141 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} 마지막 {% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="row justify-content-center">
+    <div class="col-10 col-md-6">
+        <div class="row">
+            <div class="col">
+                <div class="text-xl">가장 중요한 <br class="mobile-only">마지막 단계.</div>
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        <div class="row">
+            <div class="col">
+                <form method='post' class='form-group' enctype="multipart/form-data"> {% csrf_token %}
+                    {% if update_mode == 'True' %}
+                    <div class="row">
+                        <div class="col text-m">
+                            <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>프로필 사진 변경</button>
+                            {{form.profile_image|as_crispy_field}}
+                            <div class="text-s warning" id='profile-img-instruction'>정사각형 모양의 이미지만 올려주세요!</div>
+                        </div>
+                    </div>
+                    <div class="row-h-20"></div>
+                    {% else %}
+                    {% endif %}
+                    <div class="row">
+                        <div class="col text-m">
+                            {{form.real_name|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row-h-20"></div>
+                    {% if update_mode == 'True' %}
+                    <div class="row">
+                        <div class="col text-m">
+                            {{form.self_intro|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row-h-20"></div>
+                    {% else %}
+                    {% endif %}
+                    <div class="row">
+                        <div class="col text-m">
+                            나를 가장 잘 묘사하는 걸 골라주세요.*
+                        </div>
+                    </div>
+                    <div class="row row-topless">
+                        <div class="col text-m">
+                            <div class="card card-body" style="padding-top:0px; padding-bottom:0px;">
+                                {{form.persona_type|as_crispy_field}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col right">
+                            {% if update_mode == 'True' %}
+                            <button class="btn btn-primary" type='submit'>저장하기</button>
+                            {% else %}
+                            <button class="btn btn-primary" type='submit'>뮤지엄 시작하기</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeForm() {
+        // placeholder 변경
+        document.getElementById('id_real_name').placeholder = '뮤지엄 내에서 쓰일 이름이에요.';
+        
+        // label 변경 -- initial_mode
+        
+        document.getElementsByTagName('label')[1].innerText = "";
+        
+        // label 변경 -- update_mode
+        var isUpdateMode = '{{update_mode}}'
+        if (isUpdateMode === 'True') {
+            console.log(document.getElementsByTagName('label'))
+            document.getElementsByTagName('label')[0].innerText = "기본 사진으로";
+            document.getElementsByTagName('label')[1].innerText = "이름*";
+            document.getElementsByTagName('label')[2].innerText = "짧은 소개";
+            document.getElementsByTagName('label')[3].innerText = "";
+        }
+    }
+    changeForm();
+
+    function hideSelfQuesBtn() {
+        document.getElementById('self-ques-btn').style.display = 'none';
+    }
+    hideSelfQuesBtn();
+
+    // Non-member 답변 확인 (local storage)
+    function checkLocalStorage() {
+        
+        if (localStorage.getItem('non-member-object')) {
+            console.log('there is one')
+
+            var lsItem = localStorage.getItem('non-member-object')
+            var lsItemArr = JSON.parse(lsItem)
+            console.log(lsItemArr)
+            var postData = {
+                body : lsItemArr[0],
+                created_at : lsItemArr[1],
+                is_shared : lsItemArr[2],
+            }
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: '{% url "non-member-answer" %}',
+                data : JSON.stringify(postData)
+            })
+
+            localStorage.removeItem('non-member-object')
+        }
+    }
+    checkLocalStorage();
+
+    // 이미지 필드 처리
+    document.getElementById('div_id_profile_image').style.display = 'none';
+    document.getElementById('profile-img-instruction').style.display = 'none';
+
+    document.getElementById('profile_image-clear_id').style.display = 'none';
+    document.getElementsByTagName('label')[0].style.display = 'none';
+    
+    function ShowImageField() {
+        document.getElementById('show_img_field').style.display = 'none';
+        document.getElementById('div_id_profile_image').style.display = 'inline-block';
+        document.getElementById('profile-img-instruction').style.display = 'inline-block';
+        
+    }
+
+</script>
+{%endblock%}

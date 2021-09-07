@@ -1,0 +1,134 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 오늘의 질문 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="row">
+    <div class="col">
+        <div class="text-m bold" style="color:#d56359;">모든 생각은 <span class="bolder">질문</span>으로부터 탄생하죠.</div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col left text-l">
+        {{message}}
+    </div>
+</div>
+{% if mode == 'create' %}
+<div class="row">
+    <div class="col">
+        <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
+            <div class="row">
+                <div class="col text-l">
+                    {{ques_form.title|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                    {{ques_form.image|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s">
+                    {{ans_form.subtitle|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s textbunch">
+                    {{ans_form.body|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 left text-m">
+                    {{ans_form.is_shared}} 공유되어도 좋습니다.
+                </div>
+                <div class="col-6 right">
+                    <button class='btn btn-primary' type="submit">저장하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% elif mode == 'update' %}
+<div class="row">
+    <div class="col">
+        <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
+            <div class="row">
+                <div class="col text-s">
+                    {{ques_form.title|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                    {{ques_form.image|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s">
+                    {{ans_form.subtitle|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s textbunch">
+                    {{ans_form.body|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 left text-m">
+                    {{ans_form.is_shared}} 공유되어도 좋습니다.
+                </div>
+                <div class="col-6 right">
+                    <button class='btn btn-primary' type="submit">저장하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+
+<script>
+    console.log()
+    document.getElementById('id_is_shared').checked = true;
+
+    // 이미지 필드 처리
+    if ('{{mode}}' == 'create') {
+        document.getElementById('id_image').style.display = 'none';
+    
+        function ShowImageField() {
+            document.getElementById('show_img_field').style.display = 'none';
+            document.getElementById('id_image').style.display = 'inline-block';
+        }
+    } else if ('{{mode}}' == 'update') {
+        document.getElementById('div_id_image').style.display = 'none';
+
+        function ShowImageField() {
+            document.getElementById('show_img_field').style.display = 'none';
+            document.getElementById('div_id_image').style.display = 'inline-block';
+        }
+    }
+    
+
+    // Client-side validation
+    // class에 needs-validation 추가할 것들 
+    document.getElementById('id_title').classList.add('needs-validation');
+    document.getElementById('id_body').classList.add('needs-validation');
+    // Validation
+    function validateForm() {
+        let formTitle = document.getElementById('id_title').value;
+        let formBody = document.getElementById('id_body').value;
+        if (formTitle == "" || formBody == "") {
+          alert("비워둔 채로 저장할 수는 없어요.");
+          return false;
+        }
+      }
+
+</script>
+{% endblock %}
