@@ -13,7 +13,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 # CustomUser._meta.get_field('username')._unique = False
 # CustomUser._meta.get_field('username')._blank = True
 # CustomUser._meta.get_field('username')._null = True
-
+'''
 class UserManager(BaseUserManager):
     """User 에서 사용하기 위한 UserManager 생성"""
     def create_user(self, email, password=None, **extra_fields):
@@ -46,3 +46,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     # USERNAME 를 email 로 사용
     USERNAME_FIELD = 'email'
+'''
