@@ -8,6 +8,7 @@ body {
     font-family : 'NanumSquare', sans-serif !important;
     /* font-size : 10px !important; */
 }
+
 a {
     text-decoration: none !important;
     color: black !important;
@@ -240,7 +241,10 @@ input[type=password] {
     width: 60%;
     /* border-radius: 50px; */
 }
-
+.ci {
+    height: 100%;
+    width: auto;
+}
 
 /* Other custom settings */
 .link:hover {
