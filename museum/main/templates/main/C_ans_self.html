@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col">
-        <div class="text-m bold" style="color:#d56359;">모든 생각은 <span class="bolder">질문</span>으로부터 탄생하죠.</div>
+        <div class="text-m bold" style="color:#d56359;">모든 생각은 <span class="bolder">질문</span>으로부터 탄생합니다.</div>
     </div>
 </div>
 <div class="row justify-content-center">
@@ -23,7 +23,7 @@
     <div class="col">
         <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
             <div class="row">
-                <div class="col text-l">
+                <div class="col text-l" id='input-self-title'>
                     {{ques_form.title|as_crispy_field}}
                 </div>
             </div>

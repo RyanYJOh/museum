@@ -69,6 +69,15 @@
         </div>
     </div>
 </div>
+<div class="row-h-40"></div>
+{% if update_mode == 'True' %}
+<div class="row justify-content-center">
+    <div class="col center">
+        <a href='/logout' class="underline">로그아웃</a>
+    </div>
+</div>
+{% else %}
+{% endif %}
 
 <script>
     function changeForm() {

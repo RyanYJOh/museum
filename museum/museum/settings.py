@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd(fp^&c7jp#cc6s6*ti#&d8t)mtz756gitv*p')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -127,10 +127,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [ 
-#     os.path.join(BASE_DIR, 'static'), ## 이 표현 방식은 Django v2에서 쓰이던 방식이라고 함.
-# ]
+STATICFILES_DIRS = [ 
+    os.path.join(BASE_DIR, 'static'), 
+    os.path.join(BASE_DIR, 'main/static'),
+    os.path.join(BASE_DIR, 'member/static'),
+    os.path.join(BASE_DIR, 'register/static'),
+]
+
+## 운영서버 배포시 static 파일을 `collectstatic`하기 위한 절대 경로.
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',

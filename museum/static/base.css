@@ -1,6 +1,6 @@
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
     
-}
+} */
 .mobile-only {
     display: none;
 }
@@ -22,9 +22,6 @@ input[type=password] {
     background-color: #2D2926 !important;
     color: #ed6f63  !important;
 }
-.navbar-brand {
-    margin-left: 10px;
-}
 #navbar-menu {
     padding-right : 10px;
     padding-left : 10px;
@@ -38,7 +35,9 @@ input[type=password] {
     cursor: pointer;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out; 
 }
-
+.navbar-expand {
+    justify-content: end !important;
+}
 
 /* Grid system */
 .row {
@@ -90,7 +89,7 @@ input[type=password] {
 /* Forms */ 
 .form-control {
     /* border-radius: 20px !important; */
-    font-size: 1.063rem;
+    font-size: 1.063rem; /* text-l과 동일 */
 }
 .form-group {
     width: 100%;
@@ -100,6 +99,10 @@ input[type=password] {
 }
 .form-check { /* userinfo 입력시 라디오 버튼 간격 */
     margin-bottom: 20px !important;
+}
+.textinput#id_title { /* text-l과 동일 스펙 */
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
 }
 
 /* 왜 text-left/right/cetner로 안되는지 모르겠어서 */ 
@@ -202,6 +205,10 @@ input[type=password] {
     color: red;
     font-weight: 400;
 }
+#input-self-title {  /* text-l과 동일 */
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+}
 
 /* Images */
 .profile-img-list {
@@ -210,10 +217,12 @@ input[type=password] {
     border-radius: 50px;
 }
 .profile-img-navbar {
-    height: 1.7rem;
+    height: 2rem;
     width: auto;
     border-radius: 50px;
     border : #ed6f63 solid 2px;
+    margin-right : 10px;
+    cursor: pointer;
 }
 .profile-img-large {
     height: 8rem;
@@ -243,7 +252,7 @@ input[type=password] {
 }
 .ci {
     height: 100%;
-    width: auto;
+    width: 200px;
 }
 
 /* Other custom settings */
@@ -338,5 +347,11 @@ input[type=password] {
         width: 100%;
         /* border-radius: 50px; */
     }
-
+    .ci {
+        height: 100%;
+        width: 120px;
+    }
+    #self-ques-btn {
+        font-size: 0.813rem !important;
+    }
 }

@@ -36,27 +36,19 @@
 <body>
     <!-- START 네비게이션 바 -->
     <nav class="navbar navbar-default navbar-expand nav-bar fixed-top">
-        <div onclick="location.href='/'" class='navbar-brand nav-link'>
-            <img class="ci" src="{% static 'museum/images/ci.png' %}" alt='ci'>
+        <div class='navbar-brand nav-link' onclick="location.href='/'">
+            <img class="ci" src="{% static 'museum/images/ci_alpha.png' %}" alt='ci'>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
-            <ul class="navbar-nav ml-auto ">
-                {% if from_profile_page == 'True' %} <!-- 프로필 페이지에서 '나에게 질문 던지기' 클릭시 -->
+        <div class="navbar-text collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                {% if from_profile_page == 'True' %}
                 <li class='navbar-item'><button class='btn btn-secondary text-s' id='self-ques-btn' type='button' onclick="location.href='http://127.0.0.1:8000/question-from-myself'">나에게 질문 던지기</button></li>
                 {% else %}
                 <li class='navbar-item'><button class='btn btn-secondary text-s' id='self-ques-btn' type='button' onclick="location.href='http://127.0.0.1:8000/question-from-myself'">나에게 질문 던지기</button></li>
                 {% endif %}
 
                 {% if navbar_authenticated == 'True' %}
-                <div class="btn-group my-auto">
-                    <button type='button' class="btn btn-transparent dropdown-toggle" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-                        <img class="profile-img-navbar" src="{{navbar_this_userinfo.profile_image.url}}">
-                    </button>
-                    <ul class='dropdown-menu'>
-                        <li><a href="/profile/{{navbar_this_user}}">프로필</a></li>
-                        <li><a href="/logout">로그아웃</a></li>
-                    </ul>
-                </div>
+                <li class='navbar-item my-auto'><img class="profile-img-navbar" onclick="location.href='/profile/{{navbar_this_user}}'" src="{{navbar_this_userinfo.profile_image.url}}"></li>
                 {% elif navbar_authenticated == 'False' %}
                 <li class="navbar-item"><span onclick="location.href='/login'" class="nav-link text-s">로그인</span></li>
                 {% endif %}
@@ -64,7 +56,8 @@
         </div>
     </nav>
     <!-- END 네비게이션 바 -->
-    
+    <div class="row-h-40 pc-only"></div>
+
     {% block banner %}
     {% endblock %}
 
