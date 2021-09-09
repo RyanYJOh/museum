@@ -68,6 +68,10 @@ input[type=password] {
 .col-wo-padding-left {
     padding-left: 0px !important;
 }
+#profile-tab-col {
+    padding-right: 0px;
+    padding-left: 0px;
+}
 
 /* Cards */
 .grid-card {
