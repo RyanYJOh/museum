@@ -263,7 +263,7 @@ def create_ans_us_short(request):
                     instance.image = random_image.image
 
                     instance.save()
-                    return redirect('/question-from-museum')
+                    return redirect('/question-from-originals')
 
         else: # 처음 질문 이후 모두 해당
             # 가장 최근 질문의 가장 최근 답변일 가져오기!!
@@ -307,7 +307,7 @@ def create_ans_us_short(request):
 
                         instance.save()
 
-                        return redirect('/question-from-museum')
+                        return redirect('/question-from-originals')
 
             ## 아직 날짜가 지나지 않았을 때 (수정만 가능함)
             elif latest_created_at == today:
@@ -496,7 +496,7 @@ def update_ans_us(request, ans_us_id):
             ans_to_update.save()
             ans_us_id = ans_to_update.id
             
-        return redirect('/museum-answer/{ans_id}'.format(ans_id=ans_us_id))
+        return redirect('/originals-answer/{ans_id}'.format(ans_id=ans_us_id))
 
     ## 수정하기 위해 페이지 진입
     else:
