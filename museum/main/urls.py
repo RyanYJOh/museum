@@ -8,10 +8,10 @@ urlpatterns = [
     path('profile/<str:username>', views.profile, name='others-profile'),
 
     ## Us
-    path('question-from-museum', views.create_ans_us_short, name='question-from-museum'),
+    path('question-from-originals', views.create_ans_us_short, name='question-from-originals'),
     path('answer-long', views.create_ans_us_long, name='answer-long'),
-    path('museum-answer/<int:ans_us_id>', views.detail_ans_us, name='museum-answer-detail'),
-    path('museum-answer/edit/<int:ans_us_id>', views.update_ans_us, name="update-answer-from-museum"),
+    path('originals-answer/<int:ans_us_id>', views.detail_ans_us, name='originals-answer-detail'),
+    path('originals-answer/edit/<int:ans_us_id>', views.update_ans_us, name="update-answer-from-originals"),
     
     ## Self
     path('question-from-myself', views.create_ans_self, name="question-from-myself"),

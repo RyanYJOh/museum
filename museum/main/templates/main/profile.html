@@ -4,7 +4,7 @@
 
 {% block banner %}
 <div class="row banner-row justify-content-center">
-    <div class="row-h-80"></div>
+    <div class="row-h-40"></div>
     <div class="col-10 col-md-8 my-auto">
         <div class="row justify-content-center">
             <div class="col center my-auto">
@@ -52,8 +52,8 @@
         <div class="row justify-content-center">
             <div class="col-6 right">
                 <label class='radio-btn-label'>
-                    <input class="radio-btn" type='radio' name='ques-type' id='radio-mus' checked />
-                    <span class="text-m" id='radio-mus-text' style='color:black; font-weight:800;'>오리지널스가 던지는 질문</span>
+                    <input class="radio-btn" type='radio' name='ques-type' id='radio-orig' checked />
+                    <span class="text-m" id='radio-orig-text' style='color:black; font-weight:800;'>오리지널스가 던지는 질문</span>
                 </label>
                 
             </div>
@@ -70,12 +70,12 @@
 <!-- 내 글 -->
 <div class="row" id='my-answers'>
     <div class="col">
-        <div class="row ans-mus fade-in" id='' style='display:flex;'>
+        <div class="row ans-orig fade-in" id='' style='display:flex;'>
             {% for u in owner_ans_us %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/museum-answer/{{u.id}}">
+                        <a href="/originals-answer/{{u.id}}">
                             <div class="row">
                                 <div class="col">
                                     <div class="text-s">Q. {{u.question_id.title}}</div>
@@ -101,13 +101,13 @@
                             </div>
                             <div class="col-2 my-auto text-center">
                                 {% if u.id in list__us_saved_by_user %}
-                                <div class='bookmark-mus' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                <div class='bookmark-orig' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
                                     <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                         </svg>
                                 </div>
                                 {% else %}
-                                <div class='bookmark-mus' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                <div class='bookmark-orig' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
                                     <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                     </svg>
@@ -178,12 +178,12 @@
 <!-- 내가 북마크한 글 -->
 <div class="row" id='my-bookmarks' style="display: none;">
     <div class="col">
-        <div class="row ans-mus fade-in" id='' style='display:flex;'>
+        <div class="row ans-orig fade-in" id='' style='display:flex;'>
             {% for u in list__us_bookmarked %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/museum-answer/{{u.id}}">
+                        <a href="/originals-answer/{{u.id}}">
                             <div class="row">
                                 <div class="col">
                                     <div class="text-s">Q. {{u.question_id.title}}</div>
@@ -209,13 +209,13 @@
                             </div>
                             <div class="col-2 my-auto text-center">
                                 {% if u.id in list__us_saved_by_user %}
-                                <div class='bookmark-mus' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                <div class='bookmark-orig' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
                                     <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                         </svg>
                                 </div>
                                 {% else %}
-                                <div class='bookmark-mus' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
+                                <div class='bookmark-orig' id='bookmark-us-id-{{u.id}}' onclick="BookmarkUs(id)">
                                     <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                     </svg>
