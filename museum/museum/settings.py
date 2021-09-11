@@ -45,6 +45,8 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'bootstrap4',
+    'cloudinary_storage',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -161,3 +163,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
+## Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME' : 'he2prkoby',
+    'API_KEY' : '638573786883644',
+    'API_SECRET' : 'dKCUMT8QeufNKtKCpXOXBvVDts0',
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
