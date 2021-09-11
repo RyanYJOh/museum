@@ -52,7 +52,7 @@
                 {% if navbar_authenticated == 'True' %}
                 <li class='navbar-item my-auto'><img class="profile-img-navbar" onclick="location.href='/profile/{{navbar_this_user}}'" src="{{navbar_this_userinfo.profile_image.url}}"></li>
                 {% elif navbar_authenticated == 'False' %}
-                <li class="navbar-item"><span onclick="location.href='/login'" class="nav-link text-s">로그인</span></li>
+                <li class="navbar-item my-auto"><span onclick="location.href='/login'" class="nav-link text-s">로그인</span></li>
                 {% endif %}
             </ul>
         </div>
