@@ -464,13 +464,15 @@ def detail_ans_us(request, ans_us_id):
             editable = 'True'
         else:
             editable = ''
+        
     else:
         editable = ''
+        bookmarked = ''
 
     pre_context = {
         'this_ans' : this_ans,
         'editable' : editable,
-        'bookmarked' : bookmarked,
+        'bookmarked' : bookmarked
     }
 
     context = {**pre_context, **navbar_context}
@@ -576,8 +578,10 @@ def detail_ans_self(request, ans_self_id):
             editable = 'True'
         else:
             editable = ''
+
     else: 
         editable = ''
+        bookmarked = ''
 
     pre_context = {
         'this_ans' : this_ans,
