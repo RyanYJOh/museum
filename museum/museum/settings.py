@@ -166,11 +166,10 @@ DATABASES['default'].update(db_from_env)
 
 ## Cloudinary
 ## 아래는 git push origin main에서는 제외. git push heroku main에만 올라간다!
-"""
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME' : 'he2prkoby',
     'API_KEY' : '638573786883644',
     'API_SECRET' : 'dKCUMT8QeufNKtKCpXOXBvVDts0',
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-"""
