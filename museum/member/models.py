@@ -8,7 +8,7 @@ class UserInfo(models.Model):
     objects = models.Manager()
     this_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'userinfo', null=True, default=None) ## UserInfo가 생성될 때마다 user에게 link된다.
     real_name = models.CharField(max_length=20, blank=True, default="내 이름")
-    profile_image = models.ImageField(null=True, upload_to="profile_images", default="profile_images/default_psa.jpg")
+    profile_image = models.ImageField(null=True, upload_to="profile_images", default="default_psa.jpg")
     self_intro = models.CharField(max_length=140, blank=True, default="나에 대한 간단한 소개")
     slug = models.SlugField(max_length=100, allow_unicode=True, null=False, blank=False)
     # today_quetion_id = models.IntegerField()
