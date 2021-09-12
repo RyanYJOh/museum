@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.main_page, name='home'),
     # path('me', views.my_profile, name='my-profile'),
     path('profile/<str:username>', views.profile, name='others-profile'),
+    path('what-is-originals', views.about, name="about"),
 
     ## Us
     path('question-from-originals', views.create_ans_us_short, name='question-from-originals'),

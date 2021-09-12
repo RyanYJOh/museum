@@ -49,7 +49,7 @@ def randImg():
     random_img = random.choice(list__img_ids)
     return random_img
 
-##### 홈 화면, 프로필 화면 #####
+##### 홈 화면, 프로필 화면, About 화면 #####
 def main_page(request):
     navbar_context = navbar(request)
     
@@ -182,6 +182,15 @@ def profile(request, username):
         context = {**navbar_context, **pre_context}
         return render(request, 'main/profile.html', context)
 
+def about(request):
+    navbar_context = navbar(request)
+
+    pre_context = {
+
+    }
+
+    context = {**navbar_context, **pre_context}
+    return render(request, 'main/about.html', context)
 # def others_profile(request, username):
     profile_owner = User.objects.get(username=username)
 

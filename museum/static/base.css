@@ -139,7 +139,7 @@ input[type=password] {
     font-weight: 600 !important;
 }
 .btn-secondary:hover {
-    background-color: whitesmoke !important;
+    background-color: transparent !important;
 }
 .btn-menial {
     background-color: transparent !important;
@@ -195,6 +195,9 @@ input[type=password] {
 }
 .underline {
     text-decoration: underline !important;
+}
+.italic {
+    font-style: italic;
 }
 .truncate {
     /* white-space: nowrap; */
