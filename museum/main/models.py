@@ -36,7 +36,7 @@ class QuestionsFromUs(models.Model):
     created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return (str(self.question_no) + '. ' + str(self.title))
 
 class QuestionsFromSelf(models.Model):
     objects = models.Manager()
@@ -65,7 +65,7 @@ class AnswersForFromUs(models.Model):
     on_magazine = models.BooleanField(default=False)
 
     def __str__(self):
-        return (str(self.author_id)+'__'+str(self.question_id)+'__'+str(self.created_at))
+        return (str(self.question_id.question_no) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
 
 class AnswersForFromSelf(models.Model):
     objects = models.Manager()
@@ -83,7 +83,7 @@ class AnswersForFromSelf(models.Model):
     on_magazine = models.BooleanField(default=False)
 
     def __str__(self):
-        return (str(self.author_id) + '--' + str(self.question_id))
+        return (str(self.author_id) + ' wrote about: ' + str(self.question_id))
 
 # class AnswersForFromOthers(models.Model):
 
@@ -100,7 +100,7 @@ class SavedAnswers(models.Model):
     ans_self_ref = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='savedanswers', null=True)
 
     def __str__(self):
-        return str(self.bookmarker) + '--' + str(self.ans_type) + '--' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref)
+        return (str(self.bookmarker) + ' saved: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))
 
 class RandomImages(models.Model):
     objects = models.Manager()

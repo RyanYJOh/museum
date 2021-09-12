@@ -249,7 +249,7 @@ def create_ans_us_short(request):
         if not AnswersForFromUs.objects.filter(author_id=request.user):
             # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
             # form = AnswersForFromUs.objects.filter(author_id = request.user, question_id=1)
-            today_ques = QuestionsFromUs.objects.get(id=1)  
+            today_ques = QuestionsFromUs.objects.get(question_no=1)  
             ## 이건 today_ques_id의 답변들을 가져오는 코드
             all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=1, is_shared=True).order_by('-created_at_time')
             if request.method == 'POST':
