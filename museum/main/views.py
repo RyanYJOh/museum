@@ -54,8 +54,8 @@ def main_page(request):
     navbar_context = navbar(request)
     
     ## infiinte scroll을 할 것이냐, pagination을 쓸 것이냐.
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at') 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at')
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('created_at') 
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('created_at')
 
     if request.user.is_authenticated:
         try:
