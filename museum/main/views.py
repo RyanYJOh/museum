@@ -525,8 +525,11 @@ def create_ans_self(request):
             ## Question 먼저 validate
             if ques_form.is_valid():
                 ques_instance = ques_form.save(commit=False)
-                random_image = RandomImages.objects.get(id=randImg())
-                ques_instance.image = random_image.image
+                if not ques_form.image:
+                    random_image = RandomImages.objects.get(id=randImg())
+                    ques_instance.image = random_image.image
+                else:
+                    ques_instance.image = ques_form.image
                 ques_instance.save()
 
                 ## Answer validation
