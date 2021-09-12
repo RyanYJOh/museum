@@ -24,8 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd(fp^&c7jp#cc6s6*ti#&d8t)mtz756gitv*p')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True # 로컬
-DEBUG = False # 운영
+DEBUG = True # 로컬
+# DEBUG = False # 운영
 
 ALLOWED_HOSTS = ['*']
 
@@ -174,6 +174,6 @@ CLOUDINARY_STORAGE = {
     'API_SECRET' : 'dKCUMT8QeufNKtKCpXOXBvVDts0',
 }
 if DEBUG == True : ## 로컬
-    pass
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 elif DEBUG == False: ## 운영
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
