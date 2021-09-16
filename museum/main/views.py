@@ -226,8 +226,8 @@ def create_ans_us_short(request):
     navbar_context = navbar(request)
     ## 로그인되어있는 경우와 아닌 경우 구분해야 함. 첫번째 질문에 한하여, 로그인 안되어 있어도 일단 답변은 가능. 하지만 곧바로 가입/로그인 유도해야 한다.
     if request.user.is_authenticated == False:
-        today_ques = QuestionsFromUs.objects.get(id=1)
-        all_ans_for_this_ques = AnswersForFromUs.objects.select_related('author_id', 'author_id__userinfo').filter(question_id=1, is_shared=True)
+        today_ques = QuestionsFromUs.objects.get(question_no=1)
+        all_ans_for_this_ques = AnswersForFromUs.objects.select_related('author_id', 'author_id__userinfo').filter(question_no=1, is_shared=True)
         is_member = 'False'
 
         pre_context = {
