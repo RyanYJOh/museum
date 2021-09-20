@@ -4,15 +4,26 @@
 .mobile-only {
     display: none;
 }
-body {
-    font-family : 'NanumSquare', sans-serif !important;
-    /* font-size : 10px !important; */
-}
-
 a {
     text-decoration: none !important;
     color: black !important;
 }
+body {
+    font-family : 'NanumSquare', sans-serif !important;
+    /* font-size : 10px !important; */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.footer-section {
+    /* background-color: #2d2926 !important; */
+    color: grey !important;
+    font-weight: bold;
+    margin-top: auto;
+    border-top : 1px lightgrey solid;
+    padding-top : 5px;
+}
+
 input[type=password] {
     font-family:Arial, Helvetica, sans-serif;
 }
@@ -82,8 +93,8 @@ input[type=password] {
     padding-right: 11px !important ;
     padding-left: 11px !important ;
     padding-top: 5px !important;
-    transition: transform 160ms cubic-bezier(.877, .079, .123, .985), 
-    -webkit-transform 160ms cubic-bezier(.877, .079, .123, .985);
+    transition: transform 100ms cubic-bezier(.877, .079, .123, .985), 
+    -webkit-transform 100ms cubic-bezier(.877, .079, .123, .985);
 }
 .grid-card:hover {
     position: static;
