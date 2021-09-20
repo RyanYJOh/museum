@@ -54,7 +54,6 @@ def register(request):
 ##### 비회원 답변 저장 #####
 def nonMemberAnswer(request):
     data = json.loads(request.body)
-    print('잘 왔다고!!!')
     if request.method == 'POST':
         form = AnswersForFromUsForm(request.POST)
         if form.is_valid():
@@ -63,13 +62,13 @@ def nonMemberAnswer(request):
             random_image = RandomImages.objects.get(id=randImg())
             instance.image = random_image.image
             instance.is_shared = data['is_shared']
-            instance.question_id = QuestionsFromUs.objects.get(id=1)
+            instance.question_id = QuestionsFromUs.objects.get(question_no=1)
             instance.author_id = request.user
             instance.created_at = data['created_at']
             instance.updated_at = instance.created_at
 
             instance.save()
-            print('save도 잘 됐다고1!!')
+    
             return redirect('/')
         else:
             print("Validation 실패!!!!!!!!!!!!!!!!! due to :", form.errors)
