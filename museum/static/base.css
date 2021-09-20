@@ -15,11 +15,13 @@ body {
     display: flex;
     flex-direction: column;
 }
+footer {
+    margin-top: auto;
+}
 .footer-section {
     /* background-color: #2d2926 !important; */
     color: grey !important;
     font-weight: bold;
-    margin-top: auto;
     border-top : 1px lightgrey solid;
     padding-top : 5px;
 }

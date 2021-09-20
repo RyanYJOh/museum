@@ -229,11 +229,13 @@ def create_ans_us_short(request):
         today_ques = QuestionsFromUs.objects.get(question_no=1)
         # all_ans_for_this_ques = AnswersForFromUs.objects.select_related('author_id', 'author_id__userinfo').filter(question_no=1, is_shared=True)
         is_member = 'False'
+        mode = 'create'
 
         pre_context = {
             'today_ques' : today_ques,
             # 'all_ans_for_this_ques' : all_ans_for_this_ques,
             'is_member' : is_member,
+            'mode' : mode,
         }
 
         context = {**navbar_context, **pre_context}
