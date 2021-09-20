@@ -536,11 +536,10 @@ def create_ans_self(request):
             if ques_form.is_valid():
                 ques_instance = ques_form.save(commit=False)
                 if hasattr(ques_form, 'image'):
-                # if not ques_form.image:
+                    ques_instance.image = ques_form.image
+                else:
                     random_image = RandomImages.objects.get(id=randImg())
                     ques_instance.image = random_image.image
-                else:
-                    ques_instance.image = ques_form.image
                 ques_instance.save()
 
                 ## Answer validation
