@@ -17,7 +17,7 @@
 {% if mode == 'create' %}
 <div class="row">
     <div class="col left">
-        <div class='text-l'>{{today_ques.title}}</div>
+        <div class='text-l'>{{today_ques.question_no}}. {{today_ques.title}}</div>
     </div>
 </div>
 <div class="row">
@@ -28,7 +28,7 @@
 {% elif mode == 'update' %}
 <div class="row">
     <div class="col left">
-        <div class='text-l'>{{this_question.title}}</div>
+        <div class='text-l'>{{this_question.question_no}}. {{this_question.title}}</div>
     </div>
 </div>
 <div class="row">
@@ -120,7 +120,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="text-m textbunch truncate">{{a.body}}</div>
+                            <div class="text-s textbunch truncate">{{a.body}}</div>
                         </div>
                     </div>
                 </a>
