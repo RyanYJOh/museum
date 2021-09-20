@@ -1,12 +1,13 @@
 from django.urls import path
 from . import views
+from dashboard.views import clicks
 from register import views as registerViews
 
 urlpatterns = [
     path('', views.main_page, name='home'),
     # path('me', views.my_profile, name='my-profile'),
     path('profile/<str:username>', views.profile, name='others-profile'),
-    path('what-is-originals', views.about, name="about"),
+    path('about', views.about, name="about"),
 
     ## Us
     path('question-from-originals', views.create_ans_us_short, name='question-from-originals'),
@@ -21,5 +22,7 @@ urlpatterns = [
 
     ## Bookmark, Non-member answer
     path('ajax/bookmark', views.bookmark, name="bookmark"),
-    path('ajax/non-member-answer', registerViews.nonMemberAnswer, name="non-member-answer")
+    path('ajax/non-member-answer', registerViews.nonMemberAnswer, name="non-member-answer"),
+    path('ajax/clicks', clicks, name="clicks")
+
 ]

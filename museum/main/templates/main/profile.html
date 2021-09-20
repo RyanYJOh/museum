@@ -75,7 +75,7 @@
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/originals-answer/{{u.id}}">
+                        <a href="/originals-answer/{{u.id}}" id="my-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                             <div class="row">
                                 <div class="col">
                                     <div class="text-m">Q. {{u.question_id.title}}</div>
@@ -126,7 +126,7 @@
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/self-answer/{{s.id}}">
+                        <a href="/self-answer/{{s.id}}" id="my-click-id-{{s.id}}" onclick="TrackClicksSelf(id)">
                             <div class="row">
                                 <div class="col">
                                     <div class='text-m'>Q. {{s.question_id.title}}</div>
@@ -183,7 +183,7 @@
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/originals-answer/{{u.id}}">
+                        <a href="/originals-answer/{{u.id}}" id="bookmark-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                             <div class="row">
                                 <div class="col">
                                     <div class="text-m">Q. {{u.question_id.title}}</div>
@@ -234,7 +234,7 @@
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
                     <div class="card card-body grid-card col">
-                        <a href="/self-answer/{{s.id}}">
+                        <a href="/self-answer/{{s.id}}" id="bookmark-click-id-{{s.id}}" onclick="TrackClicksSelf(id)">
                             <div class="row">
                                 <div class="col">
                                     <div class='text-m'>Q. {{s.question_id.title}}</div>
@@ -379,6 +379,38 @@
         if ('{{is_owner}}' === 'True') {
             location.href='https://originals-mvp.herokuapp.com/member/edit-userinfo/{{current_user.username}}'
         } else {}
+    }
+
+    function TrackClicksUs(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '프로필 화면',
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
+    }
+
+    function TrackClicksSelf(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '프로필 화면',
+            ans_type : 'self',
+            ans_us_ref : '',
+            ans_self_ref : id.split('id-')[1]
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
     }
     
 </script>

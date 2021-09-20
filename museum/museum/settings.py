@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'member.apps.MemberConfig',
     'register.apps.RegisterConfig',
+    'dashboard.apps.DashboardConfig',
 
     'crispy_forms',
     'bootstrap4',

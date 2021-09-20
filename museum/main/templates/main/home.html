@@ -56,7 +56,7 @@
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col">
-                <a href="/originals-answer/{{u.id}}">
+                <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                     <div class="row">
                         <div class="col">
                             <div class="text-m">Q. {{u.question_id.title}}</div>
@@ -106,7 +106,7 @@
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col">
-                <a href="/self-answer/{{s.id}}">
+                <a href="/self-answer/{{s.id}}" id="self-click-id-{{s.id}}" onclick="TrackClicksSelf(id)">
                     <div class="row">
                         <div class="col">
                             <div class='text-m'>Q. {{s.question_id.title}}</div>
@@ -217,6 +217,37 @@
             bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
             bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z');
         } 
+    }
+
+    function TrackClicksUs(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '홈 화면',
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
+    }
+    function TrackClicksSelf(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '홈 화면',
+            ans_type : 'self',
+            ans_us_ref : '',
+            ans_self_ref : id.split('id-')[1]
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
     }
 </script>
 {%endblock%}
