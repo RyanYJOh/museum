@@ -201,11 +201,8 @@ function nonMemberAnswered() {
 
     var arr = [];
     var body = ansSubmitted.value;
-    console.log("first click")
     arr.push(body, created_at, is_shared_checked);
-    console.log(arr);
     localStorage.setItem('non-member-object', JSON.stringify(arr));
-    console.log("second click")
     location.href = '/join';
 }
 

@@ -109,11 +109,10 @@
     function checkLocalStorage() {
         
         if (localStorage.getItem('non-member-object')) {
-            console.log('there is one')
 
             var lsItem = localStorage.getItem('non-member-object')
             var lsItemArr = JSON.parse(lsItem)
-            console.log(lsItemArr)
+
             var postData = {
                 body : lsItemArr[0],
                 created_at : lsItemArr[1],

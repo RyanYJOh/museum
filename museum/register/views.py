@@ -54,7 +54,7 @@ def register(request):
 ##### 비회원 답변 저장 #####
 def nonMemberAnswer(request):
     data = json.loads(request.body)
-
+    print('잘 왔다고!!!')
     if request.method == 'POST':
         form = AnswersForFromUsForm(request.POST)
         if form.is_valid():
@@ -69,7 +69,7 @@ def nonMemberAnswer(request):
             instance.updated_at = instance.created_at
 
             instance.save()
-
+            print('save도 잘 됐다고1!!')
             return redirect('/')
         else:
             print("Validation 실패!!!!!!!!!!!!!!!!! due to :", form.errors)
