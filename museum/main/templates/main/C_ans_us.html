@@ -59,7 +59,7 @@
                     <label for="share_checkbox">공유되어도 좋습니다.</label>
                 </div>
                 <div class="col-6 right">
-                    <button type="button" onclick="nonMemberAnswered()" class='btn btn-primary' id="non-member-submit">내 정답 저장하고 가입하러 가기</button>
+                    <button type="button" onclick="nonMemberAnswered()" class='btn btn-primary' id="non-member-submit">저장해두고 가입하기</button>
                 </div>
             </div>
         </form>
@@ -198,18 +198,15 @@ function nonMemberAnswered() {
 
     var submitBtn = document.getElementById('non-member-submit');
     var ansSubmitted = document.getElementById('non-member-ans');
-    submitBtn.addEventListener('click', click);
-    function click(e) {
-        var arr = [];
-        var body = ansSubmitted.value;
-        
-        arr.push(body, created_at, is_shared_checked);
-        console.log(arr);
-        localStorage.setItem('non-member-object', JSON.stringify(arr));
-        
-        location.href = '/join';
-    }
-    
+
+    var arr = [];
+    var body = ansSubmitted.value;
+    console.log("first click")
+    arr.push(body, created_at, is_shared_checked);
+    console.log(arr);
+    localStorage.setItem('non-member-object', JSON.stringify(arr));
+    console.log("second click")
+    location.href = '/join';
 }
 
 function TrackClicks(id) {

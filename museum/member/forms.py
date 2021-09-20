@@ -5,10 +5,10 @@ from .models import UserInfo
 
 class UserInfoForm(forms.ModelForm):
     PERSONA_TYPE = (
-        ('Adam', '배울점이 있는 사람들의 생각을 접하는 것을 즐겨요.'),
+        ('Adam', '배울점이 있는 사람들의 생각을 접하며 삶에 동기부여를 받아요.'),
         ('Brian','나에게 생각할거리가 주어지는 것을 좋아해요.'),
         ('Claire','나의 생각을 글이나 메모로 정리하는 데 익숙해요.'),
-        ('Diana','삶에 동기부여를 주는 컨텐츠를 자주 찾아봐요.'),
+        # ('Diana','삶에 동기부여를 주는 컨텐츠를 자주 찾아봐요.'),
         ('Other','(기타) 어느 것에도 크게 해당되지 않아요.')
     )
 

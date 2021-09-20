@@ -10,7 +10,6 @@ class Clicks(models.Model):
         ('Adam','Adam'),
         ('Brian','Brian'),
         ('Claire','Claire'),
-        ('Diana','Diana')
     )
 
     ANS_TYPE = (
