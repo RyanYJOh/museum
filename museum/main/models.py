@@ -2,30 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-'''
-class Questions(models.Model):
-    TYPE_CHOICES = (
-        ('from_museum' , '뮤지엄이 던지는'),
-        ('from_self', '내가 나에게 던지는'),
-        ('from_others', '다른 이에게 던지는')
-    )
-
-    objects = models.Manager()
-    title = models.CharField(max_length = 100, blank=False)
-    body = models.TextField(blank=True)
-    image = models.ImageField(null=True, blank=True, upload_to="question_img")
-    from_type = models.CharField(max_length=50, choices=TYPE_CHOICES, null=False) # 여기서 null=False는 선택하지 않을 수는 없다는 거겠지?
-    is_nudge = models.BooleanField(default=False)
-    createdAt = models.DateField(auto_now_add=True)
-
-class Answers(models.Model):
-    objects = models.Manager()
-
-    question_id = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='answer', null=False) # default 필요한가?
-    self_question_title = models.CharField(max_length=100, blank=False) # 여기에 값이 있는 경우, 이 타이틀이 Questions에도 저장된다.
-    self_answer_subtitle = models.CharField(max_length=100, blank=True)
-    body = models.CharField(max_length=10000, blank=True) # 답변을 하지 않고 저장하는 경우--null=True 필요없나?
-'''
 class QuestionsFromUs(models.Model):
     objects = models.Manager()
     question_no = models.IntegerField(null=True)

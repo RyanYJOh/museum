@@ -11,7 +11,6 @@ urlpatterns = [
 
     ## Us
     path('question-from-originals', views.create_ans_us_short, name='question-from-originals'),
-    path('answer-long', views.create_ans_us_long, name='answer-long'),
     path('originals-answer/<int:ans_us_id>', views.detail_ans_us, name='originals-answer-detail'),
     path('originals-answer/edit/<int:ans_us_id>', views.update_ans_us, name="update-answer-from-originals"),
     

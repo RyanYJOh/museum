@@ -54,8 +54,8 @@ def main_page(request):
     navbar_context = navbar(request)
     
     ## infiinte scroll을 할 것이냐, pagination을 쓸 것이냐.
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at') 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at')
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
 
     if request.user.is_authenticated:
         try:
@@ -248,10 +248,10 @@ def create_ans_us_short(request):
         is_member = "True"
         mode = 'create'
 
-        ## 저장된 답변 가져오기
+        ## 저장된 답변들 가져오기
         us_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_us_ref', flat=True)
-        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_self_ref', flat=True)
         list__us_saved_by_user = list(us_saved_by_user)
+        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_self_ref', flat=True)
         list__self_saved_by_user = list(self_saved_by_user)
 
         form = AnswersForFromUsForm(request.POST)
@@ -259,7 +259,8 @@ def create_ans_us_short(request):
         ## 이 유저가 답변을 생성한 적이 없는 경우 (initial) => empty queryset
         if not AnswersForFromUs.objects.filter(author_id=request.user):
             # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
-            # form = AnswersForFromUs.objects.filter(author_id = request.user, question_id=1)
+            
+            ## 첫번째 질문 가져오기
             today_ques = QuestionsFromUs.objects.get(question_no=1)
             today_ques_id = today_ques.id
             ## 이건 today_ques_id의 답변들을 가져오는 코드
@@ -276,13 +277,15 @@ def create_ans_us_short(request):
 
                     instance.save()
                     return redirect('/question-from-originals')
-
-        else: # 처음 질문 이후 모두 해당
-            # 가장 최근 질문의 가장 최근 답변일 가져오기!!
+        
+        ## 첫번째 질문에 답을 한 경우 (두번째 이후인 경우)
+        else:
+            ## 가장 최근 질문의 가장 최근 답변일 가져오기!!
             # 1) author_id의 모든 답변들의 question_id 가져오기
             answers_created = AnswersForFromUs.objects.filter(author_id=request.user).values('question_id') # QuerySet
-            all_ques_ids = list(answers_created.values('question_id')) # 딕셔너리가 들어있는 리스트
-            # question_id 중 최댓값, 즉 답변을 한 가장 최근 질문의 넘버 가져오기
+            all_ques_ids = list(answers_created) # 딕셔너리가 들어있는 리스트 ----> 이것만 해도 충분하지 않음? instead of 아랫줄
+            # all_ques_ids = list(answers_created.values('question_id')) # 딕셔너리가 들어있는 리스트
+            # question_id 중 최댓값, 즉 답변을 한 가장 최근 질문의 id 가져오기
             list__ques_ids = []
             for i in range(0, len(all_ques_ids)): 
                 list__ques_ids.append(*all_ques_ids[i].values()) # 여기 * operator는 python3 dictionary에 적용된 view?를 없애주는 것.
@@ -291,7 +294,7 @@ def create_ans_us_short(request):
             # 2) author_id의, 가장 최근 질문의 가장 최근 created_at 가져오기
             latest_created_at = AnswersForFromUs.objects.filter(author_id=request.user, question_id=latest_ques_id).values('created_at')
             # all_created_ats의 각 원소는 {'created_at':datetime.date(2020, 07, 21)} 이런 포맷 (python dictionary view)
-            all_created_ats = list(latest_created_at.values('created_at'))
+            all_created_ats = list(latest_created_at)
             # Date 중 최댓값, 즉 가장 최근의 질문의 날짜 가져오기 (바로 위와 정확히 동일)
             list__created_ats = []
             list__created_ats_in_format = []
@@ -304,11 +307,13 @@ def create_ans_us_short(request):
             # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
             if latest_created_at < today:
                 # 다음 질문 가져오기 (정상적으로 진행)
-                today_ques_id = latest_ques_id + 1
-                # formset = ans_formset(queryset=AnswersForFromUs.objects.filter(author_id = request.user, question_id=today_ques_id))
-                today_ques = QuestionsFromUs.objects.get(id=today_ques_id)
-                ## 이건 today_ques_id의 답변들을 가져오는 코드
-                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques_id, is_shared=True).order_by('-created_at_time')
+                latest_ques = QuestionsFromUs.objects.get(id=latest_ques_id)
+                today_ques_no = getattr(latest_ques, 'question_no')+1
+                # formset = ans_formset(queryset=AnswersForFromUs.objects.filter(author_id = request.user, question_id=today_ques_no))
+                today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+
+                ##  today_ques의 답변들을 가져와야 하는데, 그럼 먼저 today_ques의 id값을 알아야 한다.
+                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
                 if request.method == "POST":
                     form = AnswersForFromUsForm(request.POST)
                     if form.is_valid():
@@ -316,6 +321,8 @@ def create_ans_us_short(request):
                         instance.author_id = request.user
                         instance.question_id = today_ques
                         instance.created_at = str(today)
+                        random_image = RandomImages.objects.get(id=randImg())
+                        instance.image = random_image.image
 
                         instance.save()
 
@@ -323,10 +330,13 @@ def create_ans_us_short(request):
 
             ## 아직 날짜가 지나지 않았을 때 (수정만 가능함)
             elif latest_created_at == today:
-                today_ques_id = latest_ques_id
-                today_ques = QuestionsFromUs.objects.get(id=today_ques_id)
-                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques_id, is_shared=True).order_by('-created_at_time')
-                my_ans_for_this_ques = AnswersForFromUs.objects.get(question_id=today_ques_id, author_id=this_user)
+                ## 오늘의 질문은 latest_ques와 같음
+                latest_ques = QuestionsFromUs.objects.get(id=latest_ques_id)
+                today_ques_no = getattr(latest_ques, 'question_no')
+                today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+
+                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
+                my_ans_for_this_ques = AnswersForFromUs.objects.get(question_id=today_ques.id, author_id=this_user)
                 message = "질문은 하루에 1개만 제공됩니다."
                 next_ques_ready = 'False'
                         
@@ -357,108 +367,6 @@ def create_ans_us_short(request):
         }
 
         context = {**pre_context, **navbar_context}
-        return render(request, 'main/C_ans_us.html', context)
-
-def create_ans_us_long(request):
-    '''
-    로그인되어있는 경우와 아닌 경우 구분해야 함. 첫번째 질문에 한하여, 로그인 안되어 있어도 일단 답변은 가능. 하지만 곧바로 가입/로그인 유도해야 한다.
-    '''
-    if request.user.is_authenticated == False:
-        today_ques = QuestionsFromUs.objects.get(id=1)
-        all_ans_for_this_ques = AnswersForFromUs.objects.select_related('author_id', 'author_id__userinfo').filter(question_id=1)
-        is_member = 'False'
-
-        context = {
-            'today_ques' : today_ques,
-            'all_ans_for_this_ques' : all_ans_for_this_ques,
-            'is_member' : is_member,
-        }
-        return render(request, 'main/C_ans_us.html', context)
-
-    elif request.user.is_authenticated:
-        this_user = request.user
-        today = date.today()
-        is_member = "True"
-        form = AnswersForFromUsForm(request.POST)
-        ##### START 이 유저에게 할당된 오늘의 질문 가져오기 -> 즉문즉답에서 사용했던 로직 참고 #####
-        ## 이 유저가 답변을 생성한 적이 없는 경우 (initial) => empty queryset
-        if not AnswersForFromUs.objects.filter(author_id=request.user):
-            # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
-            # form = AnswersForFromUs.objects.filter(author_id = request.user, question_id=1)
-            today_ques = QuestionsFromUs.objects.get(id=1)  
-            ## 이건 today_ques_id의 답변들을 가져오는 코드
-            all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=1).order_by('-created_at')
-            if request.method == 'POST':
-                form = AnswersForFromUsForm(request.POST)
-                if form.is_valid(): ## 이거 괄호 없어도 되는 거 아녀?
-                    instance = form.save(commit=False)
-                    instance.author_id = request.user
-                    instance.question_id = 1 ## Foreign key인데 이렇게 직접 id 입력하는 거 되려나..
-                    instance.created_at = str(today)
-                    instance.save()
-                    return redirect('/create-ans-us')
-
-        else: # 처음 질문 이후 모두 해당
-            # 가장 최근 질문의 가장 최근 답변일 가져오기!!
-            # 1) author_id의 모든 답변들의 question_id 가져오기
-            answers_created = AnswersForFromUs.objects.filter(author_id=request.user).values('question_id') # QuerySet
-            all_ques_ids = list(answers_created.values('question_id')) # 딕셔너리가 들어있는 리스트
-            # question_id 중 최댓값, 즉 답변을 한 가장 최근 질문의 넘버 가져오기
-            list__ques_ids = []
-            for i in range(0, len(all_ques_ids)): 
-                list__ques_ids.append(*all_ques_ids[i].values()) # 여기 * operator는 python3 dictionary에 적용된 view?를 없애주는 것.
-            latest_ques_id = max(list__ques_ids)
-
-            # 2) author_id의, 가장 최근 질문의 가장 최근 created_at 가져오기
-            latest_created_at = AnswersForFromUs.objects.filter(author_id=request.user, question_id=latest_ques_id).values('created_at')
-            # all_created_ats의 각 원소는 {'created_at':datetime.date(2020, 07, 21)} 이런 포맷 (python dictionary view)
-            all_created_ats = list(latest_created_at.values('created_at'))
-            # Date 중 최댓값, 즉 가장 최근의 질문의 날짜 가져오기 (바로 위와 정확히 동일)
-            list__created_ats = []
-            list__created_ats_in_format = []
-            for j in range(0, len(all_created_ats)): 
-                list__created_ats.append(*all_created_ats[j].values()) # 각 원소는 datetime.date(2020,07,21)의 포맷
-                list__created_ats_in_format.append(list__created_ats[j].strftime('%Y-%m-%d')) # datetime.date(2020,07,21) -> 2020-07-21로 변환
-            latest_created_at = max(list__created_ats)
-
-            # 가장 최근 질문의 가장 최근 답변일이 가져와졌다. 이 날짜와 today의 값이 서로 같은지 다른지 확인해줘야 한다.
-            # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
-            if latest_created_at < today:
-                # 다음 질문 가져오기 (정상적으로 진행)
-                today_ques_id = latest_ques_id + 1
-                # formset = ans_formset(queryset=AnswersForFromUs.objects.filter(author_id = request.user, question_id=today_ques_id))
-                today_ques = QuestionsFromUs.objects.get(id=today_ques_id)
-                ## 이건 today_ques_id의 답변들을 가져오는 코드
-                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques_id).order_by('-created_at')
-                if request.method == "POST":
-                    form = AnswersForFromUsForm(request.POST)
-                    if form.is_valid():
-                        instance = form.save(commit=False)
-                        instance.author_id = request.user
-                        instance.question_id = today_ques   ## today_ques_id로 하면 안된다. QuestionsFromUs의 인스턴스 자체를 reference해야함.
-                        instance.created_at = str(today)
-                        instance.save()
-                        '''
-                        formset의 경우 instance는 "딕셔너리 in 리스트"의 형태!!
-                        가령 이런 식. 맞나?
-                        [{author_id:'ryan', question_id:1, created_at:'2020-07-20'}]
-                        '''
-                        # save할 때 문제 생기면 아래 링크 참고 -- iteration해서 for loop으로 저장.
-                        # https://docs.djangoproject.com/en/3.0/topics/forms/modelforms/#saving-objects-in-the-formset
-                        return redirect('/create-ans-us')
-
-            elif latest_created_at == today: # 즉, 아직 날짜가 지나지 않았을 때
-                return redirect('/admin')
-            ##### END 이 유저에게 할당된 오늘의 질문 가져오기 -> 즉문즉답에서 사용했던 로직 참고 #####
-
-        ## !!!!!!!!!!!! 유저 authentication 안되면 이 아래 전부다 indentation 줘야 함.!!!!!!!!!!!!!!!!!!!
-        context = {
-            'form' : form,
-            'today_ques' : today_ques,
-            'this_user' : this_user,
-            'all_ans_for_this_ques' : all_ans_for_this_ques,
-            'is_member' : is_member,
-        }
         return render(request, 'main/C_ans_us.html', context)
 
 def detail_ans_us(request, ans_us_id):

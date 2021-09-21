@@ -43,11 +43,6 @@
     <div class="col">
         {% if is_member == 'False' %}
         <form method='post' class='form-group' id="form_is_member_false">
-            <div class="row">
-                <div class="col right text-s">
-                    일단 비워둔 채로 저장만 해도 괜찮아요.
-                </div>
-            </div>
             <div class="row row-topless">
                 <div class="col">
                     <textarea class='form-control' id="non-member-ans" placeholder="답변 먼저 작성하고 가입할 수 있어요!" rows='5'></textarea>
@@ -83,7 +78,7 @@
         {% else %}
         <form method="POST" class="form-group"> {% csrf_token %}
             <div class="row">
-                <div class="col right text-s">일단 비워둔 채로 저장만 해도 괜찮아요.</div>
+                    <div class="col right text-s">일단 비워둔 채로 저장만 해도 괜찮아요.</div>
             </div>
             <div class="row row-topless">
                 <div class="col text-m">
