@@ -22,7 +22,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <div class="text-m textbunch">{{today_ques.body}}</div>
+        <div class="text-m textbunch">{{today_ques.body|linebreaks}}</div>
     </div>
 </div>
 {% elif mode == 'update' %}
@@ -33,7 +33,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <div class="text-m textbunch">{{this_question.body}}</div>
+        <div class="text-m textbunch">{{this_question.body|linebreaks}}</div>
     </div>
 </div>
 {% endif %}
@@ -64,7 +64,7 @@
         {% if next_ques_ready == 'False' %}
         <div class="row">
             <div class="col">
-                <div class="my-ans-box">{{my_ans_for_this_ques.body}}</div>
+                <div class="my-ans-box">{{my_ans_for_this_ques.body|linebreaks}}</div>
             </div>
         </div>
         <div class="row">

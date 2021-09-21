@@ -29,4 +29,4 @@ class Clicks(models.Model):
     clicked_user_type = models.CharField(max_length=20, choices=USER_TYPE)
 
     def __str__(self):
-        return ('Viewed by ' + str(self.clicked_user_type) + ' from [' + str(self.clicked_from) + ']')
+        return ('Viewed by ' + str(self.clicked_user_type) + ' from [' + str(self.clicked_from) + '], on ' + str(self.clicked_at))
