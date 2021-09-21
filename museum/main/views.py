@@ -94,62 +94,61 @@ def main_page(request):
     context = {**navbar_context, **pre_context}
     return render(request, 'main/home.html', context)
 
-# @login_required(login_url="/login")
 def profile(request, username):
     navbar_context = navbar(request)
     from_profile_page = 'True'
 
     profile_owner = User.objects.get(username=username)
-    if request.user.is_authenticated:
-        authenticated = 'True'
-        ## 내 프로필
-        if profile_owner == request.user:
-            owner_info = UserInfo.objects.get(this_user=request.user)
-            owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user)
-            owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user)
-            is_owner = 'True'
-            
-            ## 내가 저장한 글
-            us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
-            list__us_saved_by_user = list(us_saved_by_user)
-            list__us_bookmarked = []
-            for i in list__us_saved_by_user:
-                new = AnswersForFromUs.objects.get(id=i)
-                list__us_bookmarked.append(new)
-            
-            self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_self_ref', flat=True)
-            list__self_saved_by_user = list(self_saved_by_user)
-            list__self_bookmarked = []
-            for i in list__self_saved_by_user:
-                new = AnswersForFromSelf.objects.get(id=i)
-                list__self_bookmarked.append(new)
-
-            pre_context = {
-                'current_user' : request.user,
-                'owner_info' : owner_info,
-                'owner_ans_us' : owner_ans_us,
-                'owner_ans_self' : owner_ans_self,
-                'is_owner' : is_owner,
-                'authenticated' : authenticated,
-                'list__us_bookmarked' : list__us_bookmarked, 
-                'list__self_bookmarked' : list__self_bookmarked,
-                'list__us_saved_by_user' : list__us_saved_by_user,
-                'list__self_saved_by_user' : list__self_saved_by_user,
-                'from_profile_page' : from_profile_page,
-            }
-
-            context = {**pre_context, **navbar_context}
-            return render(request, 'main/profile.html', context)
+    
+    ## 내 프로필
+    if profile_owner == request.user:
+        owner_info = UserInfo.objects.get(this_user=request.user)
+        owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time')
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time')
+        is_owner = 'True'
         
-        ## 타인 프로필
-        else:
-            is_owner = 'False'
+        ## 내가 저장한 글
+        us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
+        list__us_saved_by_user = list(us_saved_by_user)
+        list__us_bookmarked = []
+        for i in list__us_saved_by_user:
+            new = AnswersForFromUs.objects.get(id=i)
+            list__us_bookmarked.append(new)
+        
+        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_self_ref', flat=True)
+        list__self_saved_by_user = list(self_saved_by_user)
+        list__self_bookmarked = []
+        for i in list__self_saved_by_user:
+            new = AnswersForFromSelf.objects.get(id=i)
+            list__self_bookmarked.append(new)
 
-            ## 이 사람의 정답
-            owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True)
-            owner_ans_self = AnswersForFromSelf.objects.filter(author_id=profile_owner, is_shared=True)
-            
-            ## 이 사람의 글 중 내가 저장한 글
+        pre_context = {
+            'current_user' : request.user,
+            'owner_info' : owner_info,
+            'owner_ans_us' : owner_ans_us,
+            'owner_ans_self' : owner_ans_self,
+            'is_owner' : is_owner,
+            # 'authenticated' : authenticated,
+            'list__us_bookmarked' : list__us_bookmarked, 
+            'list__self_bookmarked' : list__self_bookmarked,
+            'list__us_saved_by_user' : list__us_saved_by_user,
+            'list__self_saved_by_user' : list__self_saved_by_user,
+            'from_profile_page' : from_profile_page,
+        }
+
+        context = {**pre_context, **navbar_context}
+        return render(request, 'main/profile.html', context)
+    
+    ## 타인 프로필
+    else:
+        is_owner = 'False'
+
+        ## 이 사람의 정답
+        owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time')
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time')
+        
+        if request.user.is_authenticated:
+        ## 이 사람의 글 중 내가 저장한 글
             us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
             self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_self_ref', flat=True)
             list__us_saved_by_user = list(us_saved_by_user)
@@ -164,22 +163,16 @@ def profile(request, username):
                 'is_owner' : is_owner,
                 'from_profile_page' : from_profile_page,
             }
-            
-            context = {**pre_context, **navbar_context}
-            return render(request, 'main/profile.html', context)
-
-    else:
-        authenticated = 'False'
-        is_owner = 'False'
-        message = "다른 사람의 프로필은 로그인해야 볼 수 있어요."
-        pre_context = {
-            'authenticated' : authenticated,
-            'message' : message,
-            'is_owner' : is_owner,
-            'from_profile_page' : from_profile_page,
-        }
-
-        context = {**navbar_context, **pre_context}
+        else:
+            pre_context = {
+                'owner_info' : profile_owner.userinfo, 
+                'owner_ans_us' : owner_ans_us,
+                'owner_ans_self' : owner_ans_self,
+                'is_owner' : is_owner,
+                'from_profile_page' : from_profile_page,
+            } 
+        
+        context = {**pre_context, **navbar_context}
         return render(request, 'main/profile.html', context)
 
 def about(request):

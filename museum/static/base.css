@@ -305,7 +305,7 @@ input[type=password] {
     color: white;
 }
 .fade-in {
-    animation: fadein 2s;
+    animation: fadein 1s;
   }
 @keyframes fadein {
     from {
