@@ -184,35 +184,6 @@ def about(request):
 
     context = {**navbar_context, **pre_context}
     return render(request, 'main/about.html', context)
-# def others_profile(request, username):
-    profile_owner = User.objects.get(username=username)
-
-    owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True)
-    owner_ans_self = AnswersForFromSelf.objects.filter(author_id=profile_owner, is_shared=True)
-
-    if request.user.is_authenticated:
-        ## 저장된 답변 가져오기
-        us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_no', flat=True)
-        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_no', flat=True)
-        list__us_saved_by_user = list(us_saved_by_user)
-        list__self_saved_by_user = list(self_saved_by_user)
-
-        context = {
-            'owner_info' : profile_owner.userinfo, 
-            'owner_ans_us' : owner_ans_us,
-            'owner_ans_self' : owner_ans_self,
-            'list__us_saved_by_user' : list__us_saved_by_user,
-            'list__self_saved_by_user' : list__self_saved_by_user,
-        }
-
-    else:    
-        context = {
-            'owner_info' : profile_owner.userinfo, 
-            'owner_ans_us' : owner_ans_us,
-            'owner_ans_self' : owner_ans_self,
-        }
-
-    return render(request, 'main/profile.html', context)
 
 ##### 오늘 뮤지엄이 던지는 질문 #####
 def create_ans_us_short(request):
@@ -371,7 +342,7 @@ def detail_ans_us(request, ans_us_id):
     this_ans = AnswersForFromUs.objects.get(id=ans_us_id)
     if request.user.is_authenticated:
         ## 북마크
-        if SavedAnswers.objects.filter(ans_us_ref=this_ans).exists():
+        if SavedAnswers.objects.filter(ans_us_ref=this_ans, bookmarker=request.user).exists():
             bookmarked = 'True'
         else:
             bookmarked = 'False'
