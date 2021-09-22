@@ -73,6 +73,14 @@
                 <button class="btn btn-primary" onclick="location.href='originals-answer/edit/{{my_ans_for_this_ques.id}}'">수정하기</button>
             </div>
         </div>
+
+        <div class="row-h-20"></div>
+        <div class="row">
+            <div class="col text-s">
+                <div class="card card-header">내일의 질문</div>
+                <div class="card card-body bolder">{{next_ques.title}}</div>
+            </div>
+        </div>
         
         <!-- 오늘의 질문 가능 -->
         {% else %}

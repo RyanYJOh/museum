@@ -304,6 +304,7 @@ def create_ans_us_short(request):
                 today_ques_no = getattr(latest_ques, 'question_no')+1
                 # formset = ans_formset(queryset=AnswersForFromUs.objects.filter(author_id = request.user, question_id=today_ques_no))
                 today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+                next_ques = QuestionsFromUs.objects.get(question_no = today_ques_no+1)
 
                 ##  today_ques의 답변들을 가져와야 하는데, 그럼 먼저 today_ques의 id값을 알아야 한다.
                 all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
@@ -327,6 +328,7 @@ def create_ans_us_short(request):
                 latest_ques = QuestionsFromUs.objects.get(id=latest_ques_id)
                 today_ques_no = getattr(latest_ques, 'question_no')
                 today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+                next_ques = QuestionsFromUs.objects.get(question_no = today_ques_no+1)
 
                 all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
                 my_ans_for_this_ques = AnswersForFromUs.objects.get(question_id=today_ques.id, author_id=this_user)
@@ -339,6 +341,7 @@ def create_ans_us_short(request):
                     'my_ans_for_this_ques' : my_ans_for_this_ques,
                     'message' : message,
                     'next_ques_ready' : next_ques_ready,
+                    'next_ques' : next_ques,
                     'list__us_saved_by_user' : list__us_saved_by_user,
                     'list__self_saved_by_user' : list__self_saved_by_user,
                     'mode' : mode
