@@ -71,6 +71,14 @@
 <div class="row" id='my-answers'>
     <div class="col">
         <div class="row ans-orig fade-in" id='' style='display:flex;'>
+            {% if owner_ans_us == 'None' %}
+            <div class="row-h-40"></div>
+            <div class="col-12 text-center text-s">지금 나의 첫 정답을 기록해봐요.</div>
+            <div class="col-12 text-center">
+                <button class="btn btn-primary" onclick="location.href='/question-from-originals'">오늘의 질문 받기</button>
+            </div>
+            
+            {% else %}
             {% for u in owner_ans_us %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
@@ -78,7 +86,7 @@
                         <a href="/originals-answer/{{u.id}}" id="my-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                             <div class="row">
                                 <div class="col">
-                                    <div class="text-m">Q. {{u.question_id.title}}</div>
+                                    <div class="text-m">{{u.question_id.question_no}}. {{u.question_id.title}}</div>
                                 </div>
                             </div>
                             <div class="row list-img-container-row">
@@ -119,9 +127,15 @@
                 </div>
             </div>   
             {% endfor %}
+            {% endif %}
         </div>
         
         <div class="row ans-self fade-in" id='' style='display:none;'>
+            {% if owner_ans_self == "None" %}
+            <div class="row-h-40"></div>
+            <div class="col-12 text-s text-center">아직 아무 글도 쓰지 않았어요.</div>
+
+            {% else %}
             {% for s in owner_ans_self %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
@@ -170,6 +184,7 @@
                 </div>
             </div>   
             {% endfor %}
+            {% endif %}
         </div>
         
     </div>
@@ -179,6 +194,11 @@
 <div class="row" id='my-bookmarks' style="display: none;">
     <div class="col">
         <div class="row ans-orig fade-in" id='' style='display:flex;'>
+            {% if list__us_bookmarked == "None" %}
+            <div class="row-h-40"></div>
+            <div class="col-12 text-center text-s">아직 북마크한 글이 없어요.</div>
+
+            {% else %}
             {% for u in list__us_bookmarked %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
@@ -186,7 +206,7 @@
                         <a href="/originals-answer/{{u.id}}" id="bookmark-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                             <div class="row">
                                 <div class="col">
-                                    <div class="text-m">Q. {{u.question_id.title}}</div>
+                                    <div class="text-m">{{u.question_id.question_no}}. {{u.question_id.title}}</div>
                                 </div>
                             </div>
                             <div class="row list-img-container-row">
@@ -227,9 +247,15 @@
                 </div>
             </div>   
             {% endfor %}
+            {% endif %}
         </div>
         
         <div class="row ans-self fade-in" id='' style='display:none;'>
+            {% if list__self_bookmarked == "None" %}
+            <div class="row-h-40"></div>
+            <div class="col-12 text-center text-s">아직 북마크한 글이 없어요.</div>
+
+            {% else %}
             {% for s in list__self_bookmarked %}
             <div class="col-12 col-md-4">
                 <div class="row align-middle">
@@ -278,6 +304,7 @@
                 </div>
             </div>   
             {% endfor %}
+            {% endif %}
         </div>
         
     </div>

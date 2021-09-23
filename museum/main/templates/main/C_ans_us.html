@@ -81,7 +81,7 @@
                 <div class="card card-body bolder">{{next_ques.title}}</div>
             </div>
         </div>
-        
+
         <!-- 오늘의 질문 가능 -->
         {% else %}
         <form method="POST" class="form-group"> {% csrf_token %}
@@ -95,7 +95,7 @@
             </div>
             <div class="row">
                 <div class="col-6 left text-m">
-                    {{form.is_shared}} 공유되어도 좋습니다.
+                    {{form.is_shared}} 공개되어도 좋습니다.
                 </div>
                 <div class="col-6 right">
                     <button class='btn btn-primary' type="submit" name='save'>내 정답 저장</button>

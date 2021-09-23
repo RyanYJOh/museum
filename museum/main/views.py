@@ -104,23 +104,37 @@ def profile(request, username):
     if profile_owner == request.user:
         owner_info = UserInfo.objects.get(this_user=request.user)
         owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time')
+        if not owner_ans_us:
+            owner_ans_us = 'None'
+        else:
+            pass
         owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time')
+        if not owner_ans_self:
+            owner_ans_self = "None"
+        else:
+            pass
         is_owner = 'True'
         
         ## 내가 저장한 글
         us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
         list__us_saved_by_user = list(us_saved_by_user)
-        list__us_bookmarked = []
-        for i in list__us_saved_by_user:
-            new = AnswersForFromUs.objects.get(id=i)
-            list__us_bookmarked.append(new)
+        if not us_saved_by_user:
+            list__us_bookmarked = "None"
+        else:
+            list__us_bookmarked = []
+            for i in list__us_saved_by_user:
+                new = AnswersForFromUs.objects.get(id=i)
+                list__us_bookmarked.append(new)
         
         self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_self_ref', flat=True)
         list__self_saved_by_user = list(self_saved_by_user)
-        list__self_bookmarked = []
-        for i in list__self_saved_by_user:
-            new = AnswersForFromSelf.objects.get(id=i)
-            list__self_bookmarked.append(new)
+        if not self_saved_by_user:
+            list__self_bookmarked = "None"
+        else:
+            list__self_bookmarked = []
+            for i in list__self_saved_by_user:
+                new = AnswersForFromSelf.objects.get(id=i)
+                list__self_bookmarked.append(new)
 
         pre_context = {
             'current_user' : request.user,
@@ -240,7 +254,7 @@ def create_ans_us_short(request):
                     instance.image = random_image.image
 
                     instance.save()
-                    return redirect('/question-from-originals')
+                    return redirect('/')
         
         ## 첫번째 질문에 답을 한 경우 (두번째 이후인 경우)
         else:
@@ -291,7 +305,7 @@ def create_ans_us_short(request):
 
                         instance.save()
 
-                        return redirect('/question-from-originals')
+                        return redirect('/')
 
             ## 아직 날짜가 지나지 않았을 때 (수정만 가능함)
             elif latest_created_at == today:
