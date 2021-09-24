@@ -36,7 +36,7 @@
     
 </head>
 <body>
-    <!-- START 네비게이션 바 -->
+    <!-- 인스타그램의 창업자 케빈 시스트롬이 말했습니다. 코딩은 '딱 사고칠 수준'까지만 배우라고. 그래서 딱 그 정도만 배웠습니다. 개발의 ㄱ도 모르는 사람이 짠 코드입니다. 민망하니 까보지 마세요😕 -->
     <nav class="navbar navbar-default navbar-expand nav-bar fixed-top">
         <div class='navbar-brand nav-link' onclick="location.href='/'">
             <img class="ci" src="{% static 'museum/images/ci_beta.png' %}" alt='ci'>
@@ -57,7 +57,7 @@
             </ul>
         </div>
     </nav>
-    <!-- END 네비게이션 바 -->
+    
     <div class="row-h-40 pc-only"></div>
 
     {% block banner %}
@@ -88,8 +88,11 @@
                             <span class="text-xs">이거 만든 사람</span>
                         </div>
                         <div class="col-4">
-                            <a href="/" style="color: grey !important">Community</a><br>
-                            <span class="text-xs">오픈 단톡방 참여하기</span>
+                            <!-- <a href="/" style="color: grey !important">Community</a><br> -->
+                            <div onclick="NotYetAlert()" class="link" style="color: grey !important">
+                                <span>Community</span><br>
+                                <span class="text-xs">오픈 단톡방 참여하기</span>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -99,3 +102,8 @@
     </footer>
 </body>
 </html>
+<script>
+    function NotYetAlert() {
+        window.alert('아직 준비중입니다. 멋진 분들을 모으고 있으니 조금만 기다려주세요')
+    }
+</script>
