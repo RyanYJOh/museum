@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd
 DEBUG = True # 로컬
 # DEBUG = False # 운영
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.originals.world']
 
 
 # Application definition
