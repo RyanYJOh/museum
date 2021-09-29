@@ -178,3 +178,5 @@ if DEBUG == True : ## 로컬
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 elif DEBUG == False: ## 운영
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CSRF_FAILURE_VIEW = 'main.views.csrf_failure'

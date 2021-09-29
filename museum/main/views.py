@@ -595,3 +595,9 @@ def bookmark(request):
     else:
         pass
 
+
+def csrf_failure(request, reason=""):
+    context = {
+        'message' : 'sorry'
+    }
+    return render(request, 'main/csrf_failure.html', context)
