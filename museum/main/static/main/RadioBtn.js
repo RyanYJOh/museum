@@ -25,7 +25,7 @@ window.onload = function radioBtn() {
         document.getElementById('radio-self-text').style.color = 'grey';
         document.getElementById('radio-self-text').style.fontWeight = '400';
 
-        document.getElementById('ques_type_desc').innerText = '하루에 하나씩 제공되는 질문이에요.'
+        document.getElementById('ques_type_desc').innerText = '하루에 하나씩 제공되는 질문이에요'
     }
     
     function clickSelf(e) {
@@ -44,7 +44,7 @@ window.onload = function radioBtn() {
         document.getElementById('radio-self-text').style.color = 'black';
         document.getElementById('radio-self-text').style.fontWeight = '800';
 
-        document.getElementById('ques_type_desc').innerText = '내가 스스로 고민한 질문과 정답이에요.'
+        document.getElementById('ques_type_desc').innerText = '내가 스스로 고민한 질문과 정답이에요'
     }   
 }
 
