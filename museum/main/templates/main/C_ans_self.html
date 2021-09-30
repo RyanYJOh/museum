@@ -101,9 +101,10 @@
     if ('{{mode}}' == 'create') {
         document.getElementById('id_image').style.display = 'none';
         console.log('mode = create')
-    
+
         function ShowImageField() {
             document.getElementById('show_img_field').style.display = 'none';
+            document.getElementById('div_id_image').style.display = 'inline-block';
             document.getElementById('id_image').style.display = 'inline-block';
         }
     } else if ('{{mode}}' == 'update') {
@@ -111,6 +112,7 @@
         console.log('mode = update')
         function ShowImageField() {
             document.getElementById('show_img_field').style.display = 'none';
+            document.getElementById('id_image').style.display = 'inline-block';
             document.getElementById('div_id_image').style.display = 'inline-block';
         }
     }
