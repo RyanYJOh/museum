@@ -100,6 +100,7 @@
     // 이미지 필드 처리
     if ('{{mode}}' == 'create') {
         document.getElementById('id_image').style.display = 'none';
+        console.log('mode = create')
     
         function ShowImageField() {
             document.getElementById('show_img_field').style.display = 'none';
@@ -107,7 +108,7 @@
         }
     } else if ('{{mode}}' == 'update') {
         document.getElementById('div_id_image').style.display = 'none';
-
+        console.log('mode = update')
         function ShowImageField() {
             document.getElementById('show_img_field').style.display = 'none';
             document.getElementById('div_id_image').style.display = 'inline-block';
