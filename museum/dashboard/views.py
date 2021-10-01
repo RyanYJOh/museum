@@ -59,7 +59,6 @@ def clicks(request):
     else:
         pass
 
-@login_required
 def dashboard(request):
     today = date.today
 
