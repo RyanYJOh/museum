@@ -1,0 +1,228 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} 오리지널스 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-8 text-xl left">
+        {{message}}
+    </div>
+    <div class="col-4 text-m right my-auto">
+        as of : {{date}}
+    </div>
+</div>
+
+<div class="row-h-40"></div>
+
+<div class="container bottom-border">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 유저 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalCountUsers}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countAdam}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countBrian}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countClaire}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Other</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countOther}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container bottom-border">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 [나에게 던지는 질문] 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalCountselfs}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countSelfByAdam}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countSelfByBrian}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countSelfByClaire}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container bottom-border">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 [오리지널스가 던지는 질문] 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalCountUss}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countUsByAdam}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countUsByBrian}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countUsByClaire}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container bottom-border">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 북마크 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalBookmarks}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countBookmarkByAdam}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countBookmarkByBrian}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countBookmarkByClaire}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container bottom-border">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            공개 Vs 비공개 컨텐츠 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalAnswers}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">is_shared = True</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{sharedTrue}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">is_shared = False</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{sharedFalse}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            조회수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalClicks}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+</div>
+{% endblock %}

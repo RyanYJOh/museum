@@ -1,0 +1,84 @@
+{% load static %}
+{% static 'images' as baseUrl%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="{% static 'museum/images/favicon.ico' %}">
+    <link rel="icon" href="{% static 'museum/images/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'main/C_ans_us.css' %}">
+    <!-- 나눔스퀘어 폰트 -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+    
+    <!-- Bootstrap4 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Bootstrap4를 위한 JS bundle -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <!-- AJAX 사용을 위한 jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script src="{% static 'main/RadioBtn.js' %}"></script>
+    <script src="{% static 'main/BookmarkCSRF.js' %}"></script>
+
+    {% block css %}
+    <!-- 추가적인 css 파일을 위한 block -->
+    {% endblock %}
+
+    {% load bootstrap4 %}
+
+    <title>{%block title%}{%endblock%}</title>
+    
+</head>
+<body>
+    <div class="row-h-40"></div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xs-11 col-md-10">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row-h-80"></div>
+
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xs-11 col-md-10 center footer-section">
+                    <div class="row justify-content-center">
+                        <div class="col-4">
+                            <a href="/about" style="color: grey !important">About</a><br>
+                            <span class="text-xs">여긴 어디?</span>
+                        </div>
+                        <div class="col-4">
+                            <a href="https://open.kakao.com/o/sZ2RLNAd" style="color: grey !important">Contact</a><br>
+                            <span class="text-xs">이거 만든 사람</span>
+                        </div>
+                        <div class="col-4">
+                            <!-- <a href="/" style="color: grey !important">Community</a><br> -->
+                            <div onclick="NotYetAlert()" class="link" style="color: grey !important">
+                                <span>Community</span><br>
+                                <span class="text-xs">오픈 단톡방 참여하기</span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+    </footer>
+</body>
+</html>
+<script>
+    function NotYetAlert() {
+        window.alert('아직 준비중입니다. 멋진 분들을 모으고 있으니 조금만 기다려주세요')
+    }
+</script>

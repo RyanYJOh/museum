@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 
-# urlpatterns = [
-#     ## Clicks
-#     path('ajax/clicks', views.clicks, name="clicks"),
-# ]
+urlpatterns = [
+    # path('', views.main_page, name='home'),
+    path('', views.dashboard, name='dashboard'),
+
+]
