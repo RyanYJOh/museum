@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect
 from datetime import date, datetime
 from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers
 from .models import Clicks
+from .forms import ClicksForm
 from member.models import UserInfo
 from django.contrib.auth.decorators import login_required
+import json
 
 # Create your views here.
 def clicks(request):
@@ -129,7 +131,12 @@ def dashboard(request):
         totalAnswers = sharedFalse + sharedTrue
 
         ## Persona type별 클릭수
-        totalClicks = Clicks.objects.all().count()
+        personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
+        list__otherId = []
+        for i in range(0, len(personaOther)):
+            list__otherId.append(list(personaOther)[i]['this_user'])
+        totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__otherId).count()
+
 
         context = {
             'message' : message,
