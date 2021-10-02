@@ -52,14 +52,19 @@
 </div>
 
 <div class="row ans-orig fade-in" id='' style='display:flex;'>
+    <div class="row justify-content-center">
+        <div class="col">
+            <span class="underline link" data-toggle='modal' data-target='#ans-us-modal'>질문 모아보기</span>
+        </div>
+    </div>
     {% for u in all_ans_us %}
     <div class="col-12 col-md-4">
         <div class="row align-middle">
-            <div class="card card-body grid-card col">
+            <div class="card card-body grid-card col ans-us-card">
                 <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
                     <div class="row">
                         <div class="col">
-                            <div class="text-m">{{u.question_id.question_no}}. {{u.question_id.title}}</div>
+                            <div class="text-m ques-title">{{u.question_id.question_no}}. {{u.question_id.title}}</div>
                         </div>
                     </div>
                     <div class="row list-img-container-row">
@@ -150,6 +155,28 @@
         </div>
     </div>   
     {% endfor %}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="ans-us-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-l">지금까지 다뤄진 질문들이에요</h5>
+          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">X</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {% for n in ques_no_answered_sofar %}
+            <p class="link" id="no-{{n.question_no}}" onclick="FilterQuestions(id)" data-dismiss="modal">{{n}}</p>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="NullifyFilterQuestions()" data-dismiss="modal">모두 보기</button>
+        </div>
+      </div>
+    </div>
 </div>
 
 <script>
@@ -248,6 +275,31 @@
             url: '{% url "clicks" %}',
             data : JSON.stringify(postData)
         })
+    }
+
+    function FilterQuestions(id) {
+        var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
+        var step;
+        for (step=0; step < countUsAnswers; step++) {
+            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
+            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
+            if (itsNo == `${id}`) {
+                itsGrandParent.style.display = 'inline-block';
+            } else {
+                itsGrandParent.style.display = 'none';
+            }
+        }
+        document.getElementById('ans-us-modal').hide();
+    }
+
+    function NullifyFilterQuestions() {
+        var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
+        var step;
+        for (step=0; step < countUsAnswers; step++) {
+            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
+            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
+            itsGrandParent.style.display = 'inline-block';
+        }
     }
 </script>
 {%endblock%}

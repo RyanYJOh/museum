@@ -61,9 +61,22 @@ def clicks(request):
     else:
         pass
 
-def dashboard(request):
-    today = date.today
+def personaOther():
+    personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
+    list__otherId = []
+    for i in range(0, len(personaOther)):
+        list__otherId.append(list(personaOther)[i]['this_user'])
+    
+    return list__otherId
 
+def dashboard(request):
+    personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
+    list__otherId = []
+    for i in range(0, len(personaOther)):
+        list__otherId.append(list(personaOther)[i]['this_user'])
+
+    today = date.today
+    
     if request.user.is_superuser:
         message = "Originals Dashboard!"
 
@@ -121,20 +134,17 @@ def dashboard(request):
         totalBookmarks = countBookmarkByAdam + countBookmarkByBrian + countBookmarkByClaire
 
         ## 공개 Vs 미공개 컨텐츠 수
-        allSelfsSharedFalse = AnswersForFromSelf.objects.filter(is_shared=False).count()
-        allSelfsSharedTrue = AnswersForFromSelf.objects.filter(is_shared=True).count()
-        allUssSharedFalse = AnswersForFromUs.objects.filter(is_shared=False).count()
-        allUssSharedTrue = AnswersForFromUs.objects.filter(is_shared=True).count()
+        
+        allSelfsSharedFalse = AnswersForFromSelf.objects.filter(is_shared=False).exclude(author_id__in=list__otherId).count()
+        allSelfsSharedTrue = AnswersForFromSelf.objects.filter(is_shared=True).exclude(author_id__in=list__otherId).count()
+        allUssSharedFalse = AnswersForFromUs.objects.filter(is_shared=False).exclude(author_id__in=list__otherId).count()
+        allUssSharedTrue = AnswersForFromUs.objects.filter(is_shared=True).exclude(author_id__in=list__otherId).count()
 
         sharedFalse = allSelfsSharedFalse + allUssSharedFalse
         sharedTrue = allSelfsSharedTrue + allUssSharedTrue
         totalAnswers = sharedFalse + sharedTrue
 
         ## Persona type별 클릭수
-        personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
-        list__otherId = []
-        for i in range(0, len(personaOther)):
-            list__otherId.append(list(personaOther)[i]['this_user'])
         totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__otherId).count()
 
 

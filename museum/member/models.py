@@ -11,12 +11,10 @@ class UserInfo(models.Model):
     profile_image = models.ImageField(null=True, upload_to="profile_images", default="default_psa.jpg")
     self_intro = models.CharField(max_length=140, blank=True, default="나에 대한 간단한 소개")
     slug = models.SlugField(max_length=100, allow_unicode=True, null=False, blank=False)
-    # today_quetion_id = models.IntegerField()
-    # persona_type = models.CharField(max_length=50, choices=PERSONA_TYPE) -> forms.py에서 대체
     persona_type = models.CharField(max_length=50, null=False)
     is_editor = models.BooleanField(default=False)
     saved_answers = models.ForeignKey(AnswersForFromUs, on_delete=models.CASCADE, related_name = 'userinfo', null=True, default=None)
     # saved_magazines = ForeignKey(, )
 
     def __str__(self):
-        return self.real_name
+        return (str(self.this_user) + ', ' + self.real_name)

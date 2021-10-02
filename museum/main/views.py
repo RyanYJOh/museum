@@ -13,6 +13,7 @@ import random
 
 ##### 공통 영역 #####
 today = date.today()
+now = datetime.now()
 
 def navbar(request):
     # navbar_this_user = User.objects.get(user=request.user)
@@ -56,10 +57,20 @@ def main_page(request):
     ## infiinte scroll을 할 것이냐, pagination을 쓸 것이냐.
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
-
+    
+    ## 질문 모아보기를 위해 지금까지 답변된 질문들 가져오기
+    ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
+    list__ques_no_answered_sofar = []
+    for i in ques_id_answered_sofar:
+        list__ques_no_answered_sofar.append(i)
+    ques_no_answered_sofar = QuestionsFromUs.objects.filter(question_no__in=list__ques_no_answered_sofar)
+    print(ques_no_answered_sofar)
     if request.user.is_authenticated:
+        ## UserInfo 작성했는지 확인
         try:
             current_user = UserInfo.objects.get(this_user=request.user)
+
+            ## 첫 방문인 경우, About 모달 띄워주기
 
             ## 저장된 답변 가져오기
             us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
@@ -67,6 +78,7 @@ def main_page(request):
             list__us_saved_by_user = list(us_saved_by_user)
             list__self_saved_by_user = list(self_saved_by_user)
 
+            ## 이건 뭐임?
             self_question_possible = 'True'
 
             pre_context = {
@@ -76,6 +88,7 @@ def main_page(request):
                 'all_ans_self' : all_ans_self,
                 'list__self_saved_by_user' : list__self_saved_by_user,
                 'list__us_saved_by_user' : list__us_saved_by_user,
+                'ques_no_answered_sofar' : ques_no_answered_sofar,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
