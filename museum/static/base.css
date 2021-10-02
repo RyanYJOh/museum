@@ -2,7 +2,7 @@
     
 } */
 .mobile-only {
-    display: none;
+    display: none !important;
 }
 a {
     text-decoration: none !important;
@@ -28,6 +28,10 @@ footer {
 
 input[type=password] {
     font-family:Arial, Helvetica, sans-serif;
+}
+.shadow {
+    -webkit-box-shadow: 0px 0px 8px 0px #000000; 
+    box-shadow: 0px 0px 8px 0px #000000;
 }
 
 /* Navbar */
@@ -134,6 +138,9 @@ input[type=password] {
 }
 
 /* Buttons */
+.btn {
+    border-radius : 100px !important;
+}
 .btn-primary {
     background-color: #ed6f63 !important;
     border-color: transparent !important;
@@ -270,6 +277,10 @@ input[type=password] {
     width: 60%;
     /* border-radius: 50px; */
 }
+.img-about-page {
+    width: 100%;
+    border-radius: 10px;
+}
 .ci {
     height: 100%;
     width: 200px;
@@ -327,10 +338,10 @@ input[type=password] {
 /* --------------------------- MOBILE --------------------------- */
 @media (max-width:768px) {
     .mobile-only {
-        display: inline;
+        display: inline !important;
     }
     .pc-only {
-        display: none;
+        display: none !important;
     }
     /* Text */
     .text-xl {

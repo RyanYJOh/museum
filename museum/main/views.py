@@ -64,7 +64,7 @@ def main_page(request):
     for i in ques_id_answered_sofar:
         list__ques_no_answered_sofar.append(i)
     ques_no_answered_sofar = QuestionsFromUs.objects.filter(question_no__in=list__ques_no_answered_sofar)
-    print(ques_no_answered_sofar)
+
     if request.user.is_authenticated:
         ## UserInfo 작성했는지 확인
         try:
