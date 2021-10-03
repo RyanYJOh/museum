@@ -74,7 +74,67 @@
 </div>
 
 <div class="row-h-20"></div>
+<div class="row-h-40 bottom-border"></div>
 
+<div class="row ans-orig fade-in" id=''>
+    <div class="row justify-content-center">
+        <div class="col right">
+            <span class="btn btn-menial" data-toggle='modal' data-target='#ans-us-modal'>
+                질문 모아보기 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </span>
+        </div>
+    </div>
+    {% for u in all_ans_us %}
+    <div class="col-12 col-md-4">
+        <div class="row align-middle">
+            <div class="card card-body grid-card col ans-us-card">
+                <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-m ques-title">{{u.question_id.question_no}}. {{u.question_id.title}}</div>
+                        </div>
+                    </div>
+                    <div class="row list-img-container-row">
+                        <div class="col list-img-container-col">
+                            <img class='question-img-list' src="{{u.image.url}}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class='text-s link textbunch truncate'>{{u.body}}</div>
+                        </div>
+                    </div>
+                </a>
+                <div class="row">
+                    <div class="col-2 my-auto text-center">
+                        <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}"></a>
+                    </div>
+                    <div class="col-8 my-auto left col-wo-padding-left">
+                        <div class='text-s'><a href='/profile/{{u.author_id.username}}'>{{u.author_id.userinfo.real_name}}</a></div>
+                    </div>
+                    <div class="col-2 my-auto text-center">
+                        {% if u.id in list__us_saved_by_user %}
+                        <div class='bookmark-orig' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                            <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                </svg>
+                        </div>
+                        {% else %}
+                        <div class='bookmark-orig' id='us-ans-id-{{u.id}}' onclick="BookmarkUs(id)">
+                            <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    {% endfor %}
+</div>
 <script>
     // Bookmark 기능
     function BookmarkUs(id) {
@@ -111,6 +171,22 @@
             alert('로그인을 하면 멋진 글들을 저장할 수 있어요.')
         }
     }
+    function TrackClicksUs(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '홈 화면',
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
+    }
+    
 </script>
 {% endblock %}
 

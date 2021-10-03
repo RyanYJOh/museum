@@ -365,6 +365,7 @@ def detail_ans_us(request, ans_us_id):
     navbar_context = navbar(request)
 
     this_ans = AnswersForFromUs.objects.get(id=ans_us_id)
+    this_ans_ques_no = this_ans.question_id.question_no
     if request.user.is_authenticated:
         ## 북마크
         if SavedAnswers.objects.filter(ans_us_ref=this_ans, bookmarker=request.user).exists():
@@ -381,10 +382,15 @@ def detail_ans_us(request, ans_us_id):
         editable = ''
         bookmarked = ''
 
+    ## 다른 [오리지널스가 던지는 질문]들 보기
+    this_question_id = QuestionsFromUs.objects.filter(question_no=this_ans_ques_no).values_list('id', flat=True)
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question_id[0]).exclude(id=ans_us_id).order_by('-created_at_time') 
+
     pre_context = {
         'this_ans' : this_ans,
         'editable' : editable,
-        'bookmarked' : bookmarked
+        'bookmarked' : bookmarked,
+        'all_ans_us' : all_ans_us,
     }
 
     context = {**pre_context, **navbar_context}
