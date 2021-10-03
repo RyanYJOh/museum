@@ -52,9 +52,13 @@
 </div>
 
 <div class="row ans-orig fade-in" id='' style='display:flex;'>
-    <div class="row justify-content-center" style='display: none;'>
-        <div class="col">
-            <span class="underline link" data-toggle='modal' data-target='#ans-us-modal'>질문 모아보기</span>
+    <div class="row justify-content-center">
+        <div class="col right">
+            <span class="btn btn-menial" data-toggle='modal' data-target='#ans-us-modal'>
+                질문 모아보기 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </span>
         </div>
     </div>
     {% for u in all_ans_us %}
@@ -163,13 +167,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-l">지금까지 다뤄진 질문들이에요</h5>
-          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+          <!-- <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">X</span>
-          </button>
+          </button> -->
         </div>
         <div class="modal-body">
             {% for n in ques_no_answered_sofar %}
-            <p class="link" id="no-{{n.question_no}}" onclick="FilterQuestions(id)" data-dismiss="modal">{{n}}</p>
+            <p class="link" id="no-{{n.question_no}}" onclick="FilterQuestions(id)" data-dismiss="modal">{{n.question_no}}. {{n.title}}</p>
             {% endfor %}
         </div>
         <div class="modal-footer">

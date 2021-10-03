@@ -58,13 +58,11 @@ def main_page(request):
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
     
-    ## 질문 모아보기를 위해 지금까지 답변된 질문들 가져오기
-    ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
-    list__ques_no_answered_sofar = []
-    for i in ques_id_answered_sofar:
-        list__ques_no_answered_sofar.append(i)
-    ques_no_answered_sofar = QuestionsFromUs.objects.filter(question_no__in=list__ques_no_answered_sofar)
-
+    ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
+    list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
+    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title')
+    
+    ## user authentication
     if request.user.is_authenticated:
         ## UserInfo 작성했는지 확인
         try:
