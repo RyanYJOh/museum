@@ -80,6 +80,61 @@
     </div>
     {% endif %}
 </div>
+
+<div class="row-h-20"></div>
+<div class="row-h-40 bottom-border"></div>
+
+<div class="row ans-self fade-in" id=''>
+    {% for s in all_ans_self %}
+    <div class="col-12 col-md-4">
+        <div class="row align-middle">
+            <div class="card card-body grid-card col">
+                <a href="/self-answer/{{s.id}}" id="self-click-id-{{s.id}}" onclick="TrackClicksSelf(id)">
+                    <div class="row">
+                        <div class="col">
+                            <div class='text-m'>Q. {{s.question_id.title}}</div>
+                        </div>
+                    </div>
+                    <div class="row list-img-container-row">
+                        <div class="col text-center list-img-container-col">
+                            <img class= 'question-img-list' src="{{s.question_id.image.url}}"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class='text-s link text-bunch truncate'>{{s.body}}</div>
+                        </div>
+                    </div>
+                </a>
+                <div class="row">
+                    <div class="col-2 my-auto text-center">
+                        <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}"></a>
+                    </div>
+                    <div class="col-8 my-auto left left col-wo-padding-left">
+                        <div class='text-s'><a href='/profile/{{s.author_id.username}}'>{{s.author_id.userinfo.real_name}}</a></div>
+                    </div>
+                    <div class="col-2 my-auto text-center">
+                        {% if s.id in list__self_saved_by_user %}
+                        <div class='bookmark-self' id='self-ans-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                            <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                            </svg>
+                        </div>
+                        {% else %}
+                        <div class='bookmark-self' id='self-ans-id-{{s.id}}' onclick="BookmarkSelf(id)">
+                            <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    {% endfor %}
+</div>
+
 <script>
     function BookmarkSelf(id) {
         if ('{{navbar_authenticated}}' === 'True') {
@@ -116,6 +171,22 @@
         alert('로그인을 하면 멋진 글들을 저장할 수 있어요.')
     }
     }
+    function TrackClicksSelf(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : '홈 화면',
+            ans_type : 'self',
+            ans_us_ref : '',
+            ans_self_ref : id.split('id-')[1]
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
+    }
+
 </script>
 {% endblock %}
 

@@ -500,10 +500,14 @@ def detail_ans_self(request, ans_self_id):
         editable = ''
         bookmarked = ''
 
+    ## 다른 [나에게 던지는 질문]들 노출
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).exclude(id=ans_self_id).order_by('-created_at_time')
+
     pre_context = {
         'this_ans' : this_ans,
         'editable' : editable,
         'bookmarked' : bookmarked,
+        'all_ans_self' : all_ans_self,
     }
 
     context = {**pre_context, **navbar_context}
