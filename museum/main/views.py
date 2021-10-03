@@ -60,7 +60,7 @@ def main_page(request):
     
     ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
-    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title')
+    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('question_no')
     
     ## user authentication
     if request.user.is_authenticated:
