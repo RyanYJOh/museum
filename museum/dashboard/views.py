@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from datetime import date, datetime
-from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers
+from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers, QuestionsFromUs
 from .models import Clicks
 from .forms import ClicksForm
 from member.models import UserInfo

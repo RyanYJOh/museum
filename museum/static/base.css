@@ -335,6 +335,14 @@ input[type=password] {
     }
   }
 
+.floating-menu-pc {
+    z-index: 100;
+    position : fixed;
+}
+.floating-menu-mobile {
+    /* z-index: 100;
+    position: fixed; */
+}
 /* --------------------------- MOBILE --------------------------- */
 @media (max-width:768px) {
     .mobile-only {
