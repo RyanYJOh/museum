@@ -198,39 +198,11 @@
             data : JSON.stringify(postData)
         })
     }
-    $(function() {
-        $("#btn-share").on("click", function(e) {
-          e.preventDefault();
-          var url = $(this).attr("href");
-          var accessToken = "token";
-          var params = {
-              "long_url" : url           
-          };
-          $.ajax({
-              url: "https://api-ssl.bitly.com/v4/shorten",
-              cache: false,
-              dataType: "json",
-              method: "POST",
-              contentType: "application/json",
-              beforeSend: function (xhr) {
-                  xhr.setRequestHeader("Authorization", "Bearer " + accessToken);
-              },
-              data: JSON.stringify(params)
-          }).done(function(data) {
-              console.log('SUCCESSFUL : ', data);
-              navigator.clipboard.writeText(data.link);
-              window.alert('이 글의 링크가 복사되었어요.');
-          }).fail(function(data) {
-              console.log('FAILED : ', data);
-          });
-        });
-      });
-    /*function Share() {
-
+    function Share() {
         var currentUrl = window.location.href
         navigator.clipboard.writeText(currentUrl);
-        
-    } */
+        window.alert('이 글의 링크가 복사되었어요.');
+    }
 </script>
 {% endblock %}
 
