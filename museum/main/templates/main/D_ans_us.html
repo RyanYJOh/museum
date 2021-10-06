@@ -185,7 +185,11 @@
             data : JSON.stringify(postData)
         })
     }
-    
+    function Share() {
+        var currentUrl = window.location.href
+        navigator.clipboard.writeText(currentUrl);
+        window.alert('이 글의 링크가 복사되었어요.');
+    }
 </script>
 {% endblock %}
 

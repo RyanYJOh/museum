@@ -343,7 +343,14 @@ input[type=password] {
     /* z-index: 100;
     position: fixed; */
 }
-
+.ans-body {
+    height: 100px;
+    border-bottom: 1px black solid;
+    margin-bottom : 15px;
+}
+.alert {
+    
+}
 /* --------------------------- MOBILE --------------------------- */
 @media (max-width:768px) {
     .mobile-only {
