@@ -9,8 +9,16 @@
 <div class="row-h-80"></div>
 
 <div class="row">
-    <div class="col">
+    <div class="col-10 left">
         <div class="text-s"><span class="bolder">오리지널스</span>가 던지는 질문</div>
+    </div>
+    <div class="col-2 right my-auto">
+        <span class="btn btn-menial" id="btn-share">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+              </svg>
+        </span>
     </div>
 </div>
 <div class="row">
@@ -19,12 +27,15 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-2 col-md-1 text-s center">
+    <div class="col-5 col-md-4 text-s left my-auto">
+        <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{this_ans.author_id.userinfo.real_name}}</a>
+    </div>
+    <!-- <div class="col-2 col-md-1 text-s center">
         <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}"></a>
     </div>
     <div class="col-3 text-s left col-wo-padding-left my-auto">
         <a href="/profile/{{this_ans.author_id.username}}">{{this_ans.author_id.userinfo.real_name}}</a>
-    </div>
+    </div> -->
     <div class="col-5 col-md-7 text-s right">
         {{this_ans.created_at}}
     </div>
@@ -99,11 +110,8 @@
                     </div>
                 </a>
                 <div class="row">
-                    <div class="col-2 my-auto text-center">
-                        <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}"></a>
-                    </div>
-                    <div class="col-8 my-auto left col-wo-padding-left">
-                        <div class='text-s'><a href='/profile/{{u.author_id.username}}'>{{u.author_id.userinfo.real_name}}</a></div>
+                    <div class="col-10 my-auto">
+                        <a href='/profile/{{a.author_id.username}}'><img class='profile-img-list' src='{{a.author_id.userinfo.profile_image.url}}'/>&nbsp;&nbsp;{{a.author_id.userinfo.real_name}}</a>
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if u.id in list__us_saved_by_user %}

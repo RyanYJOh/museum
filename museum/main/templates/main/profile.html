@@ -70,6 +70,7 @@
 <!-- 내 글 -->
 <div class="row" id='my-answers'>
     <div class="col">
+        <!-- 오리지널스가 던지는 질문 -->
         <div class="row ans-orig fade-in" id='' style='display:flex;'>
             {% if owner_ans_us == 'None' %}
             <div class="row-h-40"></div>
@@ -108,7 +109,7 @@
                                 </div>
                             </div>
                         </a>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-2 my-auto text-center">
                                 <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}" alt="none"></a>
                             </div>
@@ -130,7 +131,7 @@
                                 </div>
                                 {% endif %}
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>   
@@ -138,6 +139,7 @@
             {% endif %}
         </div>
         
+        <!-- 나에게 던지는 질문 -->
         <div class="row ans-self fade-in" id='' style='display:none;'>
             {% if owner_ans_self == "None" %}
             <div class="row-h-40"></div>
@@ -174,7 +176,7 @@
                             </div>
                         </a>
                         <div class="row">
-                            <div class="col-2 my-auto text-center">
+                            <!-- <div class="col-2 my-auto text-center">
                                 <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}" alt="none"></a>
                             </div>
                             <div class="col-8 my-auto left col-wo-padding-left">
@@ -194,7 +196,7 @@
                                     </svg>
                                 </div>
                                 {% endif %}
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -237,11 +239,14 @@
                             </div>
                         </a>
                         <div class="row">
-                            <div class="col-2 my-auto text-center">
+                            <!-- <div class="col-2 my-auto text-center">
                                 <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}" alt="none"></a>
                             </div>
                             <div class="col-8 my-auto left col-wo-padding-left">
                                 <div class='text-s'><a href='/profile/{{u.author_id.username}}'>{{u.author_id.userinfo.real_name}}</a></div>
+                            </div> -->
+                            <div class="col-10 my-auto">
+                                <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}</a>
                             </div>
                             <div class="col-2 my-auto text-center">
                                 {% if u.id in list__us_saved_by_user %}
@@ -294,12 +299,15 @@
                             </div>
                         </a>
                         <div class="row">
-                            <div class="col-2 my-auto text-center">
+                            <div class="col-10 my-auto">
+                                <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}</a>
+                            </div>
+                            <!-- <div class="col-2 my-auto text-center">
                                 <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}" alt="none"></a>
                             </div>
                             <div class="col-8 my-auto left col-wo-padding-left">
                                 <div class='text-s'><a href='/profile/{{s.author_id.username}}'>{{s.author_id.userinfo.real_name}}</a></div>
-                            </div>
+                            </div> -->
                             <div class="col-2 my-auto text-center">
                                 {% if s.id in list__self_saved_by_user %}
                                 <div class='bookmark-self' id='bookmark-self-id-{{s.id}}' onclick="BookmarkSelf(id)">

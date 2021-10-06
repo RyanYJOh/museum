@@ -343,6 +343,7 @@ input[type=password] {
     /* z-index: 100;
     position: fixed; */
 }
+
 /* --------------------------- MOBILE --------------------------- */
 @media (max-width:768px) {
     .mobile-only {

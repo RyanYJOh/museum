@@ -6,11 +6,21 @@
 {% endblock %}
 
 {% block content %}
+<meta property="og:image" content="{{this_ans.question_id.image.url}}">
+
 <div class="row-h-80"></div>
 
 <div class="row">
-    <div class="col">
+    <div class="col-10 left">
         <div class="text-m">내가 나에게 던지는 질문</div>
+    </div>
+    <div class="col-2 right my-auto">
+        <span class="btn btn-menial" id="btn-share" onclick="Share()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+              </svg>
+        </span>
     </div>
 </div>
 <div class="row">
@@ -25,12 +35,15 @@
 </div>
 <div class="row-h-20"></div>
 <div class="row">
-        <div class="col-2 col-md-1 text-s center">
+        <div class="col-5 col-md-4 text-s left my-auto">
+            <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{this_ans.author_id.userinfo.real_name}}</a>
+        </div>
+        <!-- <div class="col-2 col-md-1 text-s center">
             <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}"></a>
         </div>
         <div class="col-3 col-md-3 text-s left col-wo-padding-left my-auto">
             <a href="/profile/{{this_ans.author_id.username}}">{{this_ans.author_id.userinfo.real_name}}</a>
-        </div>
+        </div> -->
         <div class="col-5 col-md-7 text-s right">
             {{this_ans.created_at}}
         </div>
@@ -186,7 +199,11 @@
             data : JSON.stringify(postData)
         })
     }
-
+    function Share() {
+        var currentUrl = window.location.href
+        navigator.clipboard.writeText(currentUrl);
+        window.alert('이 글의 링크가 복사되었어요.')
+    }
 </script>
 {% endblock %}
 
