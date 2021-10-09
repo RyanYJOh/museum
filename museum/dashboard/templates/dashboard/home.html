@@ -225,4 +225,126 @@
     </div>
     <div class="row-h-20"></div>
 </div>
+
+<div class="container bottom-border" id="dash-createdAt-gaps">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 생성일 gap
+        </div>
+        <div class="col-4 text-l right">
+            
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">구분</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">MIN</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">MAX</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">AVG</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">MED</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Adam.0}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Adam.1}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Adam.2}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Adam.3}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Brian.0}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Brian.1}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Brian.2}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Brian.3}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Claire.0}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Claire.1}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Claire.2}}</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{dict__created_at_stats.Claire.3}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+<div class="container bottom-border" id="dash-all-users">
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 전체 유저
+        </div>
+        <div class="col-4 text-l right">
+            Total : 
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{users_by_persona.Adam}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{users_by_persona.Brian}}</div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-m bolder">{{users_by_persona.Claire}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
 {% endblock %}

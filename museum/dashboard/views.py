@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models.aggregates import Avg
 from django.shortcuts import render, redirect
 from datetime import date, datetime
 from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers, QuestionsFromUs
@@ -7,6 +8,9 @@ from .forms import ClicksForm
 from member.models import UserInfo
 from django.contrib.auth.decorators import login_required
 import json
+from collections import defaultdict
+import itertools
+import numpy
 
 # Create your views here.
 def clicks(request):
@@ -147,6 +151,78 @@ def dashboard(request):
         ## Persona type별 클릭수
         totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__otherId).count()
 
+        ## Persona type별 QuestionsFromUs 답변 주기 (=AnswersForFromUs 생성 주기)
+        # Adam's 답변
+        # 각 유저의 AnswersForFromUs의 created_at을 가져오고 -> 각 유저별로 created_at을 리스트로 생성 (오름차순) -> list[i+1] - list[i]의 리스트를 또 생성 (created_at_gap)
+        # 그리고나서 Adam들의 created_at_gap의 리스트를 모두 합친다.
+        # 거기서 최솟값, 최댓값, 평균값, 중앙값을 구한다.
+        # Do the same for Brian and Claire as well.
+        
+        ## 각 유저 담아오기 : [{username : persona_type} , ...]의 구조로
+        eachUser = User.objects.all().values_list('id', flat=True)
+        list__eachUsername = list(eachUser.values_list('username', flat=True))
+
+        list__eachUser = list(eachUser)
+        
+        dict__persona_type = {}
+        dict__created_at = {}
+        for u in range(0, len(list__eachUser)):
+            this_userinfo = UserInfo.objects.get(this_user=list__eachUser[u])
+            # 아래는 {username : persona_type}
+            # dict__persona_type[list__eachUsername[u]] = this_userinfo.persona_type
+            # 아래는 {real_name : persona_type}
+            dict__persona_type[this_userinfo.real_name] = this_userinfo.persona_type
+        
+            ## 각 유저의 AnswersForFromUs의 created_at 가져오기
+            # 각 유저의 created_ats 리스트
+            ans_from_us_created_ats = AnswersForFromUs.objects.filter(author_id=u).values_list('created_at', flat=True)
+            list__ans_from_us_created_ats = list(ans_from_us_created_ats)
+            # created_ats 차이로 이루어진 리스트
+            list__created_ats_gap = []
+            for c in range(0, len(list__ans_from_us_created_ats)):
+                if c+1 < len(list__ans_from_us_created_ats):
+    
+                    gap = list__ans_from_us_created_ats[c+1]-list__ans_from_us_created_ats[c]
+                    list__created_ats_gap.append(gap.days)
+    
+                    dict__created_at[this_userinfo.real_name] = list__created_ats_gap
+                else:
+                    pass
+        
+        # persona_type별로 group_by
+        users_by_persona = defaultdict(list)
+        created_at_gaps_by_persona = defaultdict(list)
+        for key, val in sorted(dict__persona_type.items()):
+            users_by_persona[val].append(key)
+            try:
+                created_at_gaps_by_persona[val].append(dict__created_at[key])
+            except KeyError:
+                pass
+        
+        # 페르소나별 created_at의 차이
+        dict__created_at_gaps_by_persona = dict(created_at_gaps_by_persona)
+        dict__created_at_stats = {}
+        for key, val in dict__created_at_gaps_by_persona.items():
+            list__created_at_stats = []
+            dict__created_at_gaps_by_persona[key] = list(itertools.chain.from_iterable(val))
+
+            if len(dict__created_at_gaps_by_persona[key]) == 0:
+                min_gap = '-'
+                max_gap = '-'
+                avg_gap = '-'
+                median_gap = '-'
+            else:
+                min_gap = numpy.min(dict__created_at_gaps_by_persona[key])
+                max_gap = numpy.max(dict__created_at_gaps_by_persona[key])
+                avg_gap = round(numpy.mean(dict__created_at_gaps_by_persona[key]), 2)
+                median_gap = numpy.median(dict__created_at_gaps_by_persona[key])
+
+            list__created_at_stats.append(min_gap)
+            list__created_at_stats.append(max_gap)
+            list__created_at_stats.append(avg_gap)
+            list__created_at_stats.append(median_gap)
+            dict__created_at_stats[key] = list__created_at_stats
+        print(dict__created_at_stats)
 
         context = {
             'message' : message,
@@ -178,6 +254,9 @@ def dashboard(request):
             'totalAnswers' : totalAnswers,
 
             'totalClicks' : totalClicks,
+
+            'users_by_persona' : users_by_persona,
+            'dict__created_at_stats' : dict__created_at_stats,
         }
     else:
         message = "관계자 외 출입 금지"
