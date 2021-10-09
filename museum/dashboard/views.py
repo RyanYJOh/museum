@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 import json
 from collections import defaultdict
 import itertools
-import numpy
+# import numpy
 
 # Create your views here.
 def clicks(request):
@@ -212,11 +212,15 @@ def dashboard(request):
                 avg_gap = '-'
                 median_gap = '-'
             else:
-                min_gap = numpy.min(dict__created_at_gaps_by_persona[key])
-                max_gap = numpy.max(dict__created_at_gaps_by_persona[key])
-                avg_gap = round(numpy.mean(dict__created_at_gaps_by_persona[key]), 2)
-                median_gap = numpy.median(dict__created_at_gaps_by_persona[key])
-
+                # min_gap = numpy.min(dict__created_at_gaps_by_persona[key])
+                # max_gap = numpy.max(dict__created_at_gaps_by_persona[key])
+                # avg_gap = round(numpy.mean(dict__created_at_gaps_by_persona[key]), 2)
+                # median_gap = numpy.median(dict__created_at_gaps_by_persona[key])
+                min_gap = '-'
+                max_gap = '-'
+                avg_gap = '-'
+                median_gap = '-'
+                
             list__created_at_stats.append(min_gap)
             list__created_at_stats.append(max_gap)
             list__created_at_stats.append(avg_gap)
