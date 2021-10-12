@@ -5,6 +5,7 @@ from register import views as registerViews
 
 urlpatterns = [
     path('', views.main_page, name='home'),
+    path('filter=<int:question_no>', views.main_page_filtered, name="home-filtered"),
     # path('me', views.my_profile, name='my-profile'),
     path('profile/<str:username>', views.profile, name='others-profile'),
     path('about', views.about, name="about"),

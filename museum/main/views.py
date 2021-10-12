@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import date, datetime
 import json
 import random
+from django.core.paginator import Paginator
 
 ##### 공통 영역 #####
 today = date.today()
@@ -54,9 +55,16 @@ def randImg():
 def main_page(request):
     navbar_context = navbar(request)
     
-    ## infiinte scroll을 할 것이냐, pagination을 쓸 것이냐.
+    ## Pagination을 쓸 것이냐.
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
+    paginator_all_ans_us = Paginator(all_ans_us, 15)
+    page_all_ans_us = request.GET.get('page')
+    all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
+
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
+    paginator_all_ans_self = Paginator(all_ans_self, 15)
+    page_all_ans_self = request.GET.get('page')
+    all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
     
     ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
@@ -67,8 +75,6 @@ def main_page(request):
         ## UserInfo 작성했는지 확인
         try:
             current_user = UserInfo.objects.get(this_user=request.user)
-
-            ## 첫 방문인 경우, About 모달 띄워주기
 
             ## 저장된 답변 가져오기
             us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
@@ -87,6 +93,8 @@ def main_page(request):
                 'list__self_saved_by_user' : list__self_saved_by_user,
                 'list__us_saved_by_user' : list__us_saved_by_user,
                 'ques_no_answered_sofar' : ques_no_answered_sofar,
+                'all_ans_us_paginated' : all_ans_us_paginated,
+                'all_ans_self_paginated' : all_ans_self_paginated,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
@@ -99,11 +107,81 @@ def main_page(request):
             'all_ans_us' : all_ans_us,
             'all_ans_self' : all_ans_self,
             'current_user' : current_user,
+            'ques_no_answered_sofar' : ques_no_answered_sofar,
             'self_question_possible' : self_question_possible,
+            'all_ans_us_paginated' : all_ans_us_paginated,
+            'all_ans_self_paginated' : all_ans_self_paginated,
         }
 
     context = {**navbar_context, **pre_context}
     return render(request, 'main/home.html', context)
+
+def main_page_filtered(request, question_no):
+    navbar_context = navbar(request)
+    
+    ## Pagination을 쓸 것이냐.
+    this_question = QuestionsFromUs.objects.get(question_no=question_no).pk
+    all_ans_us_filtered = AnswersForFromUs.objects.filter(question_id=this_question)
+    paginator_all_ans_us = Paginator(all_ans_us_filtered, 15)
+    page_all_ans_us = request.GET.get('page')
+    all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
+
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
+    paginator_all_ans_self = Paginator(all_ans_self, 15)
+    page_all_ans_self = request.GET.get('page')
+    all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
+    
+    ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
+    list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
+    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('question_no')
+    
+    ## user authentication
+    if request.user.is_authenticated:
+        ## UserInfo 작성했는지 확인
+        try:
+            current_user = UserInfo.objects.get(this_user=request.user)
+
+            ## 저장된 답변 가져오기
+            us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
+            self_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='self').values_list('ans_self_ref', flat=True)
+            list__us_saved_by_user = list(us_saved_by_user)
+            list__self_saved_by_user = list(self_saved_by_user)
+
+            ## 이건 뭐임?
+            self_question_possible = 'True'
+
+            pre_context = {
+                'current_user' : current_user,
+                'self_question_possible' : self_question_possible,
+                'all_ans_us_filtered' : all_ans_us_filtered,
+                'all_ans_self' : all_ans_self,
+                'list__self_saved_by_user' : list__self_saved_by_user,
+                'list__us_saved_by_user' : list__us_saved_by_user,
+                'ques_no_answered_sofar' : ques_no_answered_sofar,
+                'all_ans_us_paginated' : all_ans_us_paginated,
+                'all_ans_self_paginated' : all_ans_self_paginated,
+            }
+        except ObjectDoesNotExist:
+            return redirect('member/userinfo')
+
+    else:
+        current_user = ''
+        self_question_possible = 'False'
+
+        pre_context = {
+            'all_ans_us_filtered' : all_ans_us_filtered,
+            'all_ans_self' : all_ans_self,
+            'current_user' : current_user,
+            'self_question_possible' : self_question_possible,
+            'ques_no_answered_sofar' : ques_no_answered_sofar,
+            'all_ans_us_paginated' : all_ans_us_paginated,
+            'all_ans_self_paginated' : all_ans_self_paginated,
+        }
+
+    context = {**navbar_context, **pre_context}
+    return render(request, 'main/home_filtered.html', context)
+
 
 def profile(request, username):
     navbar_context = navbar(request)
@@ -119,6 +197,7 @@ def profile(request, username):
             owner_ans_us = 'None'
         else:
             pass
+
         owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time')
         if not owner_ans_self:
             owner_ans_self = "None"
@@ -147,18 +226,78 @@ def profile(request, username):
                 new = AnswersForFromSelf.objects.get(id=i)
                 list__self_bookmarked.append(new)
 
+        '''
+        ## Badge & Progress bar
+        count_ans_us = owner_ans_us.count() # 기준 10개
+        if count_ans_us < 10:
+            badge_ans_us = 1
+            badge_ans_us_max = 10
+            badge_ans_us_portion = count_ans_us/badge_ans_us_max
+        elif count_ans_us >= 10 and count_ans_us < 30:
+            badge_ans_us = 2
+            badge_ans_us_max = 30
+            badge_ans_us_portion = count_ans_us/badge_ans_us_max
+        elif count_ans_us >= 30:
+            badge_ans_us = 3
+            badge_ans_us_max = 50
+            badge_ans_us_portion = count_ans_us/badge_ans_us_max
+        
+        count_ans_self = owner_ans_self.count() # 기준 3개
+        if count_ans_self < 3:
+            badge_ans_self = 1
+            badge_ans_self_max = 3
+            badge_ans_self_portion = count_ans_us/badge_ans_self_max
+        elif count_ans_self >= 3 and count_ans_self < 10:
+            badge_ans_self = 2
+            badge_ans_self_max = 10
+            badge_ans_self_portion = count_ans_us/badge_ans_self_max
+        elif count_ans_self >= 20:
+            badge_ans_self = 3
+            badge_ans_self_max = 20
+            badge_ans_self_portion = count_ans_us/badge_ans_self_max
+
+        count_bookmarks_us = SavedAnswers.objects.all().values_list('ans_us_ref')
+        count_ans_us_bookmarked = owner_ans_us.filter(id__in=count_bookmarks_us).count()
+        count_bookmarks_self = SavedAnswers.objects.all().values_list('ans_self_ref')
+        count_ans_us_bookmarked = owner_ans_self.filter(id__in=count_bookmarks_self).count()
+        count_bookmarks_total = count_ans_us_bookmarked + count_ans_us_bookmarked
+        if count_bookmarks_total < 3:
+            badge_bookmark = 1
+            badge_bookmark_max = 3
+            badge_bookmark_portion = count_bookmarks_total/badge_bookmark_max
+        elif count_bookmarks_total >= 3 and count_bookmarks_total < 10:
+            badge_bookmark = 2
+            badge_bookmark_max = 10
+            badge_bookmark_portion = count_bookmarks_total/badge_bookmark_max
+        else:
+            badge_bookmark = 3
+            badge_bookmark_max = 20
+            badge_bookmark_portion = count_bookmarks_total/badge_bookmark_max
+        '''
         pre_context = {
             'current_user' : request.user,
             'owner_info' : owner_info,
             'owner_ans_us' : owner_ans_us,
             'owner_ans_self' : owner_ans_self,
             'is_owner' : is_owner,
-            # 'authenticated' : authenticated,
             'list__us_bookmarked' : list__us_bookmarked, 
             'list__self_bookmarked' : list__self_bookmarked,
             'list__us_saved_by_user' : list__us_saved_by_user,
             'list__self_saved_by_user' : list__self_saved_by_user,
             'from_profile_page' : from_profile_page,
+
+            # 'count_ans_us' : count_ans_us,
+            # 'badge_ans_us' : badge_ans_us,
+            # 'badge_ans_us_max' : badge_ans_us_max,
+            # 'badge_ans_us_portion' : badge_ans_us_portion*10,
+            # 'count_ans_self' : count_ans_self,
+            # 'badge_ans_self' : badge_ans_self,
+            # 'badge_ans_self_max' : badge_ans_self_max,
+            # 'badge_ans_self_portion' : badge_ans_self_portion*10,
+            # 'count_bookmarks_total' : count_bookmarks_total,
+            # 'badge_bookmark' : badge_bookmark,
+            # 'badge_bookmark_max' : badge_bookmark_max,
+            # 'badge_bookmark_portion' : badge_bookmark_portion*10,
         }
 
         context = {**pre_context, **navbar_context}
