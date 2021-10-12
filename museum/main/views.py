@@ -57,12 +57,12 @@ def main_page(request):
     
     ## Pagination을 쓸 것이냐.
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
-    paginator_all_ans_us = Paginator(all_ans_us, 15)
+    paginator_all_ans_us = Paginator(all_ans_us, 12)
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
-    paginator_all_ans_self = Paginator(all_ans_self, 15)
+    paginator_all_ans_self = Paginator(all_ans_self, 12)
     page_all_ans_self = request.GET.get('page')
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
     
@@ -122,12 +122,12 @@ def main_page_filtered(request, question_no):
     ## Pagination을 쓸 것이냐.
     this_question = QuestionsFromUs.objects.get(question_no=question_no).pk
     all_ans_us_filtered = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question).order_by('-created_at_time')
-    paginator_all_ans_us = Paginator(all_ans_us_filtered, 15)
+    paginator_all_ans_us = Paginator(all_ans_us_filtered, 12)
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
-    paginator_all_ans_self = Paginator(all_ans_self, 15)
+    paginator_all_ans_self = Paginator(all_ans_self, 12)
     page_all_ans_self = request.GET.get('page')
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
     
