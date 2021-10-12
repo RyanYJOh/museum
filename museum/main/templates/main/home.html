@@ -75,7 +75,9 @@
                     </div>
                     <div class="row list-img-container-row">
                         <div class="col list-img-container-col">
+                            {% if u.image.url %}
                             <img class='question-img-list' src="{{u.image.url}}"/>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -86,7 +88,11 @@
                 </a>
                 <div class="row">
                     <div class="col-10 my-auto text-s">
-                        <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}</a>
+                        <a href='/profile/{{u.author_id.username}}'>
+                            {% if u.author_id.userinfo.profile_image.url %}
+                            <img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">
+                            {% endif %}
+                        &nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}</a>
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if u.id in list__us_saved_by_user %}
@@ -163,7 +169,9 @@
                     </div>
                     <div class="row list-img-container-row">
                         <div class="col text-center list-img-container-col">
+                            {% if s.question_id.image.url %}
                             <img class= 'question-img-list' src="{{s.question_id.image.url}}"/>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -174,7 +182,11 @@
                 </a>
                 <div class="row">
                     <div class="col-10 my-auto text-s">
-                        <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}</a>
+                        <a href='/profile/{{s.author_id.username}}'>
+                            {% if s.author_id.userinfo.profile_image.url %}
+                            <img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">
+                            {% endif %}
+                        &nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}</a>
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if s.id in list__self_saved_by_user %}
