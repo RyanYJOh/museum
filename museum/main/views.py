@@ -15,6 +15,9 @@ from django.core.paginator import Paginator
 ##### 공통 영역 #####
 today = date.today()
 now = datetime.now()
+# noww = timezone.now()
+# string__today = str(timezone.now()).split()[0]
+# today = datetime.strptime(string__today, '%Y-%m-%d').date()
 
 def navbar(request):
     # navbar_this_user = User.objects.get(user=request.user)
@@ -54,7 +57,7 @@ def randImg():
 ##### 홈 화면, 프로필 화면, About 화면 #####
 def main_page(request):
     navbar_context = navbar(request)
-    
+
     ## Pagination을 쓸 것이냐.
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
     paginator_all_ans_us = Paginator(all_ans_us, 12)
@@ -372,7 +375,6 @@ def create_ans_us_short(request):
     ## 로그인 되어 있는 경우
     elif request.user.is_authenticated:
         this_user = request.user
-        today = date.today()
         is_member = "True"
         mode = 'create'
 
@@ -423,6 +425,7 @@ def create_ans_us_short(request):
             latest_created_at = AnswersForFromUs.objects.filter(author_id=request.user, question_id=latest_ques_id).values('created_at')
             # all_created_ats의 각 원소는 {'created_at':datetime.date(2020, 07, 21)} 이런 포맷 (python dictionary view)
             all_created_ats = list(latest_created_at)
+        
             # Date 중 최댓값, 즉 가장 최근의 질문의 날짜 가져오기 (바로 위와 정확히 동일)
             list__created_ats = []
             list__created_ats_in_format = []
@@ -430,7 +433,7 @@ def create_ans_us_short(request):
                 list__created_ats.append(*all_created_ats[j].values()) # 각 원소는 datetime.date(2020,07,21)의 포맷
                 list__created_ats_in_format.append(list__created_ats[j].strftime('%Y-%m-%d')) # datetime.date(2020,07,21) -> 2020-07-21로 변환
             latest_created_at = max(list__created_ats)
-
+            
             # 가장 최근 질문의 가장 최근 답변일이 가져와졌다. 이 날짜와 today의 값이 서로 같은지 다른지 확인해줘야 한다.
             # ans_formset = modelformset_factory(AnswersForFromUs, form=AnswersForFromUsForm, extra=1)
             if latest_created_at < today:
@@ -572,7 +575,6 @@ def update_ans_us(request, ans_us_id):
 ##### 내가 나에게 던지는 질문 #####
 def create_ans_self(request):
     navbar_context = navbar(request)
-    today = date.today()
 
     ques_form = QuestionsFromSelfForm(request.POST, request.FILES)
     ans_form = AnswersForFromSelfForm(request.POST)
