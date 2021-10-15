@@ -41,7 +41,8 @@ class AnswersForFromUs(models.Model):
     on_magazine = models.BooleanField(default=False)
 
     def __str__(self):
-        return (str(self.question_id.question_no) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
+        # return (str(self.question_id.question_no) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
+        return (str(self.question_id) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
 
 class AnswersForFromSelf(models.Model):
     objects = models.Manager()

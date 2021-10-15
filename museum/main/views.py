@@ -13,11 +13,11 @@ import random
 from django.core.paginator import Paginator
 
 ##### 공통 영역 #####
-today = date.today()
-now = datetime.now()
-# noww = timezone.now()
-# string__today = str(timezone.now()).split()[0]
-# today = datetime.strptime(string__today, '%Y-%m-%d').date()
+# today = date.today()
+# now = datetime.now()
+now = timezone.now()
+string__today = str(timezone.now()).split()[0]
+today = datetime.strptime(string__today, '%Y-%m-%d').date()
 
 def navbar(request):
     # navbar_this_user = User.objects.get(user=request.user)
@@ -425,7 +425,7 @@ def create_ans_us_short(request):
             latest_created_at = AnswersForFromUs.objects.filter(author_id=request.user, question_id=latest_ques_id).values('created_at')
             # all_created_ats의 각 원소는 {'created_at':datetime.date(2020, 07, 21)} 이런 포맷 (python dictionary view)
             all_created_ats = list(latest_created_at)
-        
+
             # Date 중 최댓값, 즉 가장 최근의 질문의 날짜 가져오기 (바로 위와 정확히 동일)
             list__created_ats = []
             list__created_ats_in_format = []
