@@ -256,6 +256,30 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="notice-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-l">커뮤니티에 참여하세요</h5>
+          <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" fill="#000"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" fill="#000"/>
+              </svg></span>
+            </span>
+        </div>
+        <div class="modal-body">
+            <p class="text-m" data-dismiss="modal">
+                오리지널스는 오픈 단톡방을 통해 커뮤니티를 운영하고 있어요. 다른 사람들의 생각을 통해 자기다움을 찾을 수 있답니다. ⬇
+            </p>
+        </div>
+        <div class="modal-footer center">
+            <button type="button" class="btn btn-secondary" onclick="location.href='https://open.kakao.com/o/grDFiMEd'" data-dismiss="modal">멋진 사람들과 교류하기</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script>
     // Bookmark 기능
     document.getElementById('radio-orig').style.display = 'none';
@@ -369,31 +393,68 @@
     function FilterQuestions(id) {
         var selectedQuestionNo = id.split('-')[1]
         location.href=`/filter=${selectedQuestionNo}`
-        /* console.log(selectedQuestionNo)
-        var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
-        var step;
-        for (step=0; step < countUsAnswers; step++) {
-            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
-            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
-            if (itsNo == `${id}`) {
-                itsGrandParent.style.display = 'inline-block';
-            } else {
-                itsGrandParent.style.display = 'none';
-            }
-        }
-        document.getElementById('ans-us-modal').hide(); */
     } 
 
     function NullifyFilterQuestions() {
         location.href='/'
-        /* var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
-        var step;
-        for (step=0; step < countUsAnswers; step++) {
-            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
-            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
-            itsGrandParent.style.display = 'inline-block';
-        }*/
     }
 
+    function NoticeModal() {
+        /*
+        <로직>
+        Home 화면에 진입시에 로컬에서 notice 존재 여부 체크
+        if 없으면, 로컬에 notice 저장
+        elif 있으면, 가장 먼저 게시 기간 확인
+            if 게시 기간 지났음 : notice 삭제
+            elif 게시 기간 아직 지나지 않음 : 모달 노출 여부 확인
+                if 모달 노출된 적 없음 : 모달 노출 후 notice 삭제
+                elif 모달 노출된 적 있음 : notice 삭제
+
+        */
+
+        // 오늘 날짜와 expireDate
+        const this_date = new Date();
+        const year = this_date.getFullYear();
+        const month = this_date.getMonth() + 1;
+        const date = this_date.getDate();
+        var string__today = `${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`;
+        var today = new Date(string__today);
+
+        noticeObject = {
+            'displayed' : false,
+            'expiresBy' : '2021-10-18',
+        }
+        
+        var notice = localStorage.getItem('notice')
+        console.log(notice)
+        if (notice == null) {
+            console.log('there is no NOTICE')
+            localStorage.setItem('notice', JSON.stringify(noticeObject))
+        } else {
+            noticeParsed = JSON.parse(notice)
+            console.log("there IS a notice, and")
+            var expireDate = new Date(noticeParsed.expiresBy);
+
+            if (today >= expireDate) {
+                console.log('the date has expired')
+                localStorage.removeItem('notice')    
+            } else if (today < expireDate) {
+                console.log('the date has not been expired, and')
+                if (noticeParsed.displayed == false) {
+                    console.log('there should be a modal displayed')
+                    console.log($('#notice-modal'))
+                    $('#notice-modal').modal('show');
+                    noticeParsed.displayed = true
+                    localStorage.setItem('notice', JSON.stringify(noticeParsed))
+                } else if (noticeParsed.displayed ==    true) {
+                    console.log('the modal has already been displayed. THE END.')
+                }
+            }
+        }
+        // Expire 날짜 지났으면 자동 삭제
+
+    }
+
+    // window.onload = NoticeModal();
 </script>
 {%endblock%}
