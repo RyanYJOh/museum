@@ -127,12 +127,16 @@ def main_page_filtered(request, question_no):
     
     ## Pagination을 쓸 것이냐.
     this_question = QuestionsFromUs.objects.get(question_no=question_no).pk
-    all_ans_us_filtered = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question).order_by('-created_at_time')
+    all_ans_us_filtered = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+    )
     paginator_all_ans_us = Paginator(all_ans_us_filtered, 12)
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+    )
     paginator_all_ans_self = Paginator(all_ans_self, 12)
     page_all_ans_self = request.GET.get('page')
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
@@ -544,7 +548,9 @@ def detail_ans_us(request, ans_us_id):
 
     ## 다른 [오리지널스가 던지는 질문]들 보기
     this_question_id = QuestionsFromUs.objects.filter(question_no=this_ans_ques_no).values_list('id', flat=True)
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question_id[0]).exclude(id=ans_us_id).order_by('-created_at_time') 
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question_id[0]).exclude(id=ans_us_id).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+    )
 
     ## 댓글
     comments = CommentAnsUs.objects.filter(ans=ans_us_id).order_by('-created_at_time')
@@ -680,7 +686,9 @@ def detail_ans_self(request, ans_self_id):
         current_user = ''
 
     ## 다른 [나에게 던지는 질문]들 노출
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).exclude(id=ans_self_id).order_by('-created_at_time')
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).exclude(id=ans_self_id).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+    )
 
     ## 댓글
     comments = CommentAnsSelf.objects.filter(ans=ans_self_id).order_by('-created_at_time')
