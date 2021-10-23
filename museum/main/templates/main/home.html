@@ -32,14 +32,14 @@
         <div class="row justify-content-center">
             <div class="col-6 right">
                 <label class='radio-btn-label'>
-                    <input class="radio-btn" type='radio' name='ques-type' id='radio-orig' checked />
+                    <input class="radio-btn" type='radio' name='ques-type' id='radio-orig' onclick="clickOriginals()" checked />
                     <span class="text-m" id='radio-orig-text' style='color:black; font-weight:800;'>오리지널스가 던지는 질문</span>
                 </label>
                 
             </div>
             <div class="col-6 center">
                 <label class='radio-btn-label'>
-                    <input class="radio-btn" type='radio' name='ques-type' id='radio-self' style='color:grey;' />
+                    <input class="radio-btn" type='radio' name='ques-type' id='radio-self' onclick="clickSelf()" style='color:grey;' />
                     <span class="text-m" id='radio-self-text' style='color:grey;'>나에게 던지는 질문</span>
                 </label>
             </div>
@@ -240,7 +240,7 @@
     {% endfor %}
 </div>
 
-<!-- Modal -->
+<!-- 질문 모아보기 모달 -->
 <div class="modal fade" tabindex="-1" role="dialog" id="ans-us-modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -485,7 +485,7 @@
                     $('#notice-modal').modal('show');
                     noticeParsed.displayed = true
                     localStorage.setItem('notice', JSON.stringify(noticeParsed))
-                } else if (noticeParsed.displayed ==    true) {
+                } else if (noticeParsed.displayed ==  true) {
                     console.log('the modal has already been displayed. THE END.')
                 }
             }
