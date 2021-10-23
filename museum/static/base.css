@@ -15,6 +15,11 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+ul {
+    list-style-type: none;
+    padding-left : 10px !important;
+}
 footer {
     margin-top: auto;
 }
@@ -240,6 +245,11 @@ input[type=password] {
 /* Images */
 .profile-img-list {
     height: 1.5rem;
+    width: auto;
+    border-radius: 50px;
+}
+.profile-img-comment {
+    height: 1rem;
     width: auto;
     border-radius: 50px;
 }

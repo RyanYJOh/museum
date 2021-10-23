@@ -49,6 +49,10 @@ INSTALLED_APPS = [
     'bootstrap4',
     'cloudinary_storage',
     'cloudinary',
+    ## Disqus
+    'disqus',
+    'django.contrib.sites',
+
 ]
 
 MIDDLEWARE = [
@@ -180,3 +184,7 @@ elif DEBUG == False: ## 운영
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CSRF_FAILURE_VIEW = 'main.views.csrf_failure'
+
+## Disqus
+DISQUS_WEBSITE_SHORTNAME = 'originals-world'
+SITE_ID = 1

@@ -23,6 +23,13 @@ urlpatterns = [
     ## Bookmark, Non-member answer
     path('ajax/bookmark', views.bookmark, name="bookmark"),
     path('ajax/non-member-answer', registerViews.nonMemberAnswer, name="non-member-answer"),
-    path('ajax/clicks', clicks, name="clicks")
+    path('ajax/clicks', clicks, name="clicks"),
 
-]
+    ## Comments
+    # Create
+    path('ajax/create-comment-ans-us', views.create_comment_ans_us, name="create_comment_ans_us"),
+    path('ajax/create-comment-ans-self', views.create_comment_ans_self, name="create_comment_ans_self"),
+    # Delete
+    path('ajax/del-comment-ans-us', views.del_comment_ans_us, name="delete-comment-ans-us"),
+    path('ajax/del-comment-ans-self', views.del_comment_ans_self, name="delete-comment-ans-self"),
+] 

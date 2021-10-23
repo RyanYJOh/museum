@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from .models import QuestionsFromSelf, AnswersForFromUs, AnswersForFromSelf, SavedAnswers
+from .models import QuestionsFromSelf, AnswersForFromUs, AnswersForFromSelf, SavedAnswers, CommentAnsUs, CommentAnsSelf
 
 class QuestionsFromSelfForm(forms.ModelForm):
     title = forms.CharField(label="", required=False, widget=forms.TextInput( ## Validation은 클라에서 진행
@@ -20,10 +20,10 @@ class AnswersForFromUsForm(forms.ModelForm):
         attrs={
             'class' : 'form-control',
             'placeholder' : '나의 답변이 곧 나의 정답',
-            'rows' : 5,
+            'rows' : 7,
         }
     ))
-    image = forms.ImageField(label="이미지 올리기", required=False)
+    image = forms.ImageField(label="", required=False)
     is_shared = forms.BooleanField(required=False)
 
     class Meta:
@@ -60,3 +60,25 @@ class SavedAnswersForm(forms.ModelForm):
     class Meta:
         model = SavedAnswers
         fields = ('ans_no', 'ans_type', 'bookmarker')
+
+class CommentAnsUsForm(forms.ModelForm):
+    body = forms.CharField(label="", required=False, widget=forms.Textarea(
+        attrs={
+            'placeholder' : '멋진 사람과의 교류는 늘 설레는 일',
+            'rows' : 2,
+        }
+    ))
+    class Meta:
+        model = CommentAnsUs
+        fields = ('body',)
+
+class CommentAnsSelfForm(forms.ModelForm):
+    body = forms.CharField(label="", required=False, widget=forms.Textarea(
+        attrs={
+            'placeholder' : '멋진 사람과의 교류는 늘 설레는 일',
+            'rows' : 2,
+        }
+    ))
+    class Meta:
+        model = CommentAnsSelf
+        fields = ('body',)

@@ -21,7 +21,7 @@
 {% if mode == 'create' %}
 <div class="row">
     <div class="col">
-        <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
+        <form method='post' class='form-group' onsubmit="return validateForm()" enctype='multipart/form-data'> {% csrf_token %}
             <div class="row">
                 <div class="col text-l" id='input-self-title'>
                     {{ques_form.title|as_crispy_field}}

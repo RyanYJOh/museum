@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.fields.related import ForeignKey
 from main.models import AnswersForFromUs
+from django.db.models.fields.related import ForeignKey
 # Create your models here.
 
 class UserInfo(models.Model):

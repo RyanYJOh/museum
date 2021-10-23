@@ -1,8 +1,8 @@
 from django.forms.widgets import RadioSelect
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib.auth.models import User
-from .forms import QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm
-from .models import QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages
+from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm
+from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages
 from member.models import UserInfo
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,10 +11,9 @@ from datetime import date, datetime
 import json
 import random
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 ##### 공통 영역 #####
-# today = date.today()
-# now = datetime.now()
 now = timezone.now()
 string__today = str(timezone.now()).split()[0]
 today = datetime.strptime(string__today, '%Y-%m-%d').date()
@@ -58,13 +57,17 @@ def randImg():
 def main_page(request):
     navbar_context = navbar(request)
 
-    ## Pagination을 쓸 것이냐.
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time') 
+    ## Pagination
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+    ) 
     paginator_all_ans_us = Paginator(all_ans_us, 12)
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+        count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+    )
     paginator_all_ans_self = Paginator(all_ans_self, 12)
     page_all_ans_self = request.GET.get('page')
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
@@ -72,7 +75,7 @@ def main_page(request):
     ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
     ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('-question_no')
-    
+
     ## user authentication
     if request.user.is_authenticated:
         ## UserInfo 작성했는지 확인
@@ -396,14 +399,20 @@ def create_ans_us_short(request):
             ## 이건 today_ques_id의 답변들을 가져오는 코드
             all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques_id, is_shared=True).order_by('-created_at_time')
             if request.method == 'POST':
-                form = AnswersForFromUsForm(request.POST)
-                if form.is_valid(): ## 이거 괄호 없어도 되는 거 아녀?
+                form = AnswersForFromUsForm(request.POST, request.FILES)
+                if form.is_valid():
                     instance = form.save(commit=False)
+                    # 이미지 유무 체크
+                    if form.cleaned_data.get('image'):
+                        pass
+                    else:
+                        random_image = RandomImages.objects.get(id=randImg())
+                        instance.image = random_image.image
+
                     instance.author_id = request.user
                     instance.question_id = today_ques
                     instance.created_at = str(today)
-                    random_image = RandomImages.objects.get(id=randImg())
-                    instance.image = random_image.image
+                    
 
                     instance.save()
                     return redirect('/')
@@ -447,14 +456,18 @@ def create_ans_us_short(request):
                 ##  today_ques의 답변들을 가져와야 하는데, 그럼 먼저 today_ques의 id값을 알아야 한다.
                 all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
                 if request.method == "POST":
-                    form = AnswersForFromUsForm(request.POST)
+                    form = AnswersForFromUsForm(request.POST, request.FILES)
                     if form.is_valid():
                         instance = form.save(commit=False)
+                        # 이미지 유무 체크
+                        if form.cleaned_data.get('image'):
+                            pass
+                        else:
+                            random_image = RandomImages.objects.get(id=randImg())
+                            instance.image = random_image.image
                         instance.author_id = request.user
                         instance.question_id = today_ques
                         instance.created_at = str(today)
-                        random_image = RandomImages.objects.get(id=randImg())
-                        instance.image = random_image.image
 
                         instance.save()
 
@@ -519,20 +532,31 @@ def detail_ans_us(request, ans_us_id):
             editable = 'True'
         else:
             editable = ''
-        
+        if request.user:
+            current_user = UserInfo.objects.get(this_user=request.user)
+        else:
+            current_user = ''
+
     else:
         editable = ''
         bookmarked = ''
+        current_user = ''
 
     ## 다른 [오리지널스가 던지는 질문]들 보기
     this_question_id = QuestionsFromUs.objects.filter(question_no=this_ans_ques_no).values_list('id', flat=True)
     all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, question_id=this_question_id[0]).exclude(id=ans_us_id).order_by('-created_at_time') 
+
+    ## 댓글
+    comments = CommentAnsUs.objects.filter(ans=ans_us_id).order_by('-created_at_time')
 
     pre_context = {
         'this_ans' : this_ans,
         'editable' : editable,
         'bookmarked' : bookmarked,
         'all_ans_us' : all_ans_us,
+        'comments' : comments,
+        'ans_us_id' : ans_us_id,
+        'current_user' : current_user,
     }
 
     context = {**pre_context, **navbar_context}
@@ -548,9 +572,14 @@ def update_ans_us(request, ans_us_id):
     ans_form = AnswersForFromUsForm(request.POST, request.FILES)
     if request.method == 'POST':
         if ans_form.is_valid():
-            ## POST된 ans_form 받아다가, 그 안의 데이터를 ans_to_update에 넣어주고 저장.
-            ## 기존처럼 삭제하고 다시 save하는 구조 아님!
             ans_instance = ans_form.save(commit=False)
+            # 이미지 유무 체크
+            if ans_form.cleaned_data.get('image'):
+                pass
+            else:
+                random_image = RandomImages.objects.get(id=randImg())
+                ans_instance.image = random_image.image
+
             ans_to_update.updated_at = str(today)
             ans_to_update.body = ans_instance.body
             ans_to_update.is_shared = ans_instance.is_shared
@@ -589,7 +618,6 @@ def create_ans_self(request):
                 else:
                     random_image = RandomImages.objects.get(id=randImg())
                     ques_instance.image = random_image.image
-                    
                     
                 ques_instance.save()
 
@@ -642,19 +670,29 @@ def detail_ans_self(request, ans_self_id):
             editable = 'True'
         else:
             editable = ''
-
+        if request.user:
+            current_user = UserInfo.objects.get(this_user=request.user)
+        else:
+            current_user = ''
     else: 
         editable = ''
         bookmarked = ''
+        current_user = ''
 
     ## 다른 [나에게 던지는 질문]들 노출
     all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).exclude(id=ans_self_id).order_by('-created_at_time')
+
+    ## 댓글
+    comments = CommentAnsSelf.objects.filter(ans=ans_self_id).order_by('-created_at_time')
 
     pre_context = {
         'this_ans' : this_ans,
         'editable' : editable,
         'bookmarked' : bookmarked,
         'all_ans_self' : all_ans_self,
+        'comments' : comments,
+        'ans_self_id' : ans_self_id,
+        'current_user' : current_user,
     }
 
     context = {**pre_context, **navbar_context}
@@ -708,11 +746,6 @@ def update_ans_self(request, ans_self_id):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_self.html', context)
 
-##### 매거진 메인 화면 #####
-
-
-##### 매거진 디테일 화면 #####
-
 ##### 답변 저장 기능 #####
 def bookmark(request):
     if request.user.is_authenticated:
@@ -763,3 +796,69 @@ def csrf_failure(request, reason=""):
         'message' : 'sorry'
     }
     return render(request, 'main/csrf_failure.html', context)
+
+def del_comment_ans_us(request):
+    data = json.loads(request.body)
+    comment_to_delete = data['pk']
+    if request.method == 'DELETE':
+        delete_instance = CommentAnsUs.objects.get(pk=comment_to_delete)
+        delete_instance.delete()
+        return redirect('/me')
+
+def create_comment_ans_us(request):
+    print('댓글 작성 호출됨 ANS-US')
+    if request.user.is_authenticated:
+        data = json.loads(request.body)
+        ans = data['ans']
+        body = data['body']
+
+        if request.method == 'POST':
+            form = CommentAnsUsForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.ans = AnswersForFromUs.objects.get(pk=ans)
+                instance.body = body
+                instance.author = UserInfo.objects.get(this_user = request.user)
+            
+                instance.save()
+                print("댓글 작성 완료!")
+                    
+                ## 아래 return 부분 잘 이해 안됨. return만 쓰면 에러 뜬다. 그렇다고 아래처럼 쓰면 아무런 반응 없음.
+                return redirect('/me')
+            else:
+                print('@@@@@@ Validation failed due to : ', form.errors)
+    else:
+        pass
+
+def del_comment_ans_self(request):
+    data = json.loads(request.body)
+    comment_to_delete = data['pk']
+    if request.method == 'DELETE':
+        delete_instance = CommentAnsSelf.objects.get(pk=comment_to_delete)
+        delete_instance.delete()
+        return redirect('/me')
+
+def create_comment_ans_self(request):
+    print('댓글 작성 호출됨 ANS-SELF')
+    if request.user.is_authenticated:
+        data = json.loads(request.body)
+        ans = data['ans']
+        body = data['body']
+
+        if request.method == 'POST':
+            form = CommentAnsSelfForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.ans = AnswersForFromSelf.objects.get(pk=ans)
+                instance.body = body
+                instance.author = UserInfo.objects.get(this_user = request.user)
+            
+                instance.save()
+                print("댓글 작성 완료!")
+                    
+                ## 아래 return 부분 잘 이해 안됨. return만 쓰면 에러 뜬다. 그렇다고 아래처럼 쓰면 아무런 반응 없음.
+                return redirect('/me')
+            else:
+                print('@@@@@@ Validation failed due to : ', form.errors)
+    else:
+        pass

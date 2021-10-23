@@ -86,3 +86,23 @@ class RandomImages(models.Model):
 
     def __str__(self):
         return str(self.color_name)
+
+class CommentAnsUs(models.Model):
+    objects = models.Manager()
+    ans = models.ForeignKey(AnswersForFromUs, on_delete=models.CASCADE, related_name='commentansus', null=True, default=None)
+    created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    author = models.ForeignKey('member.UserInfo', on_delete=models.CASCADE, related_name='commentusauthor', null=True, default=None)
+    body = models.CharField(max_length=2000, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.author)+', '+str(self.created_at_time)
+
+class CommentAnsSelf(models.Model):
+    objects = models.Manager()
+    ans = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='commentansself', null=True, default=None)
+    created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    author = models.ForeignKey('member.UserInfo', on_delete=models.CASCADE, related_name='commentselfauthor', null=True, default=None)
+    body = models.CharField(max_length=2000, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.author)+', '+str(self.created_at_time)

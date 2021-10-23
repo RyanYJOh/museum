@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {% block title %} {{this_ans.question_id.title}} {% endblock %}
 
-
 {% block extrahead %}
 <meta property="og:image" content="{{this_ans.image.url}}">
 {% endblock %}
@@ -32,12 +31,6 @@
     <div class="col-5 col-md-4 text-s left my-auto">
         <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{this_ans.author_id.userinfo.real_name}}</a>
     </div>
-    <!-- <div class="col-2 col-md-1 text-s center">
-        <a href="/profile/{{this_ans.author_id.username}}"><img class=" profile-img-list" src="{{this_ans.author_id.userinfo.profile_image.url}}"></a>
-    </div>
-    <div class="col-3 text-s left col-wo-padding-left my-auto">
-        <a href="/profile/{{this_ans.author_id.username}}">{{this_ans.author_id.userinfo.real_name}}</a>
-    </div> -->
     <div class="col-5 col-md-7 text-s right">
         {{this_ans.created_at}}
     </div>
@@ -57,12 +50,15 @@
         {% endif %}
     </div>
 </div>
-<!-- <div class="row justify-content-center">
+
+<div class="row-h-20"></div>
+
+<div class="row justify-content-center">
     <div class="col center">
         <img class='img-detail-page' src="{{this_ans.image.url}}">
     </div>
-</div> -->
-<div class="row-h-20"></div>
+</div>
+
 <div class="row">
     <div class="col col-lg-12 col-xs-10 text-m textbunch">
         {{this_ans.body|linebreaks}}
@@ -71,6 +67,45 @@
 
 <div class="row-h-40"></div>
 
+<!-- Comment 영역 -->
+<div class="container-comment">
+    <div class="row">
+        <div class="col text-m bolder">
+            댓글 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
+                <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
+              </svg>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-11 center">
+            <textarea placeholder="멋진 사람들과의 교류는 늘 설레는 일" class="form-control" id="comment-input"></textarea>
+        </div>
+        <div class="col-2  col-md-1 left my-auto">
+            <svg class="link" onclick="SubmitCommentUs()" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#ed6f63" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+              </svg>
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-11">
+            <ul id="comment-list">
+            {% for c in comments %}
+            <li class="left">
+                <p class="text-s"><img class="profile-img-comment" src="{{c.author.profile_image.url}}">&nbsp;&nbsp;{{c.author.real_name}} / {{c.created_at_time}}</p>
+                <p>{{c.body}}</p>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+<div class="row-h-40"></div>
+
+<!-- 홈으로 버튼 -->
 <div class="row">
     {% if editable == 'True' %}
     <div class="col-6 right">
@@ -136,6 +171,8 @@
     </div>   
     {% endfor %}
 </div>
+
+
 <script>
     // Bookmark 기능
     function BookmarkUs(id) {
@@ -192,6 +229,47 @@
         navigator.clipboard.writeText(currentUrl);
         window.alert('이 글의 링크가 복사되었어요.');
     }
+
+    function SubmitCommentUs() {
+        var comment = document.getElementById('comment-input');
+        // Submit
+        var postData = {
+            ans : '{{ans_us_id}}',
+            body : comment.value
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "create_comment_ans_us" %}',
+            data : JSON.stringify(postData)
+        })
+
+        // Add to the comment list
+        var commentList = document.getElementById('comment-list');
+
+        var li = document.createElement("li");
+        
+        var pBody = document.createElement('p');
+        pBody.appendChild(document.createTextNode(comment.value))
+
+        var pAuthor = document.createElement('p');
+        pAuthor.setAttribute('class', 'text-s');   
+        var img = document.createElement('img');
+        img.setAttribute('class', 'profile-img-comment');
+        img.setAttribute('src', '{{current_user.profile_image.url}}');
+        var nameAndDate = '\u00a0\u00a0{{current_user.real_name}} / 방금'
+        pAuthor.appendChild(img)
+        pAuthor.appendChild(document.createTextNode(nameAndDate))
+
+        li.appendChild(pAuthor);
+        li.appendChild(pBody);
+        
+        commentList.insertBefore(li, commentList.firstChild);
+
+        // Clear the textarea
+        comment.value = '';
+    }
+
 </script>
 {% endblock %}
 

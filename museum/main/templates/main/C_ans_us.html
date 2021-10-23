@@ -38,7 +38,7 @@
 </div>
 {% endif %}
 
-
+<!-- 답변 작성 영역 -->
 <div class="row">
     <div class="col">
         {% if is_member == 'False' %}
@@ -84,7 +84,7 @@
 
         <!-- 오늘의 질문 가능 -->
         {% else %}
-        <form method="POST" class="form-group"> {% csrf_token %}
+        <form method="POST" class="form-group" enctype='multipart/form-data'> {% csrf_token %}
             <div class="row">
                     <div class="col right text-s">일단 비워둔 채로 저장만 해도 괜찮아요.</div>
             </div>
@@ -94,11 +94,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 left text-m">
-                    {{form.is_shared}} 공개되어도 좋습니다.
+                <div class="col-6 left">
+                    <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                    {{form.image|as_crispy_field}}
                 </div>
                 <div class="col-6 right">
                     <button class='btn btn-primary' type="submit" name='save'>내 정답 저장</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col right text-m">
+                    {{form.is_shared}} 공개되어도 좋습니다.
                 </div>
             </div>
         </form>
@@ -187,6 +193,25 @@ function BookmarkUs(id) {
     }
 
 document.getElementById('id_is_shared').checked = true;
+
+// ShowImageField()
+if ('{{mode}}' == 'create') {
+    document.getElementById('id_image').style.display = 'none';
+
+    function ShowImageField() {
+        document.getElementById('show_img_field').style.display = 'none';
+        document.getElementById('div_id_image').style.display = 'inline-block';
+        document.getElementById('id_image').style.display = 'inline-block';
+    }
+} else if ('{{mode}}' == 'update') {
+    document.getElementById('div_id_image').style.display = 'none';
+    
+    function ShowImageField() {
+        document.getElementById('show_img_field').style.display = 'none';
+        document.getElementById('id_image').style.display = 'inline-block';
+        document.getElementById('div_id_image').style.display = 'inline-block';
+    }
+}
 
 function nonMemberAnswered() {
     const this_date = new Date();
