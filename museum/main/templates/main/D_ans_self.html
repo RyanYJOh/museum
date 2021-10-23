@@ -97,7 +97,7 @@
             {% for c in comments %}
             <li class="left">
                 <p class="text-s"><img class="profile-img-comment" src="{{c.author.profile_image.url}}">&nbsp;&nbsp;{{c.author.real_name}} / {{c.created_at_time}}</p>
-                <p>{{c.body}}</p>
+                <p>{{c.body|linebreaks}}</p>
             </li>
             {% endfor %}
             </ul>
