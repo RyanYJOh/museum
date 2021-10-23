@@ -202,13 +202,17 @@ def profile(request, username):
     ## 내 프로필
     if profile_owner == request.user:
         owner_info = UserInfo.objects.get(this_user=request.user)
-        owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time')
+        owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+        )
         if not owner_ans_us:
             owner_ans_us = 'None'
         else:
             pass
 
-        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time')
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+        )
         if not owner_ans_self:
             owner_ans_self = "None"
         else:
