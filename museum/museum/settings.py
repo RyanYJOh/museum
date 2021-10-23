@@ -49,10 +49,6 @@ INSTALLED_APPS = [
     'bootstrap4',
     'cloudinary_storage',
     'cloudinary',
-    ## Disqus
-    'disqus',
-    'django.contrib.sites',
-
 ]
 
 MIDDLEWARE = [
