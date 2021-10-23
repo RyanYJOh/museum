@@ -58,16 +58,18 @@ def main_page(request):
     navbar_context = navbar(request)
 
     ## Pagination
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
-        count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
-    ) 
+    # all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+    #     count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+    # ) 
+    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time')
     paginator_all_ans_us = Paginator(all_ans_us, 12)
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
-        count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
-    )
+    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time')
+    # all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+    #     count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+    # )
     paginator_all_ans_self = Paginator(all_ans_self, 12)
     page_all_ans_self = request.GET.get('page')
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
