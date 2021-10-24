@@ -287,8 +287,8 @@
     function DeleteCommentSelf(id) {
         var thisComment = id.split('comment-')[1]
         var commentDelete = document.getElementById(id).parentNode.parentNode;
-
-        if (window.confirm('댓글을 삭제할까요?')) {
+        
+        if (setTimeout(window.confirm('댓글을 삭제할까요?'), 200)) {
             var postData = {
                 thisComment : thisComment,
             }
