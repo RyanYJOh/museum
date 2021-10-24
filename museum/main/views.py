@@ -322,8 +322,12 @@ def profile(request, username):
         is_owner = 'False'
 
         ## 이 사람의 정답
-        owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time')
-        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time')
+        owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+        )
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+        )
         
         if request.user.is_authenticated:
         ## 이 사람의 글 중 내가 저장한 글
@@ -811,10 +815,16 @@ def csrf_failure(request, reason=""):
 
 def del_comment_ans_us(request):
     data = json.loads(request.body)
-    comment_to_delete = data['pk']
-    if request.method == 'DELETE':
-        delete_instance = CommentAnsUs.objects.get(pk=comment_to_delete)
-        delete_instance.delete()
+    comment_to_delete = data['thisComment']
+    
+    this_comment = CommentAnsUs.objects.get(pk=comment_to_delete)
+    if this_comment.author.this_user == request.user:
+        if request.method == 'DELETE':
+            delete_instance = this_comment
+            delete_instance.delete()
+            return redirect('/me')
+    else:
+        print("CANNOT DELETE SOMEONE ELSE'S COMMENT")
         return redirect('/me')
 
 def create_comment_ans_us(request):
@@ -844,10 +854,16 @@ def create_comment_ans_us(request):
 
 def del_comment_ans_self(request):
     data = json.loads(request.body)
-    comment_to_delete = data['pk']
-    if request.method == 'DELETE':
-        delete_instance = CommentAnsSelf.objects.get(pk=comment_to_delete)
-        delete_instance.delete()
+    comment_to_delete = data['thisComment']
+    
+    this_comment = CommentAnsSelf.objects.get(pk=comment_to_delete)
+    if this_comment.author.this_user == request.user:
+        if request.method == 'DELETE':
+            delete_instance = this_comment
+            delete_instance.delete()
+            return redirect('/me')
+    else:
+        print("CANNOT DELETE SOMEONE ELSE'S COMMENT")
         return redirect('/me')
 
 def create_comment_ans_self(request):

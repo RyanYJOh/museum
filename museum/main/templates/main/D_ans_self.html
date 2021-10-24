@@ -73,6 +73,7 @@
 
 <!-- Comment 영역 -->
 <div class="container-comment">
+    <!-- Comment 입력 -->
     <div class="row">
         <div class="col text-m bolder">
             댓글 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
@@ -91,12 +92,19 @@
         </div>
     </div>
     <div class="row-h-20"></div>
+    <!-- Comment 노출 -->
     <div class="row justify-content-center">
         <div class="col-11">
             <ul id="comment-list">
             {% for c in comments %}
-            <li class="left">
-                <p class="text-s"><img class="profile-img-comment" src="{{c.author.profile_image.url}}">&nbsp;&nbsp;{{c.author.real_name}} / {{c.created_at_time}}</p>
+            <li class="left" id="{{c.pk}}">
+                <p class="text-s">
+                    <img class="profile-img-comment" src="{{c.author.profile_image.url}}">&nbsp;&nbsp;{{c.author.real_name}} / {{c.created_at_time}}
+                    &nbsp;&nbsp;<svg class="link" id="delete-comment-{{c.pk}}" onclick="DeleteCommentSelf(id)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="lightgrey" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                      </svg>
+                </p>
                 <p>{{c.body|linebreaks}}</p>
             </li>
             {% endfor %}
@@ -265,7 +273,7 @@
         img.setAttribute('class', 'profile-img-comment');
         img.setAttribute('src', '{{current_user.profile_image.url}}');
         var nameAndDate = '\u00a0\u00a0{{current_user.real_name}} / 방금'
-        pAuthor.appendChild(img)
+        pAuthor.appendChild(img)        
         pAuthor.appendChild(document.createTextNode(nameAndDate))
 
         li.appendChild(pAuthor);
@@ -276,7 +284,27 @@
         // Clear the textarea
         comment.value = '';
     }
-    
+    function DeleteCommentSelf(id) {
+        var thisComment = id.split('comment-')[1]
+        var commentDelete = document.getElementById(id).parentNode.parentNode;
+
+        if (window.confirm('댓글을 삭제할까요?')) {
+            var postData = {
+                thisComment : thisComment,
+            }
+            $.ajax({
+                type: "DELETE",
+                dataType: 'json',
+                url: '{% url "delete-comment-ans-self" %}',
+                data : JSON.stringify(postData)
+            })
+
+            commentDelete.style.display = 'none';
+            console.log('comment hidden')
+        } else {
+            
+        }
+    }
 </script>
 {% endblock %}
 

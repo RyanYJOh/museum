@@ -227,6 +227,7 @@ def dashboard(request):
         context = {
             'message' : message,
             'date' : today,
+            'current_user' : request.user,
 
             'countAdam' : countAdam,
             'countBrian' : countBrian,
@@ -261,7 +262,8 @@ def dashboard(request):
     else:
         message = "관계자 외 출입 금지"
         context = {
-            'message' : message
+            'message' : message,
+            'current_user' : request.user,
         }
     return render(request, 'dashboard/home.html', context)
 
