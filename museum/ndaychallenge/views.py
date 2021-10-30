@@ -82,6 +82,7 @@ def ndaychallenge(request, id):
         dict__challenge_data['author'] = this_user_info.real_name
         dict__challenge_data['profile_image'] = this_user_info.profile_image
         dict__challenge_data['count'] = this_user_ans
+        dict__challenge_data['profile_url'] = this_user_info.this_user.username
         if this_user_ans >= this_challenge.pass_condition:
             dict__challenge_data['progress'] = 100
         else:
@@ -89,7 +90,7 @@ def ndaychallenge(request, id):
         list__challenge_data.append(dict__challenge_data)
     
     
-    remaining = str(this_challenge.end_date - today).split('days')[0]
+    remaining = str(this_challenge.end_date - today).split('day')[0]
     pre_context = {
         'available' : available,
         'this_challenge' : this_challenge,

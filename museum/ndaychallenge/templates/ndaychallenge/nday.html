@@ -35,7 +35,8 @@
     {% for d in list__challenge_data %}
     <div class="row">
         <div class="col-12 col-md-3">
-            <img class='profile-img-list' src="{{d.profile_image.url}}"/>&nbsp;&nbsp;{{d.author}}
+            <a href='/profile/{{d.profile_url}}'>
+            <img class='profile-img-list' src="{{d.profile_image.url}}"/>&nbsp;&nbsp;{{d.author}}</a>
             &nbsp;&nbsp; {{d.count}} / {{pass_condition}}개
         </div>
         <div class="col-12 col-md-9">

@@ -65,19 +65,19 @@ def clicks(request):
     else:
         pass
 
-def personaOther():
-    personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
-    list__otherId = []
-    for i in range(0, len(personaOther)):
-        list__otherId.append(list(personaOther)[i]['this_user'])
+def personaStaff():
+    personaStaff = UserInfo.objects.filter(persona_type = 'Staff').values('this_user')
+    list__staffId = []
+    for i in range(0, len(personaStaff)):
+        list__staffId.append(list(personaStaff)[i]['this_user'])
     
-    return list__otherId
+    return list__staffId
 
 def dashboard(request):
-    personaOther = UserInfo.objects.filter(persona_type = 'Other').values('this_user')
-    list__otherId = []
-    for i in range(0, len(personaOther)):
-        list__otherId.append(list(personaOther)[i]['this_user'])
+    personaStaff = UserInfo.objects.filter(persona_type = 'Staff').values('this_user')
+    list__staffId = []
+    for i in range(0, len(personaStaff)):
+        list__staffId.append(list(personaStaff)[i]['this_user'])
 
     today = date.today
     
@@ -89,7 +89,8 @@ def dashboard(request):
         countBrian = UserInfo.objects.filter(persona_type='Brian').count()
         countClaire = UserInfo.objects.filter(persona_type='Claire').count()
         countOther = UserInfo.objects.filter(persona_type='Other').count()
-        totalCountUsers = countAdam + countBrian + countClaire
+
+        totalCountUsers = countAdam + countBrian + countClaire + countOther
 
         ## Persona type별 [나에게 던지는 질문] 갯수
         allSelfs = AnswersForFromSelf.objects.all().values('author_id') # [{'author_id': 아이디}, ...]
@@ -104,7 +105,8 @@ def dashboard(request):
         countSelfByAdam = list__allSelfs.count('Adam')
         countSelfByBrian = list__allSelfs.count('Brian')
         countSelfByClaire = list__allSelfs.count('Claire')
-        totalCountSelfs = countSelfByAdam + countSelfByBrian + countSelfByClaire
+        countSelfByOther = list__allSelfs.count('Other')
+        totalCountSelfs = countSelfByAdam + countSelfByBrian + countSelfByClaire + countSelfByOther
 
         ## Persona type별 [오리지널스가 던지는 질문] 갯수
         allUss = AnswersForFromUs.objects.all().values('author_id') # [{'author_id': 아이디}, ...]
@@ -119,7 +121,8 @@ def dashboard(request):
         countUsByAdam = list__allUss.count('Adam')
         countUsByBrian = list__allUss.count('Brian')
         countUsByClaire = list__allUss.count('Claire')
-        totalCountUss = countUsByAdam + countUsByBrian + countUsByClaire
+        countUsByOther = list__allUss.count('Other')
+        totalCountUss = countUsByAdam + countUsByBrian + countUsByClaire + countUsByOther
 
         ## Persona Type별 북마크 수
         allBookmarkers = SavedAnswers.objects.all().values('bookmarker') # [{'bookmarker': 유저 아이디}, ...]
@@ -135,21 +138,22 @@ def dashboard(request):
         countBookmarkByAdam = list__userTypes.count('Adam')
         countBookmarkByBrian = list__userTypes.count('Brian')
         countBookmarkByClaire = list__userTypes.count('Claire')
-        totalBookmarks = countBookmarkByAdam + countBookmarkByBrian + countBookmarkByClaire
+        countBookmarkByOther = list__userTypes.count('Other')
+        totalBookmarks = countBookmarkByAdam + countBookmarkByBrian + countBookmarkByClaire + countBookmarkByOther
 
         ## 공개 Vs 미공개 컨텐츠 수
         
-        allSelfsSharedFalse = AnswersForFromSelf.objects.filter(is_shared=False).exclude(author_id__in=list__otherId).count()
-        allSelfsSharedTrue = AnswersForFromSelf.objects.filter(is_shared=True).exclude(author_id__in=list__otherId).count()
-        allUssSharedFalse = AnswersForFromUs.objects.filter(is_shared=False).exclude(author_id__in=list__otherId).count()
-        allUssSharedTrue = AnswersForFromUs.objects.filter(is_shared=True).exclude(author_id__in=list__otherId).count()
+        allSelfsSharedFalse = AnswersForFromSelf.objects.filter(is_shared=False).exclude(author_id__in=list__staffId).count()
+        allSelfsSharedTrue = AnswersForFromSelf.objects.filter(is_shared=True).exclude(author_id__in=list__staffId).count()
+        allUssSharedFalse = AnswersForFromUs.objects.filter(is_shared=False).exclude(author_id__in=list__staffId).count()
+        allUssSharedTrue = AnswersForFromUs.objects.filter(is_shared=True).exclude(author_id__in=list__staffId).count()
 
         sharedFalse = allSelfsSharedFalse + allUssSharedFalse
         sharedTrue = allSelfsSharedTrue + allUssSharedTrue
         totalAnswers = sharedFalse + sharedTrue
 
         ## Persona type별 클릭수
-        totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__otherId).count()
+        totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__staffId).count()
 
         ## Persona type별 QuestionsFromUs 답변 주기 (=AnswersForFromUs 생성 주기)
         # Adam's 답변
