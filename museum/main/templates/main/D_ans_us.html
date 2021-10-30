@@ -244,42 +244,47 @@
 
     function SubmitCommentUs() {
         var comment = document.getElementById('comment-input');
-        // Submit
-        var postData = {
-            ans : '{{ans_us_id}}',
-            body : comment.value
+        if (comment.value == '') {
+            window.alert('빈 댓글은 용납할 수 없죠')
+        } else {
+            // Submit
+            var postData = {
+                ans : '{{ans_us_id}}',
+                body : comment.value
+            }
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: '{% url "create_comment_ans_us" %}',
+                data : JSON.stringify(postData)
+            })
+
+            // Add to the comment list
+            var commentList = document.getElementById('comment-list');
+
+            var li = document.createElement("li");
+
+            var pBody = document.createElement('p');
+            pBody.appendChild(document.createTextNode(comment.value))
+
+            var pAuthor = document.createElement('p');
+            pAuthor.setAttribute('class', 'text-s');   
+            var img = document.createElement('img');
+            img.setAttribute('class', 'profile-img-comment');
+            img.setAttribute('src', '{{current_user.profile_image.url}}');
+            var nameAndDate = '\u00a0\u00a0{{current_user.real_name}} / 방금'
+            pAuthor.appendChild(img)
+            pAuthor.appendChild(document.createTextNode(nameAndDate))
+
+            li.appendChild(pAuthor);
+            li.appendChild(pBody);
+
+            commentList.insertBefore(li, commentList.firstChild);
+
+            // Clear the textarea
+            comment.value = '';
         }
-        $.ajax({
-            type: "POST",
-            dataType: 'json',
-            url: '{% url "create_comment_ans_us" %}',
-            data : JSON.stringify(postData)
-        })
-
-        // Add to the comment list
-        var commentList = document.getElementById('comment-list');
-
-        var li = document.createElement("li");
         
-        var pBody = document.createElement('p');
-        pBody.appendChild(document.createTextNode(comment.value))
-
-        var pAuthor = document.createElement('p');
-        pAuthor.setAttribute('class', 'text-s');   
-        var img = document.createElement('img');
-        img.setAttribute('class', 'profile-img-comment');
-        img.setAttribute('src', '{{current_user.profile_image.url}}');
-        var nameAndDate = '\u00a0\u00a0{{current_user.real_name}} / 방금'
-        pAuthor.appendChild(img)
-        pAuthor.appendChild(document.createTextNode(nameAndDate))
-
-        li.appendChild(pAuthor);
-        li.appendChild(pBody);
-        
-        commentList.insertBefore(li, commentList.firstChild);
-
-        // Clear the textarea
-        comment.value = '';
     }
     function DeleteCommentUs(id) {
         var thisComment = id.split('comment-')[1]

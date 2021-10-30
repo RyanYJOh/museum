@@ -301,6 +301,12 @@ input[type=password] {
     width: 200px;
 }
 
+/* Progress bar */
+.progress-bar {
+    background-color: #ed6f63 !important;
+}
+
+
 /* Other custom settings */
 .link:hover {
     cursor: pointer;

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'member.apps.MemberConfig',
     'register.apps.RegisterConfig',
     'dashboard.apps.DashboardConfig',
+    'ndaychallenge.apps.NdaychallengeConfig',
 
     'crispy_forms',
     'bootstrap4',
