@@ -11,7 +11,7 @@ class Challenge(models.Model):
     start_date = models.DateField(auto_now_add=False)
     end_date = models.DateField(auto_now_add=False)
     title = models.CharField(max_length=30, null=True, blank=True)
-    desc = models.CharField(max_length=200, null=True, blank=True)
+    desc = models.TextField(null=True, blank=True)
     participant = models.ManyToManyField(UserInfo, related_name='participant', null=True)
     pass_condition = models.IntegerField()
     passed = models.ManyToManyField(UserInfo, related_name='passed', null=True)
