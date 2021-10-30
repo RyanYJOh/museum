@@ -26,18 +26,17 @@ def clicks(request):
         if ans_type == 'us':
             this_ans = AnswersForFromUs.objects.get(id=ans_us_ref)
             author_id = getattr(this_ans, 'author_id')
-            print('author id is ', author_id)
+
             whose_post = User.objects.get(username=author_id)
         elif ans_type == 'self':
             this_ans = AnswersForFromSelf.objects.get(id=ans_self_ref)
             author_id = getattr(this_ans, 'author_id')
-            print('author id is ', author_id)
+
             whose_post = User.objects.get(username=author_id)
         
         clicked_by = request.user
         get_this_user = UserInfo.objects.get(this_user=request.user)
         clicked_user_type = getattr(get_this_user, 'persona_type')
-        print(clicked_user_type)
 
         if request.method == 'POST':
             form = ClicksForm(request.POST)
@@ -152,47 +151,39 @@ def dashboard(request):
         sharedTrue = allSelfsSharedTrue + allUssSharedTrue
         totalAnswers = sharedFalse + sharedTrue
 
-        ## Persona type별 클릭수
-        totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__staffId).count()
+        ## Persona type별 클릭수 <- 여기서만 persona Other 제외 하..
+        personaOther = UserInfo.objects.filter(persona_type = 'Staff').values('this_user')
+        list__OtherId = []
+        for i in range(0, len(personaOther)):
+            list__OtherId.append(list(personaStaff)[i]['this_user'])
+        totalClicks = Clicks.objects.all().exclude(clicked_by__in=list__OtherId).count()
 
-        ## Persona type별 QuestionsFromUs 답변 주기 (=AnswersForFromUs 생성 주기)
-        # Adam's 답변
-        # 각 유저의 AnswersForFromUs의 created_at을 가져오고 -> 각 유저별로 created_at을 리스트로 생성 (오름차순) -> list[i+1] - list[i]의 리스트를 또 생성 (created_at_gap)
-        # 그리고나서 Adam들의 created_at_gap의 리스트를 모두 합친다.
-        # 거기서 최솟값, 최댓값, 평균값, 중앙값을 구한다.
-        # Do the same for Brian and Claire as well.
-        
+        ## Persona type별 QuestionsFromUs 답변 주기 (= AnswersForFromUs 생성 주기)
         ## 각 유저 담아오기 : [{username : persona_type} , ...]의 구조로
         eachUser = User.objects.all().values_list('id', flat=True)
-        list__eachUsername = list(eachUser.values_list('username', flat=True))
-
         list__eachUser = list(eachUser)
-        
+
         dict__persona_type = {}
         dict__created_at = {}
-        for u in range(0, len(list__eachUser)):
-            this_userinfo = UserInfo.objects.get(this_user=list__eachUser[u])
-            # 아래는 {username : persona_type}
-            # dict__persona_type[list__eachUsername[u]] = this_userinfo.persona_type
-            # 아래는 {real_name : persona_type}
-            dict__persona_type[this_userinfo.real_name] = this_userinfo.persona_type
-        
+        # for u in range(0, len(list__eachUser)):
+        for u in list__eachUser:
+            # this_userinfo = UserInfo.objects.get(this_user=list__eachUser[u])
+            this_userinfo = UserInfo.objects.get(this_user = u)
+            dict__persona_type[this_userinfo.real_name] = this_userinfo.persona_type # {real_name : persona_type}
             ## 각 유저의 AnswersForFromUs의 created_at 가져오기
             # 각 유저의 created_ats 리스트
-            ans_from_us_created_ats = AnswersForFromUs.objects.filter(author_id=u).values_list('created_at', flat=True)
+            ans_from_us_created_ats = AnswersForFromUs.objects.filter(author_id=u).order_by('created_at').values_list('created_at', flat=True)
             list__ans_from_us_created_ats = list(ans_from_us_created_ats)
             # created_ats 차이로 이루어진 리스트
             list__created_ats_gap = []
             for c in range(0, len(list__ans_from_us_created_ats)):
                 if c+1 < len(list__ans_from_us_created_ats):
-    
                     gap = list__ans_from_us_created_ats[c+1]-list__ans_from_us_created_ats[c]
                     list__created_ats_gap.append(gap.days)
     
-                    dict__created_at[this_userinfo.real_name] = list__created_ats_gap
+                    dict__created_at[this_userinfo.real_name] = list__created_ats_gap # {'real_name' : [created_at 차이]}
                 else:
                     pass
-        
         # persona_type별로 group_by
         users_by_persona = defaultdict(list)
         created_at_gaps_by_persona = defaultdict(list)
@@ -226,7 +217,6 @@ def dashboard(request):
             list__created_at_stats.append(avg_gap)
             list__created_at_stats.append(median_gap)
             dict__created_at_stats[key] = list__created_at_stats
-        print(dict__created_at_stats)
 
         context = {
             'message' : message,
@@ -273,4 +263,28 @@ def dashboard(request):
             'current_user' : request.user,
         }
     return render(request, 'dashboard/home.html', context)
+
+def kpi(request):
+    ## 기본 셋팅
+    today = date.today
+    personaStaff = UserInfo.objects.filter(persona_type = 'Staff').values('this_user')
+    list__staffId = []
+    for i in range(0, len(personaStaff)):
+        list__staffId.append(list(personaStaff)[i]['this_user'])
+    
+    ## Main body
+    if request.user.is_superuser:
+        message = "KPI를 달성해보자"
+
+        ## 1. Retention by Persona, as well as total
+
+        ## 2. 몇번 질문까지 쓰고 이탈하나
+    else:
+        message = "YOU HAVE NO ACCESS."
+    
+    context = {
+        'message' : message,
+        'today' : today,
+    }
+    return render(request, 'dashboard/kpi.html', context)
 

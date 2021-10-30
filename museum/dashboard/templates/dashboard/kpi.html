@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %} 대쉬보드 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-8 text-xl left">
+        {{message}}
+    </div>
+    <div class="col-4 text-m right my-auto">
+        as of : {{date}}
+    </div>
+</div>
+<div class="row">
+    <div class="col left text-m">
+        logged in as : {{current_user}}
+    </div>
+</div>
+
+<div class="row-h-40"></div>
+
+<div class="container bottom-border" id='users'>
+    <div class="row justify-content-center">
+        <div class="col-8 text-l left">
+            페르소나별 유저 수
+        </div>
+        <div class="col-4 text-l right">
+            Total : {{totalCountUsers}}
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Adam</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countAdam}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Brian</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countBrian}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col center text-m">Claire</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl bolder">{{countClaire}}</div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="row justify-content-center" style="color:grey;">
+                <div class="col center text-m">Other</div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col center text-xl">{{countOther}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-80"></div>
+</div>
+
+{% endblock %}
