@@ -12,9 +12,9 @@ class Challenge(models.Model):
     end_date = models.DateField(auto_now_add=False)
     title = models.CharField(max_length=30, null=True, blank=True)
     desc = models.TextField(null=True, blank=True)
-    participant = models.ManyToManyField(UserInfo, related_name='participant', null=True)
+    participant = models.ManyToManyField(UserInfo, related_name='participant')
     pass_condition = models.IntegerField()
-    passed = models.ManyToManyField(UserInfo, related_name='passed', null=True)
+    passed = models.ManyToManyField(UserInfo, related_name='passed')
 
     def __str__(self):
         return (str(self.day) + ' 챌린지, since ' + str(self.start_date))

@@ -423,7 +423,7 @@ def create_ans_us_short(request):
 
                     instance.author_id = request.user
                     instance.question_id = today_ques
-                    instance.created_at = str(today)
+                    # instance.created_at = str(today)
                     
 
                     instance.save()
@@ -479,7 +479,7 @@ def create_ans_us_short(request):
                             instance.image = random_image.image
                         instance.author_id = request.user
                         instance.question_id = today_ques
-                        instance.created_at = str(today)
+                        # instance.created_at = str(today)
 
                         instance.save()
 

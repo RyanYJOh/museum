@@ -63,7 +63,8 @@ def ndaychallenge(request, id):
     ## 각 유저의 남은 답변 갯수
     participants = this_challenge.participant.values_list('this_user', flat=True).order_by('?')
     list__participants = list(participants)
-    
+    total_participants = participants.count()
+
     answers_since_start_date = AnswersForFromUs.objects.filter(author_id__in=list__participants, created_at__gte=this_challenge.start_date)
     
     ## 모든 답변 가져오기
@@ -100,6 +101,7 @@ def ndaychallenge(request, id):
         'end_date' : this_challenge.end_date,
         'remaining' : remaining,
         'is_shared_paginated' : is_shared_paginated,
+        'total_participants' : total_participants,
     }
 
     context = {**navbar_context, **pre_context}

@@ -34,7 +34,7 @@ class AnswersForFromUs(models.Model):
     author_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='answerforfromus', null=False)
     body = models.CharField(max_length=10000, blank=True) # 답변을 하지 않고 저장하는 경우--null=True 필요없나?
     image = models.ImageField(null=True, blank=True, upload_to='answer_img')
-    created_at = models.DateField(auto_now_add=False)
+    created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now_add=True)
     created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_shared = models.BooleanField(default=True)
@@ -54,7 +54,7 @@ class AnswersForFromSelf(models.Model):
     body = models.CharField(max_length=10000, blank=True) # 답변을 하지 않고 저장하는 경우--null=True 필요없나?
     image = models.ImageField(null=True, blank=True, upload_to='answer_img')
     created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now_add=False)
+    updated_at = models.DateField(auto_now_add=True)
     created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_shared = models.BooleanField(default=True)
     on_magazine = models.BooleanField(default=False)
