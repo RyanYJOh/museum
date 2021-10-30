@@ -242,16 +242,19 @@ def dashboard(request):
             'countSelfByAdam' : countSelfByAdam,
             'countSelfByBrian' : countSelfByBrian,
             'countSelfByClaire' : countSelfByClaire,
+            'countSelfByOther' : countSelfByOther,
             'totalCountSelfs' : totalCountSelfs,
 
             'countUsByAdam' : countUsByAdam,
             'countUsByBrian' : countUsByBrian,
             'countUsByClaire' : countUsByClaire,
+            'countUsByOther' : countUsByOther,
             'totalCountUss' : totalCountUss,
 
             'countBookmarkByAdam' : countBookmarkByAdam,
             'countBookmarkByBrian' : countBookmarkByBrian,
             'countBookmarkByClaire' : countBookmarkByClaire,
+            'countBookmarkByOther' : countBookmarkByOther,
             'totalBookmarks' : totalBookmarks,
 
             'sharedFalse' : sharedFalse,
