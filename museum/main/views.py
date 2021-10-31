@@ -588,11 +588,18 @@ def update_ans_us(request, ans_us_id):
         if ans_form.is_valid():
             ans_instance = ans_form.save(commit=False)
             # 이미지 유무 체크
-            if ans_form.cleaned_data.get('image'):
-                pass
+            '''
+            지금까지 아래처럼 하고 있었음. 그래서 이미지 수정해도 변경이 반영되지 않음.
+            # if ans_form.cleaned_data.get('image'):
+            #     pass
+            # else:
+            #     random_image = RandomImages.objects.get(id=randImg())
+            #     ans_instance.image = random_image.image
+            '''
+            if ans_instance.image:
+                ans_to_update.image = ans_instance.image
             else:
-                random_image = RandomImages.objects.get(id=randImg())
-                ans_instance.image = random_image.image
+                pass
 
             ans_to_update.updated_at = str(today)
             ans_to_update.body = ans_instance.body
