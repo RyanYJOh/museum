@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Challenge
 from main.models import AnswersForFromUs
@@ -6,11 +6,8 @@ from member.models import UserInfo
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
-from datetime import date, datetime
-import json
-import random
+from datetime import datetime
 from django.core.paginator import Paginator
-from django.db.models import Count
 
 # Create your views here.
 

@@ -217,7 +217,7 @@ def dashboard(request):
             list__created_at_stats.append(avg_gap)
             list__created_at_stats.append(median_gap)
             dict__created_at_stats[key] = list__created_at_stats
-
+        
         context = {
             'message' : message,
             'date' : today,
@@ -255,6 +255,7 @@ def dashboard(request):
 
             'users_by_persona' : users_by_persona,
             'dict__created_at_stats' : dict__created_at_stats,
+            'dict__created_at_gaps_by_persona': dict__created_at_gaps_by_persona,
         }
     else:
         message = "관계자 외 출입 금지"
@@ -279,6 +280,7 @@ def kpi(request):
         ## 1. Retention by Persona, as well as total
 
         ## 2. 몇번 질문까지 쓰고 이탈하나
+
     else:
         message = "YOU HAVE NO ACCESS."
     
