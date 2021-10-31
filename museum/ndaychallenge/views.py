@@ -88,6 +88,7 @@ def ndaychallenge(request, id):
     
     
     remaining = str(this_challenge.end_date - today).split('day')[0]
+    host = this_challenge.host.real_name
     pre_context = {
         'available' : available,
         'this_challenge' : this_challenge,
@@ -100,6 +101,7 @@ def ndaychallenge(request, id):
         'remaining' : remaining,
         'is_shared_paginated' : is_shared_paginated,
         'total_participants' : total_participants,
+        'host' : host,
     }
 
     context = {**navbar_context, **pre_context}
