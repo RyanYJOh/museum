@@ -36,22 +36,23 @@
         오늘 날짜 : {{today}} ( D-{{remaining}})
     </div>
 </div>
+<div class="container">
 {% for d in list__challenge_data %}
-<div class="row">
-    <div class="col-12 col-md-3">
-        <a href='/profile/{{d.profile_url}}'>
-        <img class='profile-img-list' src="{{d.profile_image.url}}"/>&nbsp;&nbsp;{{d.author}}</a>
-        &nbsp;&nbsp; {{d.count}} / {{pass_condition}}개
+    <div class="row">
+        <div class="col-12 col-md-3">
+            <a href='/profile/{{d.profile_url}}'>
+            <img class='profile-img-list' src="{{d.profile_image.url}}"/>&nbsp;&nbsp;{{d.author}}</a>
+            &nbsp;&nbsp; {{d.count}} / {{pass_condition}}개
+        </div>
+        <div class="col-12 col-md-9">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: {{d.progress}}%" aria-valuenow="{{d.count}}" aria-valuemin="0" aria-valuemax="{{pass_condition}}">{{d.count}}</div>
+            </div> 
+        </div>
     </div>
-    <div class="col-12 col-md-9">
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{d.progress}}%" aria-valuenow="{{d.count}}" aria-valuemin="0" aria-valuemax="{{pass_condition}}">{{d.count}}개</div>
-        </div> 
-    </div>
+    <div class="row-h-20"></div>
+    {% endfor %}
 </div>
-<div class="row-h-20"></div>
-{% endfor %}
-
 
 <div class="row-h-20 bottom-border"></div>
 
