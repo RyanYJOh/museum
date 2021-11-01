@@ -45,6 +45,10 @@ def navbar(request):
     return navbar_context
 
 def ndaychallenge(request, id):
+    now = timezone.now()
+    string__today = str(now).split()[0]
+    today = datetime.strptime(string__today, '%Y-%m-%d').date()
+    
     navbar_context = navbar(request)
     ## 이번 Challenge
     this_challenge = Challenge.objects.get(id=id)

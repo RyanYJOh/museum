@@ -369,6 +369,10 @@ def about(request):
 
 ##### 오늘 뮤지엄이 던지는 질문 #####
 def create_ans_us_short(request):
+    now = timezone.now()
+    string__today = str(now).split()[0]
+    today = datetime.strptime(string__today, '%Y-%m-%d').date()
+    
     navbar_context = navbar(request)
     ## 로그인되어있는 경우와 아닌 경우 구분해야 함. 첫번째 질문에 한하여, 로그인 안되어 있어도 일단 답변은 가능. 하지만 곧바로 가입/로그인 유도해야 한다.
     if request.user.is_authenticated == False:
