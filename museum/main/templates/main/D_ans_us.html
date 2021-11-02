@@ -131,13 +131,19 @@
 <div class="row-h-40 bottom-border"></div>
 
 <!-- 다른 사람들의 답변 -->
+<div class="row-h-20"></div>
+<div class="row ans-orig">
+    <div class="col text-m bolder">
+        &nbsp;&nbsp;다른 사람들은 이 질문에..
+    </div>
+</div>
 <div class="row ans-orig fade-in" id=''>
     {% for u in all_ans_us %}
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col ans-us-card">
                 <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                             <div class="text-m ques-title">
                                 {{u.question_id.question_no}}. {{u.question_id.title}}
@@ -146,7 +152,7 @@
                                   </svg>&nbsp;<span class="text-s" style="color: #ed6f63">{{u.count_comments}}</span>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row list-img-container-row">
                         <div class="col list-img-container-col">
                             <img class='question-img-list' src="{{u.image.url}}"/>
