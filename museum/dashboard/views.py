@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db.models.aggregates import Avg
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from datetime import date, datetime
 from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers, QuestionsFromUs
 from .models import Clicks
@@ -290,3 +290,77 @@ def kpi(request):
     }
     return render(request, 'dashboard/kpi.html', context)
 
+
+import xlwt
+
+def xlsx_ans_us(request):
+	
+    response = HttpResponse(content_type="application/vnd.ms-excel")
+    response["Content-Disposition"] = 'attachment;filename*=UTF-8\'\'ans-us.xls' 
+    wb = xlwt.Workbook(encoding='ansi') #encoding은 ansi로 해준다.
+    ws = wb.add_sheet('오리지널스가 던지는 질문') #시트 추가
+    
+    row_num = 0
+    col_names = ['question_id', 'author_id', 'created_at']
+    
+    #열이름을 첫번째 행에 추가 시켜준다.
+    for idx, col_name in enumerate(col_names):
+    	ws.write(row_num, idx, col_name)
+        
+    
+    #데이터 베이스에서 유저 정보를 불러온다.
+    rows = AnswersForFromUs.objects.all().values_list('question_id', 'author_id', 'created_at').order_by('-created_at_time')
+    
+    #유저정보를 한줄씩 작성한다.
+    for row in rows:
+        row_num += 1
+        for col_num, attr in enumerate(row):
+
+            ## 날짜 타입 변경
+            if isinstance(attr, date):
+                print('before : ', attr)
+                attr = attr.strftime('%Y-%m-%d')
+                print('after : ', attr)
+            else: 
+                pass
+            ws.write(row_num, col_num, attr)
+            
+    wb.save(response)
+    
+    return response
+
+def xlsx_ans_self(request):
+	
+    response = HttpResponse(content_type="application/vnd.ms-excel")
+    response["Content-Disposition"] = 'attachment;filename*=UTF-8\'\'ans-self.xls' 
+    wb = xlwt.Workbook(encoding='ansi') #encoding은 ansi로 해준다.
+    ws = wb.add_sheet('나에게 던지는 질문') #시트 추가
+    
+    row_num = 0
+    col_names = ['question_id', 'author_id', 'created_at']
+    
+    #열이름을 첫번째 행에 추가 시켜준다.
+    for idx, col_name in enumerate(col_names):
+    	ws.write(row_num, idx, col_name)
+        
+    
+    #데이터 베이스에서 유저 정보를 불러온다.
+    rows = AnswersForFromUs.objects.all().values_list('question_id', 'author_id', 'created_at').order_by('-created_at_time')
+    
+    #유저정보를 한줄씩 작성한다.
+    for row in rows:
+        row_num += 1
+        for col_num, attr in enumerate(row):
+
+            ## 날짜 타입 변경
+            if isinstance(attr, date):
+                print('before : ', attr)
+                attr = attr.strftime('%Y-%m-%d')
+                print('after : ', attr)
+            else: 
+                pass
+            ws.write(row_num, col_num, attr)
+            
+    wb.save(response)
+    
+    return response
