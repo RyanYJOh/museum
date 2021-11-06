@@ -39,6 +39,7 @@ class AnswersForFromUs(models.Model):
     created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_shared = models.BooleanField(default=True)
     on_magazine = models.BooleanField(default=False)
+    author_favorite = models.BooleanField(default=False)
 
     def __str__(self):
         # return (str(self.question_id.question_no) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
@@ -58,6 +59,7 @@ class AnswersForFromSelf(models.Model):
     created_at_time = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_shared = models.BooleanField(default=True)
     on_magazine = models.BooleanField(default=False)
+    author_favorite = models.BooleanField(default=False)
 
     def __str__(self):
         return (str(self.author_id) + ' wrote about: ' + str(self.question_id))

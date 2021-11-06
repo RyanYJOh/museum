@@ -22,6 +22,7 @@ urlpatterns = [
 
     ## Bookmark, Non-member answer
     path('ajax/bookmark', views.bookmark, name="bookmark"),
+    path('ajax/author-favorite', views.author_favorite, name="author-favorite"),
     path('ajax/non-member-answer', registerViews.nonMemberAnswer, name="non-member-answer"),
     path('ajax/clicks', clicks, name="clicks"),
 

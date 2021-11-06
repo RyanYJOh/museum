@@ -817,6 +817,31 @@ def bookmark(request):
     else:
         pass
 
+##### 중요한 질문 기능 #####
+def author_favorite(request):
+    if request.user.is_authenticated:
+        data = json.loads(request.body)
+        ans_us = data['ans_us']
+        ans_self = data['ans_self']
+
+        if ans_us == '':
+            this_ans = AnswersForFromSelf.objects.get(id=ans_self)
+        elif ans_self == '':
+            this_ans = AnswersForFromUs.objects.get(id=ans_us)
+        
+        if this_ans.author_favorite == True:
+            this_ans.author_favorite = False
+            this_ans.save()
+        elif this_ans.author_favorite == False:
+            this_ans.author_favorite = True
+            this_ans.save()
+        
+        ## 아래 return 부분 잘 이해 안됨. return만 쓰면 에러 뜬다. 그렇다고 아래처럼 쓰면 아무런 반응 없음.
+        return redirect('/me')
+        
+    else:
+        pass
+
 
 def csrf_failure(request, reason=""):
     context = {
