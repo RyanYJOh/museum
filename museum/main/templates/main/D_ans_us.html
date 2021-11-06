@@ -108,22 +108,29 @@
     </div>
 </div>
 
-
-<div class="row-h-40"></div>
+<!-- <div class="row-h-20"></div> -->
 
 <!-- 홈으로 버튼 -->
 <div class="row">
     {% if editable == 'True' %}
-    <div class="col-6 right">
+    <!-- <div class="col-4 right">
         <button class="btn btn-primary" onclick="location.href='/'">홈 화면으로</button>
-    </div>
-    <div class="col-6 left">
+    </div> -->
+    <div class="col-6 right">
         <button class="btn btn-secondary" onclick="location.href='edit/{{this_ans.id}}'">수정하기</button>
     </div>
-    {% else %}
-    <div class="col center">
-        <button class="btn btn-primary" onclick="location.href='/'">홈 화면으로</button>
+    <div class="col-6 left">
+        <button class="btn btn-secondary" onclick="DeleteThisAns()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed6f63" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+        </button>
     </div>
+    {% else %}
+    <!-- <div class="col center">
+        <button class="btn btn-primary" onclick="location.href='/'">홈 화면으로</button>
+    </div> -->
     {% endif %}
 </div>
 
@@ -299,6 +306,16 @@
 
             commentDelete.style.display = 'none';
             console.log('comment hidden')
+        } else {
+            
+        }
+    }
+
+    function DeleteThisAns(id) {
+        var thisAns = "{{this_ans.id}}"
+
+        if (window.confirm('글을 완전히 삭제하시겠어요?')) {
+            window.location.href="/originals-answer/delete/{{this_ans.id}}"
         } else {
             
         }

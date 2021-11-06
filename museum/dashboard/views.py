@@ -345,7 +345,7 @@ def xlsx_ans_self(request):
         
     
     #데이터 베이스에서 유저 정보를 불러온다.
-    rows = AnswersForFromUs.objects.all().values_list('question_id', 'author_id', 'created_at').order_by('-created_at_time')
+    rows = AnswersForFromSelf.objects.all().values_list('question_id', 'author_id', 'created_at').order_by('-created_at_time')
     
     #유저정보를 한줄씩 작성한다.
     for row in rows:

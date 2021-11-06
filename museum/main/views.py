@@ -626,6 +626,12 @@ def update_ans_us(request, ans_us_id):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_us.html', context)
 
+def delete_ans_us(request, ans_us_id):
+    this_ans = AnswersForFromUs.objects.get(id = ans_us_id)
+    
+    this_ans.delete()
+    return redirect('/')
+
 ##### 내가 나에게 던지는 질문 #####
 def create_ans_self(request):
     navbar_context = navbar(request)
@@ -773,6 +779,13 @@ def update_ans_self(request, ans_self_id):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_self.html', context)
 
+def delete_ans_self(request, ans_self_id):
+    this_ans = AnswersForFromSelf.objects.get(id = ans_self_id)
+    this_ques = QuestionsFromSelf.objects.get(id=this_ans.question_id.id)
+    
+    this_ques.delete()
+    return redirect('/')
+
 ##### 답변 저장 기능 #####
 def bookmark(request):
     if request.user.is_authenticated:
@@ -841,7 +854,6 @@ def author_favorite(request):
         
     else:
         pass
-
 
 def csrf_failure(request, reason=""):
     context = {
