@@ -42,7 +42,7 @@
         <div class="col-12 col-md-3">
             <a href='/profile/{{d.profile_url}}'>
             <img class='profile-img-list' src="{{d.profile_image.url}}"/>&nbsp;&nbsp;{{d.author}}</a>
-            &nbsp;&nbsp; {{d.count}} / {{pass_condition}}개
+            &nbsp;&nbsp; <span id="check-pass-fail-{{d.pk}}">{{d.count}} / {{pass_condition}}개</span>
         </div>
         <div class="col-12 col-md-9">
             <div class="progress">

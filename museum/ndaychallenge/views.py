@@ -93,6 +93,7 @@ def ndaychallenge(request, id):
     
     remaining = str(this_challenge.end_date - today).split('day')[0]
     host = this_challenge.host.real_name
+
     pre_context = {
         'available' : available,
         'this_challenge' : this_challenge,
