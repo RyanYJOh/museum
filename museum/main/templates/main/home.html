@@ -472,3 +472,15 @@
     window.onload = NoticeModal();
 </script>
 {%endblock%}
+
+{% block sidemenu %}
+<div class="row">
+    <div class="col center">
+        <ul class="list-group sidemenu text-s bold">
+            <li class="list-group-item link" onclick="NotYetAlert()">커뮤니티</li>
+            <li class="list-group-item link" onclick="NotYetAlert()">매거진</li>
+            <li class="list-group-item link bolder theme-color" onclick="location.href='https://forms.gle/bfu83d3RBYmz8wVm6'">15일 질문 챌린지</li>
+          </ul>
+    </div>
+</div>
+{% endblock %}

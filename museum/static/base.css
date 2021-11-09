@@ -38,7 +38,12 @@ input[type=password] {
     -webkit-box-shadow: 0px 0px 8px 0px #000000; 
     box-shadow: 0px 0px 8px 0px #000000;
 }
-
+.sidemenu {
+    position : fixed;
+}
+.theme-color {
+    color: #ed6f63  !important;
+}
 /* Navbar */
 .navbar {
     background-color: #2D2926 !important;
