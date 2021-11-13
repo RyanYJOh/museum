@@ -565,7 +565,7 @@ def detail_ans_us(request, ans_us_id):
     )
 
     ## 댓글
-    comments = CommentAnsUs.objects.filter(ans=ans_us_id).order_by('-created_at_time')
+    comments = CommentAnsUs.objects.filter(ans=ans_us_id).order_by('created_at_time')
 
     pre_context = {
         'this_ans' : this_ans,
@@ -716,7 +716,7 @@ def detail_ans_self(request, ans_self_id):
     )
 
     ## 댓글
-    comments = CommentAnsSelf.objects.filter(ans=ans_self_id).order_by('-created_at_time')
+    comments = CommentAnsSelf.objects.filter(ans=ans_self_id).order_by('created_at_time')
 
     pre_context = {
         'this_ans' : this_ans,
