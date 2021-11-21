@@ -50,12 +50,9 @@ INSTALLED_APPS = [
     'bootstrap4',
     'cloudinary_storage',
     'cloudinary',
-
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', # CORS policy
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,8 +61,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware', # CORS policy
-
 ]
 
 ROOT_URLCONF = 'museum.urls'
@@ -186,9 +181,3 @@ elif DEBUG == False: ## 운영
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CSRF_FAILURE_VIEW = 'main.views.csrf_failure'
-
-CORS_ALLOWED_ORIGINS = [
-    'https://www.originals.world',
-    'http://127.0.0.1:8000',
-    'http://localhost:8000',
-]
