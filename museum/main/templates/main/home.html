@@ -512,7 +512,6 @@
     function DetailModal(from, postId) {
         console.log(from)
         $.ajax({
-            
             url: '/getThisAns/'+from+'/'+postId,
             dataType: "json",
             success: function (data) {
@@ -547,7 +546,7 @@
         var postId = id.split('-')[1]
         
         var currentUrl = '/' + from + '-answer' + '/' + postId
-        window.open(currentUrl, '_blank').focus();
+        window.open(currentUrl);
     }
 
     window.onload = NoticeModal();
