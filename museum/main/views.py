@@ -1,5 +1,5 @@
 from django.forms.widgets import RadioSelect
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm
 from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages
@@ -192,6 +192,57 @@ def main_page_filtered(request, question_no):
     context = {**navbar_context, **pre_context}
     return render(request, 'main/home_filtered.html', context)
 
+def detail_modal(request, ques_from, id):
+    if ques_from == 'originals':
+        this_ans = AnswersForFromUs.objects.filter(id=id).values()
+        title = QuestionsFromUs.objects.filter(id=this_ans[0]['question_id_id']).values('title')[0]['title']
+        img = this_ans[0]['image']
+    elif ques_from == 'self':
+        this_ans = AnswersForFromSelf.objects.filter(id=id).values()
+        this_ques = QuestionsFromSelf.objects.filter(id=this_ans[0]['question_id_id']).values('title', 'image')
+        title = this_ques[0]['title'] 
+        img = this_ques[0]['image'] 
+    
+    author = UserInfo.objects.filter(this_user=this_ans[0]['author_id_id']).values('real_name', 'profile_image')
+    username = User.objects.filter(id=this_ans[0]['author_id_id']).values('username')[0]['username']
+    
+    author_name = author[0]['real_name']
+    created_at = this_ans[0]['created_at']
+    body = this_ans[0]['body']
+    author_img = author[0]['profile_image']
+    
+
+    # img 이름이 media/로 시작하면 : 사용자가 직접 등록한 이미지
+    # 그렇지 않으면 : 디폴트 이미지
+    if author_img.split('/')[0] == 'media':
+        profile_img_media_url = 'https://res.cloudinary.com/he2prkoby/image/upload/v1/'
+
+    else:
+        profile_img_media_url = '/media/'
+
+    
+    if img.split('/')[0] == 'media':
+        detail_img_media_url = 'https://res.cloudinary.com/he2prkoby/image/upload/v1/'
+
+    else:
+        detail_img_media_url = '/media/'
+
+
+    dict__detail = {
+        'id' : id,
+        'title' : title,
+        'author' : author_name,
+        'profile_img' : profile_img_media_url+author_img,
+        'created_at' : created_at,
+        'img' : detail_img_media_url+img,
+        'body' : body,
+        'username' : username,
+    }
+    print(dict__detail)
+
+    # print(dict__detail)
+    result = json.dumps(dict__detail, default=str)
+    return HttpResponse(result, content_type="text/json") # charset=utf8 필요?
 
 def profile(request, username):
     navbar_context = navbar(request)
