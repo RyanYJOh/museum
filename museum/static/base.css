@@ -295,7 +295,9 @@ input[type=password] {
 }
 .img-detail-page {
     width: 60%;
-    /* border-radius: 50px; */
+}
+.img-detail-modal {
+    width: 95%;
 }
 .img-about-page {
     width: 100%;
