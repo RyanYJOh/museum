@@ -55,7 +55,7 @@
 
 <!-- 오리지널스가 던지는 질문 영역 -->
 <div class="row ans-orig fade-in" id='' style='display:flex;'>
-    <div class="col-12 right">
+    <div class="col-12">
         <div class="row justify-content-center">
             <div class="col right">
                 <span class="btn btn-menial" data-toggle='modal' data-target='#ans-us-modal'>
@@ -70,7 +70,6 @@
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col ans-us-card">
-                <!-- <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)"> -->
                 <div class="link" id="ans-click-id-{{u.id}}" onclick='DetailModal("originals", "{{u.id}}")'>
                     <div class="row">
                         <div class="col">
@@ -101,7 +100,8 @@
                             {% if u.author_id.userinfo.profile_image %}
                             <img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">
                             {% endif %}
-                        &nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}</a>
+                        &nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}
+                        </a>
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if u.id in list__us_saved_by_user %}
@@ -153,36 +153,6 @@
 
 <!-- 나에게 던지는 질문 영역 -->
 <div class="row ans-self fade-in" id='' style='display:none;'>
-    <!-- <div class="col-12">
-        <div class="row justify-content-center pagination">
-            <div class="col left">
-                {% if all_ans_self_paginated.has_previous %}
-                <a href="?page={{all_ans_self_paginated.previous_page_number}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
-                    </svg></a>
-                    &nbsp;&nbsp;
-                {% else %}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-chevron-compact-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M9.224 1.553a.5.5 0 0 1 .223.67L6.56 8l2.888 5.776a.5.5 0 1 1-.894.448l-3-6a.5.5 0 0 1 0-.448l3-6a.5.5 0 0 1 .67-.223z"/>
-                    </svg>&nbsp;&nbsp;
-                {% endif %}
-                <span>{{all_ans_self_paginated.number}}</span>
-                <span>/</span>
-                <span>{{all_ans_self_paginated.paginator.num_pages}}</span>
-                {% if all_ans_self_paginated.has_next %}
-                &nbsp;&nbsp;
-                <a href="?page={{all_ans_self_paginated.next_page_number}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
-                    </svg></a>
-                {% else %}
-                &nbsp;&nbsp;
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="grey" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
-                    </svg>
-                {% endif %}
-            </div>
-        </div>
-    </div> -->
     {% for s in all_ans_self %}
     <div class="col-12 col-md-4">
         <div class="row align-middle">
@@ -217,7 +187,8 @@
                             {% if s.author_id.userinfo.profile_image %}
                             <img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">
                             {% endif %}
-                        &nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}</a>
+                        &nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}
+                        </a>
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if s.id in list__self_saved_by_user %}

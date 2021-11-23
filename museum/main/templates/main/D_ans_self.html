@@ -115,13 +115,9 @@
 </div>
 
 
-<!-- <div class="row-h-20"></div> -->
-
 <div class="row">
     {% if editable == 'True' %}
-    <!-- <div class="col-4 right">
-        <button class="btn btn-primary" onclick="location.href='/'">홈 화면으로</button>
-    </div> -->
+
     <div class="col-6 right">
         <button class="btn btn-secondary" onclick="location.href='edit/{{this_ans.id}}'">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed6f63" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -139,9 +135,7 @@
         </button>
     </div>
     {% else %}
-    <!-- <div class="col center">
-        <button class="btn btn-primary" onclick="location.href='/'">홈 화면으로</button>
-    </div> -->
+
     {% endif %}
 </div>
 
@@ -253,11 +247,13 @@
             data : JSON.stringify(postData)
         })
     }
+
     function Share() {
         var currentUrl = window.location.href
         navigator.clipboard.writeText(currentUrl);
         window.alert('이 글의 링크가 복사되었어요.');
     }
+
     function SubmitCommentSelf() {
         var comment = document.getElementById('comment-input');
         if (comment.value == '') {
@@ -301,6 +297,7 @@
             comment.value = '';
         }
     }
+
     function DeleteCommentSelf(id) {
         var thisComment = id.split('comment-')[1]
         var commentDelete = document.getElementById(id).parentNode.parentNode;
@@ -322,6 +319,7 @@
             
         }
     }
+
     function DeleteThisAns(id) {
         var thisAns = "{{this_ans.id}}"
 
@@ -334,5 +332,4 @@
 </script>
 {% endblock %}
 
-<!-- 수정url : /self-answer/edit/{{this_ans.id}} -->
 

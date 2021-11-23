@@ -53,6 +53,7 @@
     </div>
 </div>
 
+<!-- 오리지널스가 던지는 질문 영역 -->
 <div class="row ans-orig fade-in" id='' style='display:flex;'>
     <div class="col-12">
         <div class="row justify-content-center pagination">
@@ -69,7 +70,7 @@
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col ans-us-card">
-                <a href="/originals-answer/{{u.id}}" id="ans-click-id-{{u.id}}" onclick="TrackClicksUs(id)">
+                <div class="link" id="ans-click-id-{{u.id}}" onclick='DetailModal("originals", "{{u.id}}")'>
                     <div class="row">
                         <div class="col">
                             <div class="text-m ques-title">
@@ -82,7 +83,9 @@
                     </div>
                     <div class="row list-img-container-row">
                         <div class="col list-img-container-col">
+                            {% if u.image %}
                             <img class='question-img-list' src="{{u.image.url}}"/>
+                            {% endif %}                        
                         </div>
                     </div>
                     <div class="row">
@@ -90,10 +93,15 @@
                             <div class='text-s link textbunch truncate'>{{u.body}}</div>
                         </div>
                     </div>
-                </a>
+                </div>
                 <div class="row">
                     <div class="col-10 my-auto text-s">
-                        <a href='/profile/{{u.author_id.username}}'><img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}</a>
+                        <a href='/profile/{{u.author_id.username}}'>
+                            {% if u.author_id.userinfo.profile_image %}
+                            <img class='profile-img-list' src="{{u.author_id.userinfo.profile_image.url}}">
+                            {% endif %}
+                        &nbsp;&nbsp;&nbsp;{{u.author_id.userinfo.real_name}}
+                        </a>                    
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if u.id in list__us_saved_by_user %}
@@ -143,6 +151,7 @@
     </div>
 </div>
 
+<!-- 나에게 던지는 질문 영역 -->
 <div class="row ans-self fade-in" id='' style='display:none;'>
     <div class="col-12">
         <div class="row justify-content-center pagination">
@@ -178,7 +187,7 @@
     <div class="col-12 col-md-4">
         <div class="row align-middle">
             <div class="card card-body grid-card col">
-                <a href="/self-answer/{{s.id}}" id="self-click-id-{{s.id}}" onclick="TrackClicksSelf(id)">
+                <div class="link" id="ans-click-id-{{s.id}}" onclick='DetailModal("self", "{{s.id}}")'>
                     <div class="row">
                         <div class="col">
                             <div class='text-m'>
@@ -191,18 +200,24 @@
                     </div>
                     <div class="row list-img-container-row">
                         <div class="col text-center list-img-container-col">
+                            {% if s.question_id.image %}
                             <img class= 'question-img-list' src="{{s.question_id.image.url}}"/>
-                        </div>
+                            {% endif %}                        </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <div class='text-s link text-bunch truncate'>{{s.body}}</div>
                         </div>
                     </div>
-                </a>
+                </div>
                 <div class="row">
                     <div class="col-10 my-auto text-s">
-                        <a href='/profile/{{s.author_id.username}}'><img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}</a>
+                        <a href='/profile/{{s.author_id.username}}'>
+                            {% if s.author_id.userinfo.profile_image %}
+                            <img class='profile-img-list' src="{{s.author_id.userinfo.profile_image.url}}">
+                            {% endif %}
+                        &nbsp;&nbsp;&nbsp;{{s.author_id.userinfo.real_name}}
+                        </a>                    
                     </div>
                     <div class="col-2 my-auto text-center">
                         {% if s.id in list__self_saved_by_user %}
@@ -249,6 +264,45 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="NullifyFilterQuestions()" data-dismiss="modal">질문 모두 보기</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- 디테일 모달 -->
+<div class="modal fade lg" tabindex="-1" role="dialog" id="detail-modal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title text-m bolder" id="detail-modal-title"></div>
+            <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" fill="#000"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" fill="#000"/>
+                </svg></span>
+            </span>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col center">
+                    <div class="" id="detail-modal-img"></div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-11">
+                    <div class="row">
+                        <div class="col-6 text-s left" id="detail-modal-author"></div>
+                        <div class="col-6 text-s right" id="detail-modal-createdat"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-center">
+                <div class="col-11 text-m" id="detail-modal-body"></div>
+            </div>
+        </div>
+        <div class="modal-footer center">
+            <button type="button" class="btn btn-menial detail-modal-footer" id="" onclick="ToDetailPage(id)" data-dismiss="modal">전체 화면으로</button>
         </div>
       </div>
     </div>
@@ -367,30 +421,63 @@
     function FilterQuestions(id) {
         var selectedQuestionNo = id.split('-')[1]
         location.href=`/filter=${selectedQuestionNo}`
-        /* console.log(selectedQuestionNo)
-        var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
-        var step;
-        for (step=0; step < countUsAnswers; step++) {
-            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
-            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
-            if (itsNo == `${id}`) {
-                itsGrandParent.style.display = 'inline-block';
-            } else {
-                itsGrandParent.style.display = 'none';
-            }
-        }
-        document.getElementById('ans-us-modal').hide(); */
     } 
 
     function NullifyFilterQuestions() {
         location.href='/'
-        /* var countUsAnswers = document.getElementsByClassName('ans-us-card').length;
-        var step;
-        for (step=0; step < countUsAnswers; step++) {
-            var itsNo = 'no-'+document.getElementsByClassName('ans-us-card')[step].firstElementChild.getElementsByClassName('ques-title')[0].innerText.split('.')[0]
-            var itsGrandParent = document.getElementsByClassName('ans-us-card')[step].parentElement.parentElement
-            itsGrandParent.style.display = 'inline-block';
-        }*/
     }
+
+    function DetailModal(from, postId) {
+        console.log(from)
+        $.ajax({
+            url: '/getThisAns/'+from+'/'+postId,
+            dataType: "json",
+            success: function (data) {
+                console.log('success')
+                console.log(data)
+                
+                document.getElementsByClassName('detail-modal-footer')[0].setAttribute('id', from+'-'+data.id);
+                document.getElementById('detail-modal-title').innerText = data.title;
+                document.getElementById('detail-modal-body').innerText = data.body;
+                document.getElementById('detail-modal-createdat').innerText = data.created_at;
+                document.getElementById('detail-modal-img').innerHTML = `<img class="img-detail-modal" src="${data.img}">`;
+                document.getElementById('detail-modal-author').innerHTML = `<a href="/profile/${data.username}"><img class='profile-img-list' src=${data.profile_img}>&nbsp;&nbsp;<span class='text-s'>${data.author}</span></a>`;
+            },
+            error: function (request, status, error) {
+                console.log('실패');
+            }
+        });
+        
+        $('#detail-modal').modal()
+        
+        // TrackClicks
+        var intPostId = parseInt(postId)
+        if (from == 'originals') {
+            TrackClicksUs(intPostId)
+        } else {
+            TrackClicksSelf(intPostId)
+        }
+    }
+
+    function ToDetailPage(id) {
+        var from = id.split('-')[0]
+        var postId = id.split('-')[1]
+        
+        var currentUrl = '/' + from + '-answer' + '/' + postId
+        window.open(currentUrl, "_self");
+    }
+
 </script>
 {%endblock%}
+
+{% block sidemenu %}
+<div class="row pc-only">
+    <div class="col center">
+        <ul class="list-group sidemenu text-s bold">
+            <li class="list-group-item link" onclick="NotYetAlert()">커뮤니티</li>
+            <li class="list-group-item link" onclick="NotYetAlert()">매거진</li>
+            <li class="list-group-item link bolder theme-color" onclick="location.href='https://forms.gle/bfu83d3RBYmz8wVm6'">15일 질문 챌린지</li>
+          </ul>
+    </div>
+</div>
+{% endblock %}
