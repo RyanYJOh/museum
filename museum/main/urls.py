@@ -36,4 +36,8 @@ urlpatterns = [
     # Delete
     path('ajax/del-comment-ans-us', views.del_comment_ans_us, name="delete-comment-ans-us"),
     path('ajax/del-comment-ans-self', views.del_comment_ans_self, name="delete-comment-ans-self"),
+
+    ## Search
+    # path('search', views.SearchFormView.as_view(), name="search"),
+    path('search', views.home_search, name="search"),
 ] 

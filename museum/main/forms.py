@@ -82,3 +82,26 @@ class CommentAnsSelfForm(forms.ModelForm):
     class Meta:
         model = CommentAnsSelf
         fields = ('body',)
+
+class SearchForm(forms.Form):
+    WHICH = (
+        ('answer', '답변'),
+        ('question','질문'),
+        ('user','유저'),
+    )
+
+    search_keyword = forms.CharField(label="", required=False, widget=forms.TextInput(
+        attrs = {
+            'placeholder' : '찾고야 말 테다',
+            'class' : 'search-form'
+        }
+    ))
+    which = forms.ChoiceField(label="", required=False, choices=WHICH, 
+        widget=forms.Select(
+            attrs= {
+                # 'class' : 'dropdown'
+            }
+        )
+    )
+    class Meta: 
+        fields = ('search_keyword', 'which')

@@ -15,6 +15,27 @@ body {
     display: flex;
     flex-direction: column;
 }
+select, .search-form { /* Bootstrap과 동일한 설정 */
+    border-radius: 0.25rem;
+    border : 1px solid #ced4da; 
+    padding-top: 0.5rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    display: inline-block;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    line-height: 1.5;
+    color: #212529;
+    width: 100%
+}
+.search-form {
+    padding-top : 0.35rem;
+    padding-bottom : 0.35rem;
+}
+.modal-footer {
+    width : 100% !important;
+}
 
 ul {
     list-style-type: none;
@@ -34,6 +55,7 @@ footer {
 input[type=password] {
     font-family:Arial, Helvetica, sans-serif;
 }
+
 .shadow {
     -webkit-box-shadow: 0px 0px 8px 0px #000000; 
     box-shadow: 0px 0px 8px 0px #000000;

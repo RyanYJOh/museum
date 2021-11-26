@@ -1,11 +1,15 @@
+from re import search
 from django.forms.widgets import RadioSelect
 from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
+from django.views.generic import FormView
 from django.contrib.auth.models import User
-from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm
+from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm, SearchForm
 from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages
 from member.models import UserInfo
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
+from django.contrib import messages
 from django.utils import timezone
 from datetime import date, datetime
 import json
@@ -53,25 +57,106 @@ def randImg():
     random_img = random.choice(list__img_ids)
     return random_img
 
+##### 검색 #####
+
+def home_search(form):
+    if form.is_valid():
+        keyword = form.cleaned_data['search_keyword']
+        which = form.cleaned_data['which']
+
+        if which == 'answer':    
+            all_ans_us = AnswersForFromUs.objects.filter(Q(body__icontains=keyword) & Q(is_shared=True)).distinct().order_by('-created_at_time').annotate(
+            count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+
+            all_ans_self = AnswersForFromSelf.objects.filter(Q(body__icontains=keyword) & Q(is_shared=True)).distinct().order_by('-created_at_time').annotate(
+            count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+
+            context = {
+                'search_form' : form,
+                'keyword' : keyword,
+                'all_ans_us' : all_ans_us,
+                'all_ans_self' : all_ans_self,
+            }
+
+        elif which == 'question' :
+            us_ques_list = QuestionsFromUs.objects.filter(Q(title__icontains=keyword) | Q(body__icontains=keyword)).distinct().values_list('pk', flat=True)
+            print('us_ques_list : ', us_ques_list)
+            all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, question_id__in=us_ques_list).order_by('-created_at_time').annotate(
+                count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+            self_ques_list = QuestionsFromSelf.objects.filter(Q(title__icontains=keyword)).distinct().values_list('pk', flat=True)
+            print('self_ques_list : ', self_ques_list)
+            all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True, question_id__in=self_ques_list).order_by('-created_at_time').annotate(
+                count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+            
+            print('all_ans_us : ', all_ans_us)
+            print('all_ans_self : ', all_ans_self)
+
+            context = {
+                'search_form' : form,
+                'keyword' : keyword,
+                'all_ans_us' : all_ans_us,
+                'all_ans_self' : all_ans_self,
+            }
+
+        elif which == 'user':
+            user_list = UserInfo.objects.filter(Q(real_name__icontains=keyword) | Q(self_intro__icontains=keyword)).distinct().values_list('this_user', flat=True)
+            all_ans_us = AnswersForFromUs.objects.filter(is_shared=True, author_id__in=user_list).order_by('-created_at_time').annotate(
+                count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+            all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True, author_id__in=user_list).order_by('-created_at_time').annotate(
+                count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+            )
+
+            context = {
+                'search_form' : form,
+                'keyword' : keyword,
+                'all_ans_us' : all_ans_us,
+                'all_ans_self' : all_ans_self,
+            }
+
+        return context
+    else:
+        pass
+
 ##### 홈 화면, 프로필 화면, About 화면 #####
 def main_page(request):
     navbar_context = navbar(request)
 
+    ## Search form
+
+    
+    ## 답변 리스트 쿼리 -- 검색결과인지 여부 먼저 확인해야 함
+    search_form = SearchForm(request.POST)
+    print('METHOD.POST : ', request.POST)
+    print('METHOD IS :  ', request.method)
+    if request.method == 'POST':
+        search_context = home_search(search_form)
+        print('SEARCH RESULT : ', search_context)
+        all_ans_us = search_context['all_ans_us']
+        all_ans_self = search_context['all_ans_self']
+        is_search_result=True
+    else:
+        all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
+        )
+        all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
+        )
+        is_search_result=False
+
     ## Pagination
-    all_ans_us = AnswersForFromUs.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
-        count_comments = Count('commentansus') ## annotate은 댓글 갯수 가져오는 용도.
-    ) 
-    paginator_all_ans_us = Paginator(all_ans_us, 12)
+    paginator_all_ans_us = Paginator(all_ans_us, 12)   
     page_all_ans_us = request.GET.get('page')
     all_ans_us_paginated = paginator_all_ans_us.get_page(page_all_ans_us)
 
-    all_ans_self = AnswersForFromSelf.objects.filter(is_shared=True).order_by('-created_at_time').annotate(
-        count_comments = Count('commentansself') ## annotate은 댓글 갯수 가져오는 용도.
-    )
     paginator_all_ans_self = Paginator(all_ans_self, 12)
-    page_all_ans_self = request.GET.get('page')
+    page_all_ans_self = request.GET.get('page')   
     all_ans_self_paginated = paginator_all_ans_self.get_page(page_all_ans_self)
-    
+
     ## [질문 모아보기]를 위해 지금까지 답변된 질문들 가져오기
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
     ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('-question_no')
@@ -92,6 +177,7 @@ def main_page(request):
             self_question_possible = 'True'
 
             pre_context = {
+                'search_form' : search_form,
                 'current_user' : current_user,
                 'self_question_possible' : self_question_possible,
                 'all_ans_us' : all_ans_us,
@@ -101,6 +187,7 @@ def main_page(request):
                 'ques_no_answered_sofar' : ques_no_answered_sofar,
                 'all_ans_us_paginated' : all_ans_us_paginated,
                 'all_ans_self_paginated' : all_ans_self_paginated,
+                'is_search_result' : is_search_result,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
@@ -117,6 +204,7 @@ def main_page(request):
             'self_question_possible' : self_question_possible,
             'all_ans_us_paginated' : all_ans_us_paginated,
             'all_ans_self_paginated' : all_ans_self_paginated,
+            'is_search_result' : is_search_result,
         }
 
     context = {**navbar_context, **pre_context}
@@ -677,6 +765,7 @@ def update_ans_us(request, ans_us_id):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_us.html', context)
 
+@login_required(login_url="/login")
 def delete_ans_us(request, ans_us_id):
     this_ans = AnswersForFromUs.objects.get(id = ans_us_id)
     
@@ -830,6 +919,7 @@ def update_ans_self(request, ans_self_id):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_self.html', context)
 
+@login_required(login_url="/login")
 def delete_ans_self(request, ans_self_id):
     this_ans = AnswersForFromSelf.objects.get(id = ans_self_id)
     this_ques = QuestionsFromSelf.objects.get(id=this_ans.question_id.id)
@@ -989,3 +1079,55 @@ def create_comment_ans_self(request):
                 print('@@@@@@ Validation failed due to : ', form.errors)
     else:
         pass
+
+## 검색 기능
+class SearchFormView(FormView):
+    form_class = SearchForm
+    template_name = 'main/search_result.html'
+
+    def form_valid(self, form):
+        keyword = form.cleaned_data['search_keyword']
+        ans_us_list = AnswersForFromUs.objects.filter(Q(body__icontains=keyword)).distinct()
+        ans_self_list = AnswersForFromSelf.objects.filter(Q(body__icontains=keyword)).distinct()
+
+        context = {
+            'search_form' : form,
+            'keyword' : keyword,
+            'search_result' : ans_us_list,
+            'search_result_2' : ans_self_list,
+        }
+        # if which == 'answers':    
+        #     keyword = form.cleaned_data['search_keyword']
+        #     ans_us_list = AnswersForFromUs.objects.filter(Q(body__icontains=keyword)).distinct()
+        #     ans_self_list = AnswersForFromSelf.objects.filter(Q(body__icontains=keyword)).distinct()
+
+        #     context = {
+        #         'search_form' : form,
+        #         'keyword' : keyword,
+        #         'search_result' : ans_us_list,
+        #         'search_result_2' : ans_self_list,
+        #     }
+
+        # elif which == 'questions' :
+        #     keyword = form.cleaned_data['search_word']
+        #     us_ques_list = QuestionsFromUs.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(content__icontains=keyword)).distinct()
+        #     self_ques_list = QuestionsFromSelf.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(content__icontains=keyword)).distinct()
+
+        #     context = {
+        #         'search_form' : form,
+        #         'keyword' : keyword,
+        #         'search_result' : us_ques_list,
+        #         'search_result_2' : self_ques_list,
+        #     }
+
+        # elif which == 'users':
+        #     keyword = form.cleaned_data['search_word']
+        #     user_list = UserInfo.objects.filter(Q(title__icontains=keyword) | Q(description__icontains=keyword) | Q(content__icontains=keyword)).distinct()
+
+        #     context = {
+        #         'search_form' : form,
+        #         'keyword' : keyword,
+        #         'search_result' : user_list,
+        #     }
+
+        return render(self.request, self.template_name, context)

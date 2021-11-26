@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block css %}
 
@@ -52,17 +53,27 @@
         <div class='text-s' id='ques_type_desc'>하루에 하나씩 제공되는 질문이에요</div>
     </div>
 </div>
-
+<div class="row-h-20"></div>
 <!-- 오리지널스가 던지는 질문 영역 -->
 <div class="row ans-orig fade-in" id='' style='display:flex;'>
     <div class="col-12">
         <div class="row justify-content-center">
             <div class="col right">
-                <span class="btn btn-menial" data-toggle='modal' data-target='#ans-us-modal'>
+                {% if is_search_result %}
+                <button class="btn btn-menial" onclick="location.href='/'">처음으로</button>
+                {% endif %}
+                <button class="btn btn-menial" onclick="SearchModal()" id='search-icon'>
+                    <span class="pc-only">검색</span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                      </svg>
+                </button>
+                {% if not is_search_result %}
+                <button class="btn btn-menial" data-toggle='modal' data-target='#ans-us-modal'>
                     <span class="pc-only">질문 모아보기</span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                     <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
                   </svg>
-                </span>
+                </button>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -212,6 +223,10 @@
     {% endfor %}
 </div>
 
+<!-- ####################
+##### 모달 영역 #####
+#################### -->
+
 <!-- 질문 모아보기 모달 -->
 <div class="modal fade" tabindex="-1" role="dialog" id="ans-us-modal">
     <div class="modal-dialog" role="document">
@@ -301,6 +316,33 @@
         <div class="modal-footer center">
             <button type="button" class="btn btn-menial detail-modal-footer" id="" onclick="ToDetailPage(id)" data-dismiss="modal">전체 화면으로</button>
         </div>
+      </div>
+    </div>
+</div>
+
+<!-- 검색 모달 -->
+<div class="modal fade" tabindex="-1" role="dialog" id="search-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-m">
+        </div>
+        <form action="" method="post" class="">{%csrf_token%}
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        {{search_form.which}}
+                    </div>
+                    <div class="col-md-9">
+                        {{search_form.search_keyword}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type='submit' class="btn btn-primary">
+                    검색하기
+                </button>
+            </div>
+        </form>
       </div>
     </div>
 </div>
@@ -520,6 +562,10 @@
         window.open(currentUrl, "_self");
     }
 
+    function SearchModal() {
+        $('#search-modal').modal()
+
+    }
     window.onload = NoticeModal();
 </script>
 {%endblock%}
