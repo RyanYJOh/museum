@@ -42,8 +42,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # 로컬
-# DEBUG = False # 운영
+# DEBUG = True # 로컬
+DEBUG = False # 운영
 
 ALLOWED_HOSTS = [
     # '*', 
@@ -163,7 +163,8 @@ STATICFILES_DIRS = [
 ]
 
 ## 운영서버 배포시 static 파일을 `collectstatic`하기 위한 절대 경로.
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/') ## 이렇게 하라는 것도 있음
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
