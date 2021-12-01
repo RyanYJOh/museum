@@ -48,6 +48,7 @@ DEBUG = True # 로컬
 
 ALLOWED_HOSTS = [
     # '*', 
+    '127.0.0.1',
     '.originals.world'
     ]
 
@@ -57,6 +58,7 @@ CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',    # whitenoise가 static 파일을 serve할 수 있도록 해줌
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,6 +76,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'cloudinary_storage',
     'cloudinary',
+    
 ]
 
 MIDDLEWARE = [
@@ -164,7 +167,8 @@ STATICFILES_DIRS = [
 ]
 
 ## 운영서버 배포시 static 파일을 `collectstatic`하기 위한 절대 경로.
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -190,6 +194,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
 
 ## Cloudinary
 ## 아래는 git push origin main에서는 제외. git push heroku main에만 올라간다!

@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),   # Django의 로그인/로그아웃을 위한 built-in 페이지
     path('dashboard/', include('dashboard.urls')),
     path('challenge/', include('ndaychallenge.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
