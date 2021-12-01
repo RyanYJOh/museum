@@ -58,7 +58,6 @@ CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',    # whitenoise가 static 파일을 serve할 수 있도록 해줌
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,8 +79,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -162,8 +161,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [ 
     os.path.join(BASE_DIR, 'static'), 
     os.path.join(BASE_DIR, 'main/static'),
-    os.path.join(BASE_DIR, 'member/static'),
-    os.path.join(BASE_DIR, 'register/static'),
+    # os.path.join(BASE_DIR, 'member/static'),
+    # os.path.join(BASE_DIR, 'register/static'),
 ]
 
 ## 운영서버 배포시 static 파일을 `collectstatic`하기 위한 절대 경로.

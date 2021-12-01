@@ -1,0 +1,458 @@
+/* @media (max-width: 1024px) {
+    
+} */
+.mobile-only {
+    display: none !important;
+}
+a {
+    text-decoration: none !important;
+    color: black !important;
+}
+body {
+    font-family : 'NanumSquare', sans-serif !important;
+    /* font-size : 10px !important; */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+select, .search-form { /* Bootstrap과 동일한 설정 */
+    border-radius: 0.25rem;
+    border : 1px solid #ced4da; 
+    padding-top: 0.5rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.75rem;
+    font-size: 1rem;
+    display: inline-block;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    line-height: 1.5;
+    color: #212529;
+    width: 100%
+}
+.search-form {
+    padding-top : 0.35rem;
+    padding-bottom : 0.35rem;
+}
+.modal-footer {
+    width : 100% !important;
+}
+
+ul {
+    list-style-type: none;
+    padding-left : 10px !important;
+}
+footer {
+    margin-top: auto;
+}
+.footer-section {
+    /* background-color: #2d2926 !important; */
+    color: grey !important;
+    font-weight: bold;
+    border-top : 1px lightgrey solid;
+    padding-top : 5px;
+}
+
+input[type=password] {
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.shadow {
+    -webkit-box-shadow: 0px 0px 8px 0px #000000; 
+    box-shadow: 0px 0px 8px 0px #000000;
+}
+.sidemenu {
+    position : fixed;
+}
+.theme-color {
+    color: #ed6f63  !important;
+}
+/* Navbar */
+.navbar {
+    background-color: #2D2926 !important;
+    color: #ed6f63  !important;
+}
+#navbar-menu {
+    padding-right : 10px;
+    padding-left : 10px;
+}
+.navbar-item {
+    margin-right : 10px;
+    margin-left : 10px;
+}
+.nav-link {
+    color: #ed6f63  !important;
+    cursor: pointer;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out; 
+}
+.navbar-expand {
+    justify-content: end !important;
+}
+
+/* Grid system */
+.row {
+    margin-top: 10px !important;
+}
+.row-h-20 {
+    height: 20px;
+}
+.row-h-40 {
+    height: 40px;
+}
+.row-h-80 {
+    height: 80px;
+}
+
+.empty-row {
+    height : 10px;
+}
+.empty-row-l {
+    height : 50px;
+}
+.bottom-border {
+    border-bottom : 2px lightgray solid;
+}
+.row-topless {
+    margin-top: 0px !important;
+}
+.col-wo-padding-left {
+    padding-left: 0px !important;
+}
+#profile-tab-col {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+/* Cards */
+.grid-card {
+    margin : 15px !important;
+    border-radius: 20px !important;
+    border-color: transparent !important;
+    background-color: #F6F6F6 !important;
+    padding-right: 11px !important ;
+    padding-left: 11px !important ;
+    padding-top: 5px !important;
+    transition: transform 100ms cubic-bezier(.877, .079, .123, .985), 
+    -webkit-transform 100ms cubic-bezier(.877, .079, .123, .985);
+}
+.grid-card:hover {
+    position: static;
+    transform: translate(0px, -10px);
+}
+
+/* Forms */ 
+.form-control {
+    /* border-radius: 20px !important; */
+    font-size: 1.063rem; /* text-l과 동일 */
+}
+.form-group {
+    width: 100%;
+}
+.form-label { /* 로그인, 회원가입시 form label*/
+    font-size: 0.813rem;
+}
+.form-check { /* userinfo 입력시 라디오 버튼 간격 */
+    margin-bottom: 20px !important;
+}
+.textinput#id_title { /* text-l과 동일 스펙 */
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+}
+
+/* 왜 text-left/right/cetner로 안되는지 모르겠어서 */ 
+.right {
+    text-align: right; 
+}
+.left {
+    text-align: left;
+}
+.center {
+    text-align: center;
+}
+
+/* Buttons */
+.btn {
+    border-radius : 100px !important;
+}
+.btn-primary {
+    background-color: #ed6f63 !important;
+    border-color: transparent !important;
+    color: #2D2926 !important;
+    font-size: 1.063rem !important;
+    font-weight: 800 !important;
+}
+.btn-primary:hover {
+    background-color: #d56359 !important;
+}
+.btn-secondary {
+    background-color: transparent !important;
+    border: 2px solid #d56359 !important;
+    color: #d56359 !important;
+    font-size: 1.063rem !important;
+    font-weight: 600 !important;
+}
+.btn-secondary:hover {
+    background-color: transparent !important;
+}
+.btn-menial {
+    background-color: transparent !important;
+    border : 1px grey solid !important;
+    font-size: 0.813rem !important;
+}
+.btn-no-border {
+    background-color: transparent !important;
+    border: none !important;
+    padding : 0px !important;
+}
+#btn-edit-profile {
+    background-color: transparent !important;
+    border : 1px #F6F6F6 solid !important;
+    font-size: 0.813rem !important;
+    color: #F6F6F6 !important;
+}
+.btn-transparent {
+    background-color: transparent !important;
+    color: transparent !important;
+}
+
+/* Radio button */
+.radio-btn {
+    visibility: hidden;
+}
+.radio-btn-label {
+    cursor: pointer
+}
+
+/* Text */
+.text-xl {
+    font-size : 3rem; /* 48px */
+    font-weight: 800;
+}
+.text-l {
+    font-size: 1.5rem; /* 24px */
+    font-weight: 800;
+}
+.text-m {
+    font-size: 1.063rem; /* 17px */
+}
+.text-s {
+    font-size: 0.813rem; /* 13px */ 
+}
+.text-xs {
+    font-size: 0.625rem; /* 10px */
+    font-weight: 300;
+}
+.textbunch {
+    line-height: 1.75;
+}
+.light {
+    font-weight: 300;
+}
+.bolder {
+    font-weight: 800;
+}
+.underline {
+    text-decoration: underline !important;
+}
+.italic {
+    font-style: italic;
+}
+.truncate {
+    /* white-space: nowrap; */
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    height : 4rem;
+}
+.my-ans-box {
+    overflow: hidden;
+}
+.warning {
+    color: red;
+    font-weight: 400;
+}
+#input-self-title {  /* text-l과 동일 */
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+}
+
+/* Images */
+.profile-img-list {
+    height: 1.5rem;
+    width: auto;
+    border-radius: 50px;
+}
+.profile-img-comment {
+    height: 1rem;
+    width: auto;
+    border-radius: 50px;
+}
+.profile-img-navbar {
+    height: 2rem;
+    width: auto;
+    border-radius: 50px;
+    border : #ed6f63 solid 2px;
+    margin-right : 10px;
+    cursor: pointer;
+}
+.profile-img-large {
+    height: 8rem;
+    width: auto;
+    border-radius: 50px;
+}
+.question-img-list {
+    width: 100%;
+}
+.list-img-container-row {
+    height: 10rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.list-img-container-col {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+.img-detail-page {
+    width: 60%;
+    /* border-radius: 50px; */
+}
+.img-detail-modal {
+    width: 95%;
+}
+.img-about-page {
+    width: 100%;
+    border-radius: 10px;
+}
+.ci {
+    height: 100%;
+    width: 200px;
+}
+
+/* Progress bar */
+.progress-bar {
+    background-color: #ed6f63 !important;
+}
+
+
+/* Other custom settings */
+.link:hover {
+    cursor: pointer;
+    color: lightgray;
+}
+.bookmark-icon {
+    cursor: pointer;
+}
+.banner-row {
+    /* background-image: url(https://blog.creatopy.com/wp-content/uploads/2016/06/images-for-banner-ads-1024x527.png);
+    opacity: 50%; */
+    margin-top: 0px !important;
+    height: 350px;
+    background-color: #2D2926 !important;
+    color: white;
+    width: 100%;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.home-tab {
+
+}
+.my-ans-box {
+    width : 100%;
+    height : 100px;
+    border : lightgrey solid 1px;
+    border-radius: 10px;
+    padding: 10px;
+}
+.profile-intro {
+    color: white;
+}
+.fade-in {
+    animation: fadein 1s;
+  }
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+  @-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+
+.floating-menu-pc {
+    z-index: 100;
+    position : fixed;
+}
+.floating-menu-mobile {
+    /* z-index: 100;
+    position: fixed; */
+}
+.ans-body {
+    height: 100px;
+    border-bottom: 1px black solid;
+    margin-bottom : 15px;
+}
+.alert {
+    
+}
+/* --------------------------- MOBILE --------------------------- */
+@media (max-width:768px) {
+    .mobile-only {
+        display: inline !important;
+    }
+    .pc-only {
+        display: none !important;
+    }
+    /* Text */
+    .text-xl {
+        font-size : 2.5rem;
+        font-weight: 800;
+    }
+    .text-l {
+        font-size: 1.5rem; /* 24px */
+        font-weight: 800;
+    }
+    .text-m {
+        font-size: 1rem;
+    }
+    .text-s {
+        font-size: 0.813rem; /* 13px */ 
+    }
+    .text-xs {
+        font-size: 0.625rem; /* 10px */
+        font-weight: 300;
+    }
+    .textinput#id_title {
+        font-size: 1.5rem; /* 24px */
+        font-weight: 800; 
+    }
+    .banner-row {
+        /* background-image: url(https://blog.creatopy.com/wp-content/uploads/2016/06/images-for-banner-ads-1024x527.png);
+        opacity: 50%; */
+        margin-top: 0px !important;
+        height: 350px;
+        background-color: #2D2926 !important;
+        color: white;
+    }
+    .img-detail-page {
+        width: 100%;
+        /* border-radius: 50px; */
+    }
+    .ci {
+        height: 100%;
+        width: 120px;
+    }
+    #self-ques-btn {
+        font-size: 0.813rem !important;
+    }
+}
