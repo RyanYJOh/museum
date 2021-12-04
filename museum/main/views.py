@@ -1,4 +1,3 @@
-from re import search
 from django.forms.widgets import RadioSelect
 from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
 from django.views.generic import FormView
@@ -38,7 +37,7 @@ def navbar(request):
         except ObjectDoesNotExist:
             navbar_authenticated = 'False'
             navbar_context = {
-                navbar_authenticated : navbar_authenticated,
+                'navbar_authenticated' : navbar_authenticated,
                 'navbar_this_user' : navbar_this_user.username,
             }
     else:
@@ -768,8 +767,12 @@ def update_ans_us(request, ans_us_id):
 @login_required(login_url="/login")
 def delete_ans_us(request, ans_us_id):
     this_ans = AnswersForFromUs.objects.get(id = ans_us_id)
-    
-    this_ans.delete()
+
+    if User.objects.get(id=request.user.id) == this_ans.author_id:
+        this_ans.delete()
+    else:
+        pass
+
     return redirect('/')
 
 ##### 내가 나에게 던지는 질문 #####
@@ -924,7 +927,10 @@ def delete_ans_self(request, ans_self_id):
     this_ans = AnswersForFromSelf.objects.get(id = ans_self_id)
     this_ques = QuestionsFromSelf.objects.get(id=this_ans.question_id.id)
     
-    this_ques.delete()
+    if User.objects.get(id=request.user.id) == this_ans.author_id:
+        this_ques.delete()
+    else:
+        pass
     return redirect('/')
 
 ##### 답변 저장 기능 #####

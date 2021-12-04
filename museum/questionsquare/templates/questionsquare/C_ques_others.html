@@ -1,0 +1,137 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 오리지널스 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="container">
+    <div class="sub-container">
+        <div class="row">
+            <div class="col text-xl">
+                질문 스퀘어.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-m">
+                다른 사람들에게 질문을 던지고 답할 수 있는 공간입니다.
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+    </div>
+    <div class="row-h-40"></div>
+
+    <div class="row">
+        <div class="col text-s right">
+            *<span class='bolder'>오리지널스의 결</span>과 맞지 않는 질문은 임의로 삭제될 수 있습니다.
+        </div>
+    </div>
+    {% if mode == 'create' %}
+    <form method='post' class='form-group' onsubmit="return validateForm()" enctype='multipart/form-data'> {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                {{ques_form.title|as_crispy_field}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ques_form.desc}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 left">
+                <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                {{ques_form.image}}
+            </div>
+            <div class="col-6 right">
+                <button class='btn btn-primary' type="submit" name='save'>질문 던지기</button>
+            </div>
+        </div>
+    </form>
+    {% elif mode == 'update' %}
+    <div class="row">
+        <div class="col">
+            <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
+                <div class="row">
+                    <div class="col text-s">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col left">
+                        <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-s">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-s textbunch">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 left text-m">
+                        
+                    </div>
+                    <div class="col-6 right">
+                        <button class='btn btn-primary' type="submit">저장하기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<script>
+    // 이미지 필드 처리
+    var imageForm = document.getElementById('id_image');
+    imageForm.style.display = 'none';
+    function ShowImageField() {
+        if ('{{mode}}' == 'create') {
+            console.log('mode = create')
+
+            document.getElementById('show_img_field').style.display = 'none';
+            //ocument.getElementById('div_id_image').style.display = 'inline-block';
+            imageForm.style.display = 'inline-block';
+        }
+        else if ('{{mode}}' == 'update') {
+            document.getElementById('div_id_image').style.display = 'none';
+            console.log('mode = update')
+            document.getElementById('show_img_field').style.display = 'none';
+            imageForm.style.display = 'inline-block';
+            document.getElementById('div_id_image').style.display = 'inline-block';
+            
+        }
+    }
+
+    // Client-side validation
+    // class에 needs-validation 추가할 것들 
+    /*
+    document.getElementById('id_title').classList.add('needs-validation');
+    document.getElementById('id_body').classList.add('needs-validation');
+    // Validation
+    function validateForm() {
+        let formTitle = document.getElementById('id_title').value;
+        let formBody = document.getElementById('id_body').value;
+        if (formTitle == "" || formBody == "") {
+          alert("빈 생각을 저장할 수는 없어요.");
+          return false;
+        }
+    }
+    */
+
+    window.onload = function() {
+        imageForm.style.display = 'none';
+    }
+
+</script>
+{% endblock %}

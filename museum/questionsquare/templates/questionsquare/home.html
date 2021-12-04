@@ -1,0 +1,68 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 오리지널스 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="container">
+    <div class="sub-container">
+        <div class="row">
+            <div class="col text-xl">
+                질문 스퀘어.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-m">
+                다른 사람들에게 질문을 던지고 답할 수 있는 공간입니다.
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        <div class="row">
+            <div class="col right">
+                <button class='btn btn-primary' onclick="location.href='/question-square/throw-question'">질문 던지기</button>
+            </div>
+        </div>
+    </div>
+    <div class="row-h-20"></div>
+    {% if questions %}
+    {% for q in questions %}
+    <div class="row-h-20"></div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col text-l bolder">
+                    {{q.title}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col right">
+                    <button class='btn btn-menial' onclick="location.href='/question-square/answers-of/{{q.id}}'">
+                        답변 <span class="bolder theme-color">{{q.count_answers}}</span>개 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row-h-20 bottom-border"></div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="row-h-80"></div>
+    <div class="row-h-80"></div>
+    <div class="row">
+        <div class="col center">
+            질문 없지롱
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+<script>
+
+
+</script>
+{% endblock %}

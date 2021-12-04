@@ -1,0 +1,193 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} 오리지널스 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-5 col-md-4 text-m left my-auto">
+            <a href="/profile/{{this_ques.questioner.real_name}}"><img class=" profile-img-list" src="{{this_ques.questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_ques.questioner.real_name}}</span></a>의 질문.
+        </div>
+    </div>
+
+
+    {% if mode == 'create' %}
+    <div class="row">
+        <div class="col left">
+            <div class='text-xl'>{{this_ques.title}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="text-m textbunch">{{this_ques.desc|linebreaks}}</div>
+        </div>
+    </div>
+    {% elif mode == 'update' %}
+    <div class="row">
+        <div class="col left">
+            <div class='text-l'>{{this_ques.title}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="text-m textbunch">{{this_ques.desc|linebreaks}}</div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 답변 작성 영역 -->
+    <div class="row">
+        <div class="col">
+            <form method="POST" class="form-group" enctype='multipart/form-data'> {% csrf_token %}
+                <div class="row row-topless">
+                    <div class="col text-m">
+                        {{ans_form.body|as_crispy_field}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 left">
+                        <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                        {{ans_form.image|as_crispy_field}}
+                    </div>
+                    <div class="col-6 right">
+                        <button class='btn btn-primary' type="submit" name='save'>저장하기</button>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col right text-m">
+                        {{ans_form.is_shared}} 공개되어도 좋습니다.
+                    </div>
+                </div> -->
+            </form>
+        </div>
+    </div>
+
+    <div class="row-h-40 pc-only"></div>
+    <div class="row-h-20 mobile-only"></div>
+</div>
+
+<!-- <div class="row fade-in">
+    {% for a in all_ans_for_this_ques %}
+    <div class="col-12 col-md-4">
+        <div class="row align-middle">
+            <div class="col card card-body grid-card">
+                <a href="/originals-answer/{{a.id}}" id="click-id-{{a.id}}" onclick="TrackClicks(id)">
+                    <div class="row list-img-container-row">
+                        <div class="col list-img-container-col">
+                            <img class="question-img-list" src='{{a.image.url}}'/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-s textbunch truncate">{{a.body}}</div>
+                        </div>
+                    </div>
+                </a>
+                <div class="row">
+                    <div class="col-10 my-auto text-s left">
+                        <a href='/profile/{{a.author_id.username}}'><img class='profile-img-list' src='{{a.author_id.userinfo.profile_image.url}}'/>&nbsp;&nbsp;&nbsp;{{a.author_id.userinfo.real_name}}</a>
+                    </div>
+                    <div class="col-2 my-auto text-center">
+                        {% if a in list__us_saved_by_user %}
+                        <div class='bookmark-us' id='us-ans-id-{{a.id}}' onclick="BookmarkUs(id)">
+                            <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                            </svg>
+                        </div>
+                        {% else %}
+                        <div class='bookmark-us' id='us-ans-id-{{a.id}}' onclick="BookmarkUs(id)">
+                            <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                            </svg>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor%}
+</div> -->
+
+<script>
+    //document.getElementById('id_is_shared').checked = true;
+
+    // 이미지 필드 처리
+    var imageForm = document.getElementById('id_image');
+    imageForm.style.display = 'none';
+    function ShowImageField() {
+        if ('{{mode}}' == 'create') {
+            console.log('mode = create')
+
+            document.getElementById('show_img_field').style.display = 'none';
+            //ocument.getElementById('div_id_image').style.display = 'inline-block';
+            imageForm.style.display = 'inline-block';
+        }
+        else if ('{{mode}}' == 'update') {
+            document.getElementById('div_id_image').style.display = 'none';
+            console.log('mode = update')
+            document.getElementById('show_img_field').style.display = 'none';
+            imageForm.style.display = 'inline-block';
+            document.getElementById('div_id_image').style.display = 'inline-block';
+            
+        }
+    }
+    // Bookmark 기능
+    function BookmarkUs(id) {
+        // ajax로 POST
+        var postData = {
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : '',
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "bookmark" %}',
+            data : JSON.stringify(postData)
+        })
+
+        // 북마크 아이콘 상태 변경
+        var bookmarkIcon = document.getElementById(`${id}`)
+        var bookmarkFilled = document.getElementById(`${id}`).getElementsByTagName('svg')[0];
+        var bookmarkFilledPath = bookmarkFilled.getElementsByTagName('path')
+        
+        if (bookmarkFilled.classList[2] === 'bi-bookmark-fill') {
+            bookmarkFilled.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z');
+            
+        } else if (bookmarkFilled.classList[2] === 'bi-bookmark') {
+            bookmarkFilled.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+            bookmarkFilled.getElementsByTagName('path')[0].removeAttribute('d');
+            bookmarkFilled.getElementsByTagName('path')[0].setAttribute('d', 'M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z');
+        }
+    }
+
+    function TrackClicks(id) {
+        // ajax로 POST
+        var postData = {
+            clicked_from : 'From Us CREATE 화면',
+            ans_type : 'us',
+            ans_us_ref : id.split('id-')[1],
+            ans_self_ref : ''
+        }
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: '{% url "clicks" %}',
+            data : JSON.stringify(postData)
+        })
+    }
+            
+    window.onload = function() {
+        imageForm.style.display = 'none';
+    }
+</script>
+{% endblock %}

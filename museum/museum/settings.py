@@ -42,8 +42,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True # 로컬
-DEBUG = False # 운영
+DEBUG = True # 로컬
+# DEBUG = False # 운영
 
 
 ALLOWED_HOSTS = [
@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'dashboard.apps.DashboardConfig',
     'ndaychallenge.apps.NdaychallengeConfig',
+    'questionsquare.apps.QuestionsquareConfig',
 
     'crispy_forms',
     'bootstrap4',

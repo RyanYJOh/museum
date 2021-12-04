@@ -566,18 +566,34 @@
         $('#search-modal').modal()
 
     }
+    
+    function FloatingBtn() {
+        $(".menu-btn").on('click',function(){
+        $(this).parents(".box").find(".menu-round-box").toggleClass('open');
+      });
+    }
+
     window.onload = NoticeModal();
 </script>
 {%endblock%}
 
 {% block sidemenu %}
-<div class="row pc-only">
+<!-- <div class="row mobile-only">
     <div class="col center">
         <ul class="list-group sidemenu text-s bold">
             <li class="list-group-item link" onclick="NotYetAlert()">커뮤니티</li>
             <li class="list-group-item link" onclick="NotYetAlert()">매거진</li>
-            <li class="list-group-item link bolder theme-color" onclick="location.href='https://forms.gle/bfu83d3RBYmz8wVm6'">15일 질문 챌린지</li>
           </ul>
+    </div>
+</div> -->
+<div class="row pc-only menu">
+    <div class="col center menu-round-box">
+        <ul class="">
+            <li>커뮤니티</li>
+            <li>매거진</li>
+            <!-- <li class="list-group-item link bolder theme-color" onclick="location.href='https://forms.gle/bfu83d3RBYmz8wVm6'">15일 질문 챌린지</li> -->
+        </ul>
+        <div class='menu-btn' onclick="FloatingBtn()">메뉴</div>
     </div>
 </div>
 {% endblock %}
