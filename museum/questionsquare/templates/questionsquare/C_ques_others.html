@@ -8,88 +8,85 @@
 {% block content %}
 <div class="row-h-80"></div>
 
-<div class="container">
-    <div class="sub-container">
-        <div class="row">
-            <div class="col text-xl">
-                질문 스퀘어.
-            </div>
-        </div>
-        <div class="row">
-            <div class="col text-m">
-                다른 사람들에게 질문을 던지고 답할 수 있는 공간입니다.
-            </div>
-        </div>
-        <div class="row-h-20"></div>
-    </div>
-    <div class="row-h-40"></div>
-
+<div class="sub-container">
     <div class="row">
-        <div class="col text-s right">
-            *<span class='bolder'>오리지널스의 결</span>과 맞지 않는 질문은 임의로 삭제될 수 있습니다.
+        <div class="col text-xl">
+            질문 스퀘어.
         </div>
     </div>
-    {% if mode == 'create' %}
-    <form method='post' class='form-group' onsubmit="return validateForm()" enctype='multipart/form-data'> {% csrf_token %}
-        <div class="row">
-            <div class="col">
-                {{ques_form.title|as_crispy_field}}
-            </div>
+    <div class="row">
+        <div class="col text-m">
+            다른 사람들에게 질문을 던지고 답할 수 있는 공간입니다.
         </div>
-        <div class="row">
-            <div class="col">
-                {{ques_form.desc}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 left">
-                <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
-                {{ques_form.image}}
-            </div>
-            <div class="col-6 right">
-                <button class='btn btn-primary' type="submit" name='save'>질문 던지기</button>
-            </div>
-        </div>
-    </form>
-    {% elif mode == 'update' %}
+    </div>
+    <div class="row-h-20"></div>
+</div>
+<div class="row-h-40"></div>
+
+<div class="row">
+    <div class="col text-s right">
+        *<span class='bolder'>오리지널스의 결</span>과 맞지 않는 질문은<br class='mobile-only'> 임의로 삭제될 수 있습니다.
+    </div>
+</div>
+{% if mode == 'create' %}
+<form method='post' class='form-group' onsubmit="return validateForm()" enctype='multipart/form-data'> {% csrf_token %}
     <div class="row">
         <div class="col">
-            <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
-                <div class="row">
-                    <div class="col text-s">
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col left">
-                        <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col text-s">
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col text-s textbunch">
-                        
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 left text-m">
-                        
-                    </div>
-                    <div class="col-6 right">
-                        <button class='btn btn-primary' type="submit">저장하기</button>
-                    </div>
-                </div>
-            </form>
+            {{ques_form.title|as_crispy_field}}
         </div>
     </div>
-    {% endif %}
+    <div class="row">
+        <div class="col">
+            {{ques_form.desc}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 left">
+            <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+            {{ques_form.image}}
+        </div>
+        <div class="col-6 right">
+            <button class='btn btn-primary' type="submit" name='save'>질문 던지기</button>
+        </div>
+    </div>
+</form>
+{% elif mode == 'update' %}
+<div class="row">
+    <div class="col">
+        <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
+            <div class="row">
+                <div class="col text-s">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col left">
+                    <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-s textbunch">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 left text-m">
+                    
+                </div>
+                <div class="col-6 right">
+                    <button class='btn btn-primary' type="submit">저장하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
-
+{% endif %}
 
 <script>
     // 이미지 필드 처리

@@ -11,21 +11,29 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-5 col-md-4 text-m left my-auto">
-            <a href="/profile/{{this_ques.questioner.real_name}}"><img class=" profile-img-list" src="{{this_ques.questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_ques.questioner.real_name}}</span></a>의 질문.
+        <div class="col left">
+            <a href="/question-square" class="text-m">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>질문 스퀘어
+            </a>
         </div>
     </div>
-
-
     {% if mode == 'create' %}
     <div class="row">
         <div class="col left">
-            <div class='text-xl'>{{this_ques.title}}</div>
+            <div class='text-l mobile-only bolder'>{{this_ques.title}}</div>
+            <div class='text-xl pc-only'>{{this_ques.title}}</div>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <div class="text-m textbunch">{{this_ques.desc|linebreaks}}</div>
+            <div class="text-m textbunch">
+                {{this_ques.desc|linebreaks}}
+                <span class='text-s'>
+                    질문 by&nbsp;&nbsp;<a href="/profile/{{this_ques.questioner.real_name}}"><img class=" profile-img-list" src="{{this_ques.questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_ques.questioner.real_name}}</span></a>
+                </span>
+            </div>
         </div>
     </div>
     {% elif mode == 'update' %}

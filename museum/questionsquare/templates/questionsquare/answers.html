@@ -20,7 +20,10 @@
     </div>
     <div class="row-h-20"></div>
     <div class="row">
-        <div class="col text-xl">
+        <div class="col mobile-only text-l bolder">
+            {{this_question.title}}
+        </div>
+        <div class="col text-xl pc-only">
             {{this_question.title}}
         </div>
     </div>
@@ -34,7 +37,7 @@
     {% else %}
     {% endif %}
     <div class="row">
-        <div class="col text-m">
+        <div class="col text-m textbunch">
             {{this_question.desc|linebreaks}}
             <span class='text-s'>
                 질문 by&nbsp;&nbsp;<a href="/profile/{{this_questioner.real_name}}"><img class=" profile-img-list" src="{{this_questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_questioner.real_name}}</span></a>
