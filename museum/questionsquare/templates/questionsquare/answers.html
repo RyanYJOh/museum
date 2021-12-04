@@ -40,7 +40,7 @@
         <div class="col text-m textbunch">
             {{this_question.desc|linebreaks}}
             <span class='text-s'>
-                질문 by&nbsp;&nbsp;<a href="/profile/{{this_questioner.real_name}}"><img class=" profile-img-list" src="{{this_questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_questioner.real_name}}</span></a>
+                질문 by&nbsp;&nbsp;<a href="/profile/{{this_question.questioner.this_user.username}}"><img class=" profile-img-list" src="{{this_questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_questioner.real_name}}</span></a>
             </span>
         </div>
     </div>
@@ -49,46 +49,46 @@
             <button class='btn btn-primary' onclick="location.href='/question-square/answer-to/{{this_question.id}}'">내 생각 적기</button>
         </div>
     </div>
-    {% if exists %}
-    <div class="row-h-20"></div>
-    {% for a in ans_for_this_ques %}
-    <div class="row card-section link" onclick="location.href='/question-square/answer/{{a.id}}'">
-        <div class="col">
-            <div class="row">
-                <div class="col-5 col-md-4 text-s left my-auto">
-                    <a href="/profile/{{a.author.real_name}}"><img class=" profile-img-list" src="{{a.author.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{a.author.real_name}}</a>
-                </div>
-                <div class="col-7 col-md-8 text-s right my-auto">
-                    {{a.created_at}}
-                </div>
-            </div>
-            <div class="row-h-20"></div>
-            {% if a.image %}
-            <!-- 일단 이미지는 스킵. 화면 설계 필요 -->
-            <div class="row">
-                <div class="col textbunch">
-                    {{a.body|linebreaks}}
-                </div>
-            </div>
-            {% else %}
-            <div class="row">
-                <div class="col">
-                    {{a.body|linebreaks}}
-                </div>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endfor %}
-    {% else %}
-    <div class="row-h-80"></div>
-    <div class="row justify-content-center">
-        <div class="col center text-m bolder">
-            아직 아무 답변이 없습니다..
-        </div>
-    </div>
-    {% endif %}
 </div>
+{% if exists %}
+<div class="row-h-20"></div>
+{% for a in ans_for_this_ques %}
+<div class="row card-section link" onclick="location.href='/question-square/answer/{{a.id}}'">
+    <div class="col">
+        <div class="row">
+            <div class="col-5 col-md-4 text-s left my-auto">
+                <a href="/profile/{{a.author.real_name}}"><img class=" profile-img-list" src="{{a.author.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{a.author.real_name}}</a>
+            </div>
+            <div class="col-7 col-md-8 text-s right my-auto">
+                {{a.created_at}}
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        {% if a.image %}
+        <!-- 일단 이미지는 스킵. 화면 설계 필요 -->
+        <div class="row">
+            <div class="col textbunch">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="row-h-80"></div>
+<div class="row justify-content-center">
+    <div class="col center text-m bolder">
+        아직 아무 답변이 없습니다..
+    </div>
+</div>
+{% endif %}
 
 
 <script>

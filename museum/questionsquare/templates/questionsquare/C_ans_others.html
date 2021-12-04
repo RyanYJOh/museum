@@ -26,6 +26,7 @@
             <div class='text-xl pc-only'>{{this_ques.title}}</div>
         </div>
     </div>
+    <div class="row-h-20"></div>
     <div class="row">
         <div class="col">
             <div class="text-m textbunch">
@@ -48,37 +49,36 @@
         </div>
     </div>
     {% endif %}
-
-    <!-- 답변 작성 영역 -->
-    <div class="row">
-        <div class="col">
-            <form method="POST" class="form-group" enctype='multipart/form-data'> {% csrf_token %}
-                <div class="row row-topless">
-                    <div class="col text-m">
-                        {{ans_form.body|as_crispy_field}}
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 left">
-                        <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
-                        {{ans_form.image|as_crispy_field}}
-                    </div>
-                    <div class="col-6 right">
-                        <button class='btn btn-primary' type="submit" name='save'>저장하기</button>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                    <div class="col right text-m">
-                        {{ans_form.is_shared}} 공개되어도 좋습니다.
-                    </div>
-                </div> -->
-            </form>
-        </div>
-    </div>
-
-    <div class="row-h-40 pc-only"></div>
-    <div class="row-h-20 mobile-only"></div>
 </div>
+<!-- 답변 작성 영역 -->
+<div class="row">
+    <div class="col">
+        <form method="POST" class="form-group" enctype='multipart/form-data'> {% csrf_token %}
+            <div class="row row-topless">
+                <div class="col text-m">
+                    {{ans_form.body|as_crispy_field}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 left">
+                    <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
+                    {{ans_form.image|as_crispy_field}}
+                </div>
+                <div class="col-6 right">
+                    <button class='btn btn-primary' type="submit" name='save'>저장하기</button>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col right text-m">
+                    {{ans_form.is_shared}} 공개되어도 좋습니다.
+                </div>
+            </div> -->
+        </form>
+    </div>
+</div>
+
+<div class="row-h-40 pc-only"></div>
+<div class="row-h-20 mobile-only"></div>
 
 <!-- <div class="row fade-in">
     {% for a in all_ans_for_this_ques %}

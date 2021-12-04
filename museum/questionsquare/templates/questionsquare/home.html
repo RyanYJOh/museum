@@ -16,7 +16,7 @@
     </div>
     <div class="row">
         <div class="col text-m">
-            다른 사람들에게 질문을 던지고 답할 수 있는 공간입니다.
+            다른 사람들에게 질문을 던지는 공간입니다.
         </div>
     </div>
     <div class="row-h-20"></div>
@@ -39,7 +39,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col right">
+                <div class="col-5 text-s left my-auto">
+                    By &nbsp;<a href="/profile/{{q.questioner.this_user.username}}"><img class=" profile-img-list" src="{{q.questioner.profile_image.url}}">&nbsp;&nbsp;<span style='font-weight:400;'>{{q.questioner.real_name}}</span></a>
+                </div>
+                <div class="col-7 right">
                     <button class='btn btn-menial' onclick="location.href='/question-square/answer-to/{{q.id}}'">
                         내 생각 적기
                     </button>
