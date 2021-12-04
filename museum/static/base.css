@@ -527,14 +527,11 @@ input[type=password] {
     }
   }
 
-.floating-menu-pc {
+.floating-menu {
     z-index: 100;
     position : fixed;
 }
-.floating-menu-mobile {
-    /* z-index: 100;
-    position: fixed; */
-}
+
 .ans-body {
     height: 100px;
     border-bottom: 1px black solid;
