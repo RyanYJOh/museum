@@ -107,9 +107,12 @@ def update_ques_from_others(request, ques_others_id):
             else:
                 pass
             
+            ques_to_update.title = ques_instance.title
+            ques_to_update.desc = ques_instance.desc
+            
             ques_to_update.save()
 
-        return redirect('/answers-of/{ques_id}'.format(ques_id=ques_others_id))
+        return redirect('/question-square/answers-of/{ques_id}'.format(ques_id=ques_others_id))
 
     ## 수정하기 위해 페이지 진입
     else:
@@ -128,7 +131,10 @@ def update_ques_from_others(request, ques_others_id):
 def delete_ques_from_others(request, ques_others_id):
     this_ques = QuestionsFromOthers.objects.get(id=ques_others_id)
     
-    this_ques.delete()
+    if UserInfo.objects.get(this_user=request.user) == this_ques.questioner:
+        this_ques.delete()
+    else:
+        pass
     return redirect('/question-square')
 
 ## 답변 목록
@@ -138,8 +144,15 @@ def view_ans_others(request, ques_id):
     ans_for_this_ques = AnswersForFromOthers.objects.filter(question_id=ques_id).order_by('-created_at_time')
     this_question = QuestionsFromOthers.objects.get(id=ques_id)
     
+    ## 질문 주인 여부 (수정/삭제)
+    if this_question.questioner.this_user == request.user:
+        is_ques_owner = True
+        print('true')
+    else:
+        is_ques_owner = False
+        print('false')
+
     ## 발제자 프로필
-    print(this_question)
     this_questioner = this_question.questioner
 
     ## 답변 있는지 여부 먼저 체크해야됨.
@@ -157,6 +170,7 @@ def view_ans_others(request, ques_id):
     
     pre_context['ans_for_this_ques'] = ans_for_this_ques
     pre_context['this_question'] = this_question
+    pre_context['is_ques_owner'] = is_ques_owner
 
     context = {**pre_context, **navbar_context}
     return render(request, 'questionsquare/answers.html', context)
@@ -252,6 +266,8 @@ def update_ans_others(request, ans_others_id):
 
     ans_to_update = AnswersForFromOthers.objects.get(id=ans_others_id)
     ans_form = AnswersForFromOthersForm(request.POST, request.FILES)
+    
+    this_ques = QuestionsFromOthers.objects.get(id=ans_to_update.question_id.id)
 
     if request.method == 'POST':
         if ans_form.is_valid():
@@ -261,9 +277,10 @@ def update_ans_others(request, ans_others_id):
             else:
                 pass
             
+            ans_to_update.body = ans_instance.body
             ans_to_update.save()
 
-        return redirect('/answers/{ans_id}'.format(ans_id=ans_others_id))
+        return redirect('/question-square/answer/{ans_id}'.format(ans_id=ans_others_id))
 
     ## 수정하기 위해 페이지 진입
     else:
@@ -272,18 +289,20 @@ def update_ans_others(request, ans_others_id):
         pre_context = {
             'ans_form' : ans_form,
             'mode' : mode,
+            'this_ques' : this_ques,
         }
 
         context = {**pre_context, **navbar_context}
-        return render(request, 'questionsquare/C_ques_others.html', context)
+        return render(request, 'questionsquare/C_ans_others.html', context)
 
 ## 답변 삭제
 @login_required(login_url="/login")
 def delete_ans_others(request, ans_others_id):
     this_ans = AnswersForFromOthers.objects.get(id=ans_others_id)
+    this_ques = QuestionsFromOthers.objects.get(id=this_ans.question_id.id)
 
     if UserInfo.objects.get(this_user=request.user) == this_ans.author:
         this_ans.delete()
     else:
         pass
-    return redirect('/question-square')
+    return redirect('/question-square/answers-of/{ques_id}'.format(ques_id=this_ques.id))

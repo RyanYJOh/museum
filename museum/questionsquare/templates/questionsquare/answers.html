@@ -8,48 +8,65 @@
 {% block content %}
 <div class="row-h-80"></div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-10 left">
-            <a href="/question-square" class="text-m">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                </svg>질문 스퀘어
-            </a>
-        </div>
-    </div>
-    <div class="row-h-20"></div>
-    <div class="row">
-        <div class="col mobile-only text-l bolder">
-            {{this_question.title}}
-        </div>
-        <div class="col text-xl pc-only">
-            {{this_question.title}}
-        </div>
-    </div>
-    
-    {% if this_question.image %}
-    <div class="row justify-content-center">
-        <div class="col center">
-            <img class='img-detail-page' src="{{this_question.image.url}}">
-        </div>
-    </div>
-    {% else %}
-    {% endif %}
-    <div class="row">
-        <div class="col text-m textbunch">
-            {{this_question.desc|linebreaks}}
-            <span class='text-s'>
-                질문 by&nbsp;&nbsp;<a href="/profile/{{this_question.questioner.this_user.username}}"><img class=" profile-img-list" src="{{this_questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_questioner.real_name}}</span></a>
-            </span>
-        </div>
-    </div>
-    <div class="row ">
-        <div class="col right">
-            <button class='btn btn-primary' onclick="location.href='/question-square/answer-to/{{this_question.id}}'">내 생각 적기</button>
-        </div>
+
+<div class="row">
+    <div class="col-10 left">
+        <a href="/question-square" class="text-m">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>질문 스퀘어
+        </a>
     </div>
 </div>
+<div class="row-h-20"></div>
+<div class="row">
+    <div class="col mobile-only text-l bolder">
+        {{this_question.title}}
+    </div>
+    <div class="col text-xl pc-only">
+        {{this_question.title}}
+    </div>
+</div>
+
+{% if this_question.image %}
+<div class="row justify-content-center">
+    <div class="col center">
+        <img class='img-detail-page' src="{{this_question.image.url}}">
+    </div>
+</div>
+{% else %}
+{% endif %}
+<div class="row">
+    <div class="col text-m textbunch">
+        {{this_question.desc|linebreaks}}
+        <span class='text-s'>
+            질문 by&nbsp;&nbsp;<a href="/profile/{{this_question.questioner.this_user.username}}"><img class=" profile-img-list" src="{{this_questioner.profile_image.url}}">&nbsp;&nbsp;<span class='bolder'>{{this_questioner.real_name}}</span></a>
+        </span>
+    </div>
+</div>
+<div class="row ">
+    <div class="col right">
+        {% if is_ques_owner %}
+        <button class="btn btn-secondary" onclick="location.href='/question-square/edit-question/{{this_question.id}}'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed6f63" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>
+        </button>
+        &nbsp;
+        <button class="btn btn-secondary" onclick="DeleteThisQues()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed6f63" class="bi bi-trash" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+        </button>
+        &nbsp;
+        {% endif %}
+        <button class='btn btn-primary' onclick="location.href='/question-square/answer-to/{{this_question.id}}'">내 생각 적기</button>
+    </div>
+</div>
+
+<!-- 답변 리스트 영역 -->
 {% if exists %}
 <div class="row-h-20"></div>
 {% for a in ans_for_this_ques %}
@@ -92,5 +109,14 @@
 
 
 <script>
+    function DeleteThisQues(id) {
+        var thisAns = "{{this_question.id}}"
+
+        if (window.confirm('질문을 완전히 삭제하시겠어요?')) {
+            window.location.href="/question-square/delete-question/{{this_question.id}}"
+        } else {
+            
+        }   
+    }
 </script>
 {% endblock %}

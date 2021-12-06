@@ -347,6 +347,32 @@
     </div>
 </div>
 
+<!-- Floating button -->
+<div class="row mobile-only">
+    <div class="col center">
+        <div class="fab link text-l ml-auto" onclick="FloatingBtn()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#2D2926" class="bi bi-justify" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- 더보기 메뉴 모달 -->
+<div class="modal fade " tabindex="-1" role="dialog" id="menu-modal" style="text-align:center">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header text-m">
+        </div> -->
+        <div class="modal-body center bolder theme-color" onclick="location.href='/question-square'">질문 스퀘어</div>
+        <div class="bottom-border"></div>
+        <div class="modal-body center">***</div>
+        <div class="bottom-border"></div>
+        <div class="modal-body center">****</div>
+      </div>
+    </div>
+</div>
+
 <script>
     // Bookmark 기능
     document.getElementById('radio-orig').style.display = 'none';
@@ -564,28 +590,22 @@
 
     function SearchModal() {
         $('#search-modal').modal()
-
     }
     
     function FloatingBtn() {
-        $(".menu-btn").on('click',function(){
-        $(this).parents(".box").find(".menu-round-box").toggleClass('open');
-      });
+        $('#menu-modal').modal()
+    }
+
+    function CloseModal() { // 왜 모달에서 X버튼 눌러도 안닫히지?
+        $('#menu-modal').modal('hide');
     }
 
     window.onload = NoticeModal();
 </script>
+
 {%endblock%}
 
 {% block sidemenu %}
-<!-- <div class="row mobile-only">
-    <div class="col center">
-        <ul class="list-group sidemenu text-s bold">
-            <li class="list-group-item link" onclick="NotYetAlert()">커뮤니티</li>
-            <li class="list-group-item link" onclick="NotYetAlert()">매거진</li>
-          </ul>
-    </div>
-</div> -->
 <div class="row pc-only">
     <div class="col center">
         <ul class="list-group floating-menu">
@@ -595,4 +615,5 @@
         </ul>
     </div>
 </div>
+
 {% endblock %}

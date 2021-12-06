@@ -56,31 +56,21 @@
         <form method='post' class='form-group' onsubmit="return validateForm()"enctype='multipart/form-data'> {% csrf_token %}
             <div class="row">
                 <div class="col text-s">
-                    
+                    {{ques_form.title|as_crispy_field}}
                 </div>
             </div>
             <div class="row">
-                <div class="col left">
+                <div class="col">
+                    {{ques_form.desc}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 left">
                     <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>이미지 추가</button>
-                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-s">
-                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-s textbunch">
-                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 left text-m">
-                    
+                    {{ques_form.image}}
                 </div>
                 <div class="col-6 right">
-                    <button class='btn btn-primary' type="submit">저장하기</button>
+                    <button class='btn btn-primary' type="submit" name='save'>저장하기</button>
                 </div>
             </div>
         </form>
@@ -91,7 +81,9 @@
 <script>
     // 이미지 필드 처리
     var imageForm = document.getElementById('id_image');
-    imageForm.style.display = 'none';
+    if ('{{mode}}' == 'create') {
+        imageForm.style.display = 'none';
+    }
     function ShowImageField() {
         if ('{{mode}}' == 'create') {
             console.log('mode = create')
@@ -125,10 +117,6 @@
         }
     }
     */
-
-    window.onload = function() {
-        imageForm.style.display = 'none';
-    }
 
 </script>
 {% endblock %}
