@@ -580,7 +580,7 @@ def profile(request, username):
         ## 근데 아래 방법으로 하면 performance가 현저히 낮아진다고 함. 특히 queryset이 커짐에 따라.
         all_answers = sorted(
             chain(owner_ans_us, owner_ans_self),
-            key=lambda post: post.created_at_time, reverse=True
+            key=lambda post: post.created_at, reverse=True
         )
 
         ## Pagination -> 일단 hold
@@ -598,7 +598,7 @@ def profile(request, username):
         ## 두 queryset 합쳐주기
         all_bookmarked = sorted(
             chain(list__us_saved_by_user, list__self_saved_by_user),
-            key=lambda post: post.created_at_time, reverse=True
+            key=lambda post: post.created_at, reverse=True
         )
 
         pre_context = {
