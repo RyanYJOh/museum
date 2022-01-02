@@ -639,4 +639,7 @@ button, button:focus, input[type="button"]:focus, button:active, input[type="but
         padding-left: 0px !important;
         border: none;
     }
+    .p-home {
+        max-height: 5rem;
+    }
 }
