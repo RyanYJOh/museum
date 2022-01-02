@@ -58,10 +58,6 @@
         $('[data-toggle="tooltip"]').tooltip()
       })
 
-    function hideSelfQuesBtn() {
-        document.getElementById('self-ques-btn').style.display = 'none';
-    }
-
     function changeForm() {
         // label 변경
         document.getElementsByTagName('label')[0].innerText = "아이디*";
@@ -76,7 +72,7 @@
         document.getElementsByTagName('label')[3].classList.add('form-label');
         
         // placeholder 변경
-        document.getElementById('id_username').placeholder = '자주 사용하는 아이디';
+        document.getElementById('id_username').placeholder = '이 아이디로 가입돼요';
         document.getElementById('id_email').placeholder = '이상한 거 안 보낼게요';
         document.getElementById('id_password1').placeholder = '영문+숫자 조합 8자 이상';
         document.getElementById('id_password2').placeholder = '실수하지 말고';
@@ -89,8 +85,6 @@
         passwordForm.setAttribute('title', '아이디와 비슷하면 안됩니다!');
     }
 
-    
-    window.onload = hideSelfQuesBtn();
     window.onload = changeForm();
 </script>
 

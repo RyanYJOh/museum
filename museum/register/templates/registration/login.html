@@ -43,10 +43,6 @@
     </div>
 </div>
 <script>
-    function hideSelfQuesBtn() {
-        document.getElementById('self-ques-btn').style.display = 'none';
-    }
-
     function changeForm() {
         // label 변경
         document.getElementsByTagName('label')[0].innerText = "아이디*";
@@ -60,8 +56,7 @@
         document.getElementById('id_username').placeholder = '';
         document.getElementById('id_password').placeholder = '';
     }
-
-    window.onload = hideSelfQuesBtn();
+    
     window.onload = changeForm();
 </script>
 
