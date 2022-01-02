@@ -124,4 +124,4 @@ class Likes(models.Model):
     ans_self_ref = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='likesSelf', null=True)
 
     def __str__(self):
-        return (str(self.liker) + ' saved: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))
+        return (str(self.liker) + ' liked: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))
