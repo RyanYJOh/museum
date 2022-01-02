@@ -12,7 +12,7 @@ urlpatterns = [
     path('getThisAns/<str:ques_from>/<int:id>', views.detail_modal, name='others-profile'),
 
     ## Us
-    path('question-from-originals', views.create_ans_us_short, name='question-from-originals'),
+    path('question-from-originals', views.create_ans_us, name='question-from-originals'),
     path('originals-answer/<int:ans_us_id>', views.detail_ans_us, name='originals-answer-detail'),
     path('originals-answer/edit/<int:ans_us_id>', views.update_ans_us, name="update-answer-from-originals"),
     path('originals-answer/delete/<int:ans_us_id>', views.delete_ans_us, name="delete-answer-from-originals"),
@@ -23,8 +23,9 @@ urlpatterns = [
     path('self-answer/edit/<int:ans_self_id>', views.update_ans_self, name="update-answer-from-myself"),
     path('self-answer/delete/<int:ans_self_id>', views.delete_ans_self, name="delete-answer-from-myself"),
 
-    ## Bookmark, Non-member answer
+    ## Bookmark, Likes, Non-member answer
     path('ajax/bookmark', views.bookmark, name="bookmark"),
+    path('ajax/like', views.likes, name="likes"),
     path('ajax/author-favorite', views.author_favorite, name="author-favorite"),
     path('ajax/non-member-answer', registerViews.nonMemberAnswer, name="non-member-answer"),
     path('ajax/clicks', clicks, name="clicks"),
@@ -40,4 +41,7 @@ urlpatterns = [
     ## Search
     # path('search', views.SearchFormView.as_view(), name="search"),
     path('search', views.home_search, name="search"),
+
+    ## This Question
+    path('all-answers/<int:ques_id>', views.this_question, name="all-answers"),
 ] 

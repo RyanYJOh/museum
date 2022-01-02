@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from .models import QuestionsFromSelf, AnswersForFromUs, AnswersForFromSelf, SavedAnswers, CommentAnsUs, CommentAnsSelf
+from .models import QuestionsFromSelf, AnswersForFromUs, AnswersForFromSelf, SavedAnswers, CommentAnsUs, CommentAnsSelf, Likes
 
 class QuestionsFromSelfForm(forms.ModelForm):
     title = forms.CharField(label="", required=False, widget=forms.TextInput( ## Validation은 클라에서 진행
         attrs={
-            'placeholder' : '내가 나에게 던지는 질문',
+            'placeholder' : '제목을 입력해주세요.',
             # 'style':'font-size:3rem;'
         }))
     image = forms.ImageField(label="", required=False)
@@ -34,7 +34,7 @@ class AnswersForFromSelfForm(forms.ModelForm):
 
     subtitle = forms.CharField(label="", required=False, widget=forms.TextInput(
         attrs={
-            'placeholder' : '부제: 무엇에 대한 글인가',
+            'placeholder' : '부제목도 있나요?',
             'style':'font-size:1.063rem;'
         }
     ))
@@ -60,6 +60,15 @@ class SavedAnswersForm(forms.ModelForm):
     class Meta:
         model = SavedAnswers
         fields = ('ans_no', 'ans_type', 'bookmarker')
+
+class LikesForm(forms.ModelForm):
+    ans_no = forms.IntegerField(required=False)
+    ans_type = forms.CharField(required=False)
+    liker = forms.CharField(required=False)
+
+    class Meta:
+        model = Likes
+        fields = ('ans_no', 'ans_type', 'liker')
 
 class CommentAnsUsForm(forms.ModelForm):
     body = forms.CharField(label="", required=False, widget=forms.Textarea(

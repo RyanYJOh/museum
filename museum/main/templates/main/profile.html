@@ -145,11 +145,19 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if u.image %}
                             <div class="row list-img-container-row">
                                 <div class="col list-img-container-col">
                                     <img class='question-img-list' src="{{u.image.url}}" alt="none">
                                 </div>
                             </div>
+                            {% else %}
+                            <div class="row list-img-container-row">
+                                <div class="col list-img-container-col">
+                                    <img class='question-img-list' src="https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg" alt="none">
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="row">
                                 <div class="col">
                                     <p class='text-s link textbunch truncate'>{{u.body}}</p>
@@ -208,11 +216,19 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if s.image %}
                             <div class="row list-img-container-row">
                                 <div class="col text-center list-img-container-col">
                                     <img class= 'question-img-list' src="{{s.question_id.image.url}}" alt="none"/>
                                 </div>
                             </div>
+                            {% else %}
+                            <div class="row list-img-container-row">
+                                <div class="col text-center list-img-container-col">
+                                    <img class='question-img-list' src="https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg" alt="none"/>
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="row">
                                 <div class="col">
                                     <p class='text-s link text-bunch truncate'>{{s.body}}</p>

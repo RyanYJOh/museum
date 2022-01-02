@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="{% static 'museum/images/favicon.ico' %}">
     <link rel="icon" href="{% static 'museum/images/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="stylesheet" href="{% static 'v2__base.css' %}">
 
     <!-- 나눔스퀘어 폰트 -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
@@ -45,12 +46,13 @@
         </div>
         <div class="navbar-text collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav">
+                <!--
                 {% if from_profile_page == 'True' %}
                 <li class='navbar-item'><button class='btn btn-secondary text-s' id='self-ques-btn' type='button' onclick="location.href='https://www.originals.world/question-from-myself'">나에게 질문</button></li>
                 {% else %}
                 <li class='navbar-item'><button class='btn btn-secondary text-s' id='self-ques-btn' type='button' onclick="location.href='https://www.originals.world/question-from-myself'">나에게 질문</button></li>
                 {% endif %}
-
+                -->
                 {% if navbar_authenticated == 'True' %}
                 <li class='navbar-item my-auto'><img class="profile-img-navbar" onclick="location.href='/profile/{{navbar_this_user}}'" src="{{navbar_this_userinfo.profile_image.url}}"></li>
                 {% elif navbar_authenticated == 'False' %}
@@ -67,15 +69,15 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-1"></div>
+            <!-- <div class="col-md-1"></div> -->
             <div class="col-xs-11 col-md-10">
                 {% block content %}
                 {% endblock %}
             </div>
-            <div class="col-md-1">
+            <!-- <div class="col-md-1">
                 {% block sidemenu %}
                 {% endblock %}
-            </div>
+            </div> -->
         </div>
     </div>
 

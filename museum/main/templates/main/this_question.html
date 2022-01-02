@@ -1,0 +1,96 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} 오리지널스 {% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content %}
+<div class="row-h-80"></div>
+
+<div class="row">
+    <div class="col-10 left">
+        <span onclick="history.back()" class="text-s link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>뒤로
+        </span>
+    </div>
+</div>
+<div class="row-h-20"></div>
+<div class="row">
+    <div class="col text-s">
+        하나의 질문, 무수한 정답
+    </div>
+</div>
+<div class="row">
+    <div class="col text-l">
+        {{this_question.question_no}}. {{this_question.title}}
+    </div>
+</div>
+
+{% if this_question.image %}
+<div class="row justify-content-center">
+    <div class="col center">
+        <img class='img-detail-page' src="{{this_question.image.url}}">
+    </div>
+</div>
+{% else %}
+{% endif %}
+<div class="row">
+    <div class="col text-m textbunch">
+        {{this_question.body|linebreaks}}
+    </div>
+</div>
+<!-- <div class="row ">
+    <div class="col right">
+        <button class='btn btn-primary' onclick="location.href='/question-square/answer-to/{{this_question.id}}'">내 생각 적기</button>
+    </div>
+</div> -->
+
+<!-- 답변 리스트 영역 -->
+{% if exists %}
+<div class="row-h-20"></div>
+{% for a in ans_for_this_ques %}
+<div class="row card-section link" onclick="location.href='/originals-answer/{{a.id}}'">
+    <div class="col">
+        <div class="row">
+            <div class="col-5 col-md-4 text-s left my-auto">
+                <a href="/profile/{{a.author_id.userinfo.real_name}}"><img class=" profile-img-list" src="{{a.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{a.author_id.userinfo.real_name}}</a>
+            </div>
+            <div class="col-7 col-md-8 text-s right my-auto">
+                {{a.created_at}}
+            </div>
+        </div>
+        <div class="row-h-20"></div>
+        {% if a.image %}
+        <!-- 일단 이미지는 스킵. 화면 설계 필요 -->
+        <div class="row">
+            <div class="col textbunch text-s">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col text-s">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="row-h-80"></div>
+<div class="row justify-content-center">
+    <div class="col center text-m bolder">
+        아직 아무 답변이 없습니다..
+    </div>
+</div>
+{% endif %}
+
+
+<script>
+
+</script>
+{% endblock %}

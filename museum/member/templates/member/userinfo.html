@@ -7,17 +7,21 @@
 <div class="row-h-80"></div>
 
 <div class="row justify-content-center">
-    <div class="col-10 col-md-6">
+    <div class="col-11 col-md-6">
         <div class="row">
             <div class="col">
+                {% if update_mode %}
+                <div class="text-xl">나에 대해<br> 더 풍성하게.</div>
+                {% else %}
                 <div class="text-xl">가장 중요한<br>마지막 단계.</div>
+                {% endif %}
             </div> 
         </div>
         <div class="row-h-20"></div>
         <div class="row">
             <div class="col">
                 <form method='post' class='form-group' enctype="multipart/form-data"> {% csrf_token %}
-                    {% if update_mode == 'True' %}
+                    {% if update_mode %}
                     <div class="row">
                         <div class="col text-m">
                             <button type='button' onclick="ShowImageField()" class="btn btn-menial" id='show_img_field'>프로필 사진 변경</button>
@@ -34,13 +38,34 @@
                         </div>
                     </div>
                     <div class="row-h-20"></div>
-                    {% if update_mode == 'True' %}
+                    {% if update_mode %}
                     <div class="row">
                         <div class="col text-m">
                             {{form.self_intro|as_crispy_field}}
                         </div>
                     </div>
                     <div class="row-h-20"></div>
+                    {% else %}
+                    {% endif %}
+                    {% if update_mode %}
+                    <div class="row">
+                        <div class="col text-m">
+                            {{form_additional.best_book|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row-h-20"></div>
+                    <div class="row">
+                        <div class="col text-m">
+                            {{form_additional.thoughts|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row-h-20"></div>
+                    <div class="row">
+                        <div class="col text-m">
+                            {{form_additional.enthusiasm|as_crispy_field}}
+                        </div>
+                    </div>
+                    <div class="row-h-40"></div>
                     {% else %}
                     {% endif %}
                     <div class="row">
@@ -57,7 +82,7 @@
                     </div>
                     <div class="row">
                         <div class="col right">
-                            {% if update_mode == 'True' %}
+                            {% if update_mode %}
                             <button class="btn btn-primary" type='submit'>저장하기</button>
                             {% else %}
                             <button class="btn btn-primary" type='submit'>오리지널스 시작하기</button>
@@ -70,7 +95,7 @@
     </div>
 </div>
 <div class="row-h-40"></div>
-{% if update_mode == 'True' %}
+{% if update_mode %}
 <div class="row justify-content-center">
     <div class="col center">
         <a href='/logout' class="underline">로그아웃</a>
@@ -90,12 +115,16 @@
         
         // label 변경 -- update_mode
         var isUpdateMode = '{{update_mode}}'
-        if (isUpdateMode === 'True') {
-            console.log(document.getElementsByTagName('label'))
+        if (isUpdateMode) {
+            document.getElementById('div_id_profile_image').style.display = 'none';
+
             document.getElementsByTagName('label')[0].innerText = "기본 사진으로";
             document.getElementsByTagName('label')[1].innerText = "이름*";
             document.getElementsByTagName('label')[2].innerText = "짧은 소개";
-            document.getElementsByTagName('label')[3].innerText = "";
+            document.getElementsByTagName('label')[3].innerText = "📚 요즘 읽은 책";
+            document.getElementsByTagName('label')[4].innerText = "💬 요즘 하는 생각";
+            document.getElementsByTagName('label')[5].innerText = "🔥 요즘 열심히 하는 것";
+            document.getElementsByTagName('label')[6].innerText = "";
         }
     }
     changeForm();

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from .models import UserInfo
+from .models import UserInfo, UserInfoAdditional
 
 class UserInfoForm(forms.ModelForm):
     PERSONA_TYPE = (
@@ -30,3 +30,21 @@ class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ('real_name', 'profile_image', 'self_intro', 'persona_type')
+
+class UserInfoAdditionalForm(forms.ModelForm):
+    best_book = forms.CharField(max_length=50, required=False, 
+        widget=forms.Textarea(attrs={
+            'rows' : 2
+        }))
+    thoughts = forms.CharField(max_length=100, required=False, 
+        widget=forms.Textarea(attrs={
+            'rows' : 2
+        }))
+    enthusiasm = forms.CharField(max_length=100, required=False, 
+        widget=forms.Textarea(attrs={
+            'rows' : 2
+        }))
+
+    class Meta:
+        model = UserInfoAdditional
+        fields = ('best_book', 'thoughts', 'enthusiasm')

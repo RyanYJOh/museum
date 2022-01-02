@@ -1,7 +1,8 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, HttpResponseRedirect
-from .forms import UserInfoForm
+from .forms import UserInfoAdditionalForm, UserInfoForm
 from django.contrib.auth.models import User
-from .models import UserInfo
+from .models import UserInfo, UserInfoAdditional
 from django.contrib.auth.decorators import login_required
 from datetime import date, datetime
 from django.contrib.auth import login, authenticate
@@ -36,7 +37,14 @@ def create_userinfo(request):
 def update_userinfo(request, username):
     user_to_update = User.objects.get(username = username)
     userinfo_to_update = UserInfo.objects.get(this_user = user_to_update)
+    
+    try: ## 이 유저의 UserInfoAdditional 오브젝트가 존재
+        userinfo_additional = UserInfoAdditional.objects.get(this_user = user_to_update)
+    except ObjectDoesNotExist: ## 이 유저의 UserInfoAdditional 오브젝트가 부재
+        userinfo_additional = False
+
     if request.method == 'POST':
+        ## UserInfo 
         form = UserInfoForm(request.POST, request.FILES)
         if form.is_valid:
             instance = form.save(commit=False)
@@ -54,16 +62,42 @@ def update_userinfo(request, username):
 
             userinfo_to_update.save()
 
+        ## UserInfoAdditional
+        form_additional = UserInfoAdditionalForm(request.POST)
+        if form_additional.is_valid:
+            if userinfo_additional: ## 이 유저의 UserInfoAdditional 존재
+                instance_additional = form_additional.save(commit=False)
+                userinfo_additional.best_book = instance_additional.best_book
+                userinfo_additional.thoughts = instance_additional.thoughts
+                userinfo_additional.enthusiasm = instance_additional.enthusiasm
+
+                userinfo_additional.save()
+
+            else: ## 이 유저의 UserInfoAdditional 부재
+                instance_additional = form_additional.save(commit=False)
+                instance_additional.this_user = request.user
+
+                form_additional.save()
+
         return HttpResponseRedirect('/profile/{}'.format(request.user.username))
 
     ## 수정하기 위해 페이지 진입
     else:
+        ## UserInfo
         form = UserInfoForm(instance=userinfo_to_update)
-        update_mode = 'True'
+        
+        ## UserInfoForm
+        if userinfo_additional:
+            form_additional = UserInfoAdditionalForm(instance=userinfo_additional)
+        else:
+            form_additional = UserInfoAdditionalForm()
+
+        update_mode = True
         # form.fields['real_name'].widget.attrs['readonly'] = True ## 이름은 수정 불가
         message = "내 정보 수정"
         context = {
             'form' : form,
+            'form_additional' : form_additional,
             'message' : message,
             'update_mode' : update_mode,
         }

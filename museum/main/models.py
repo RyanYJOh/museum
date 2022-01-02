@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 # Create your models here.
 
 class QuestionsFromUs(models.Model):
@@ -108,3 +110,18 @@ class CommentAnsSelf(models.Model):
 
     def __str__(self):
         return str(self.author)+', '+str(self.created_at_time)
+
+class Likes(models.Model):
+    ANS_TYPE = (
+        ('us','us'),
+        ('self','self'),
+    )
+
+    objects = models.Manager()
+    liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', null=True, default=None)
+    ans_type = models.CharField(max_length=10, choices=ANS_TYPE)
+    ans_us_ref = models.ForeignKey(AnswersForFromUs, on_delete=models.CASCADE, related_name='likes', null=True)
+    ans_self_ref = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='likes', null=True)
+
+    def __str__(self):
+        return (str(self.liker) + ' saved: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))

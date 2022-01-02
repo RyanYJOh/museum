@@ -18,3 +18,13 @@ class UserInfo(models.Model):
 
     def __str__(self):
         return (str(self.this_user) + ', ' + self.real_name)
+
+class UserInfoAdditional(models.Model):
+    objects = models.Manager()
+    this_user = models.OneToOneField(User, on_delete=models.CASCADE, related_name = 'userinfoadditional', null=True, default=None) ## UserInfo가 생성될 때마다 user에게 link된다.
+    best_book = models.CharField(max_length=100, blank=True, default="📚")
+    thoughts = models.CharField(max_length=100, blank=True, default="💬")
+    enthusiasm = models.CharField(max_length=100, blank=True, default="🔥")
+
+    def __str__(self):
+        return (str(self.this_user))
