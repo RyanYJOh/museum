@@ -557,7 +557,7 @@ def profile(request, username):
         is_owner = 'True'
 
         owner_info = UserInfo.objects.get(this_user=request.user)
-        owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
+        owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-id').annotate(
             count_comments = Count('commentansus'), ## annotate은 댓글 갯수 가져오는 용도.
             count_likes = Count('likes')
         )
@@ -566,7 +566,7 @@ def profile(request, username):
         else:
             pass
 
-        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-id').annotate(
             count_comments = Count('commentansself'), ## annotate은 댓글 갯수 가져오는 용도.
             count_likes = Count('likes')
         )
@@ -579,8 +579,8 @@ def profile(request, username):
         ## See : https://howchoo.com/django/combine-two-querysets-with-different-models
         ## 근데 아래 방법으로 하면 performance가 현저히 낮아진다고 함. 특히 queryset이 커짐에 따라.
         all_answers = sorted(
-            chain(owner_ans_us, owner_ans_self),
-            key=lambda post: post.created_at, reverse=True
+            chain(owner_ans_self, owner_ans_us),
+            key=lambda post: post.id, reverse=True
         )
 
         ## Pagination -> 일단 hold
@@ -598,7 +598,7 @@ def profile(request, username):
         ## 두 queryset 합쳐주기
         all_bookmarked = sorted(
             chain(list__us_saved_by_user, list__self_saved_by_user),
-            key=lambda post: post.created_at, reverse=True
+            key=lambda post: post.id, reverse=True
         )
 
         pre_context = {
