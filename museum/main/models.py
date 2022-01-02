@@ -120,8 +120,8 @@ class Likes(models.Model):
     objects = models.Manager()
     liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', null=True, default=None)
     ans_type = models.CharField(max_length=10, choices=ANS_TYPE)
-    ans_us_ref = models.ForeignKey(AnswersForFromUs, on_delete=models.CASCADE, related_name='likes', null=True)
-    ans_self_ref = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='likes', null=True)
+    ans_us_ref = models.ForeignKey(AnswersForFromUs, on_delete=models.CASCADE, related_name='likesUs', null=True)
+    ans_self_ref = models.ForeignKey(AnswersForFromSelf, on_delete=models.CASCADE, related_name='likesSelf', null=True)
 
     def __str__(self):
         return (str(self.liker) + ' saved: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))

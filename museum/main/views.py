@@ -559,12 +559,12 @@ def profile(request, username):
         owner_info = UserInfo.objects.get(this_user=request.user)
         owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
             count_comments = Count('commentansus'), ## annotate은 댓글 갯수 가져오는 용도.
-            count_likes = Count('likes')
+            count_likes = Count('likesUs')
         )
 
         owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
             count_comments = Count('commentansself'), ## annotate은 댓글 갯수 가져오는 용도.
-            count_likes = Count('likes')
+            count_likes = Count('likesSelf')
         )
         
         ## 문제는, 서로 다른 모델의 queryset을 합쳐서(merge) 보여줘야 한다는 것.
