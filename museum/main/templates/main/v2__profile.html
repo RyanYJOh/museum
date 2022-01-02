@@ -73,17 +73,18 @@
                         {{this_userinfoadditional.best_book}}
                     </li>
                     {% else %}
+                    {% if is_owner == 'True' %}
                     <li class="list-group-item right">
                         <a href='/member/edit-userinfo/{{current_user.username}}' class='link underline'>입력하기</a>
-                    </li>
-                    {% endif %}
-                    {% if is_owner == 'True' %}
-                    <li class="list-group-item list-group-item-header">
-                        💬 <span class='bolder'>요즘 하는 생각</span>
                     </li>
                     {% else %}
                     <li class='list-group-item right'>
                         😴
+                    </li>
+                    {% endif %}
+                    {% endif %}
+                    <li class="list-group-item list-group-item-header">
+                        💬 <span class='bolder'>요즘 하는 생각</span>
                     </li>
                     {% endif %}
                     {% if this_userinfoadditional.thoughts%}
@@ -91,19 +92,19 @@
                         {{this_userinfoadditional.thoughts}}
                     </li>
                     {% else %}
+                    {% if is_owner == 'True' %}
                     <li class="list-group-item right">
                         <a href='/member/edit-userinfo/{{current_user.username}}' class='link underline'>입력하기</a>
-                    </li>
-                    {% endif %}
-                    {% if is_owner == 'True' %}
-                    <li class="list-group-item list-group-item-header">
-                        🔥 <span class='bolder'>요즘 열심히 하는 것</span>
                     </li>
                     {% else %}
                     <li class='list-group-item right'>
                         😴
                     </li>
                     {% endif %}
+                    {% endif %}
+                    <li class="list-group-item list-group-item-header">
+                        🔥 <span class='bolder'>요즘 열심히 하는 것</span>
+                    </li>
                     {% if this_userinfoadditional.enthusiasm %}
                     <li class="list-group-item">
                         {{this_userinfoadditional.enthusiasm }}
