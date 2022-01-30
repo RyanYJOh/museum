@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from register import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,8 +26,17 @@ urlpatterns = [
     path('member/', include('member.urls')),
     path('join/', views.register, name='register'),
     path('', include("django.contrib.auth.urls")),   # Django의 로그인/로그아웃을 위한 built-in 페이지
+    path('', include('allauth.urls')), ## django-allauth
     path('dashboard/', include('dashboard.urls')),
     path('challenge/', include('ndaychallenge.urls')),
     path('question-square/', include('questionsquare.urls')),
+    
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset_done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+    ## 이메일 발송 테스트용
+    path('test/', include('register.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

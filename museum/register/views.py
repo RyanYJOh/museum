@@ -72,3 +72,12 @@ def nonMemberAnswer(request):
             return redirect('/')
         else:
             print("Validation 실패!!!!!!!!!!!!!!!!! due to :", form.errors)
+
+from django.core.mail.message import EmailMessage
+
+def send_email(request):
+    subject = "message"
+    to = ["yyjo1104@naver.com"]
+    from_email = "this.is.originals.official@gmail.com"
+    message = "메지시 테스트"
+    EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()

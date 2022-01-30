@@ -1,5 +1,7 @@
 {% extends 'main/base.html' %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
+{% providers_media_js %}
 
 {% block title %} 돌아오셨군요 {% endblock %}
 
@@ -27,6 +29,11 @@
                             {{form.password|as_crispy_field}}
                         </div>
                     </div>
+                    <div class="row row-topless">
+                        <div class="col text-s left">
+                            <a href="/password_reset" class='link underline'>패스워드를 잊으셨나요?</a>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col right">
                             <button class="btn btn-primary" type='submit'>로그인</button>
@@ -40,6 +47,11 @@
                 <div class="text-m">아직 멤버가 아니신가요? <a href="/join" class='underline'>가입하기</a></div>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="col">
+                <a href="{% provider_login_url 'google' %}">구글 로그인</a>
+            </div>
+        </div> -->
     </div>
 </div>
 <script>
