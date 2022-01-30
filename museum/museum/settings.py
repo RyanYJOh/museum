@@ -22,7 +22,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd(fp^&c7jp#cc6s6*ti#&d8t)mtz756gitv*p')
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd(fp^&c7jp#cc6s6*ti#&d8t)mtz756gitv*p')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # 로컬
@@ -212,11 +212,11 @@ elif DEBUG == False: ## 운영
 CSRF_FAILURE_VIEW = 'main.views.csrf_failure'
 
 ##### Reset Password #####
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_PORT = '587'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-# SECURE_SSL_REDIRECT = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = '587'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SECURE_SSL_REDIRECT = True
