@@ -126,8 +126,6 @@ def home_search(form):
 def d__________main_page(request):
     navbar_context = navbar(request)
 
-    ## Search form
-
     
     ## 답변 리스트 쿼리 -- 검색결과인지 여부 먼저 확인해야 함
     search_form = SearchForm(request.POST)

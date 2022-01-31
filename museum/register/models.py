@@ -2,17 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 # Create your models here.
 
-# class CustomUser(AbstractUser):
-#     USERNAME_FIELD = 'email'
-
-#     def natural_key(self):
-#         return dict(email=self.email)
-
-# CustomUser._meta.get_field('email')._unique = True
-# CustomUser._meta.get_field('email')._blank = False
-# CustomUser._meta.get_field('username')._unique = False
-# CustomUser._meta.get_field('username')._blank = True
-# CustomUser._meta.get_field('username')._null = True
 '''
 class UserManager(BaseUserManager):
     """User 에서 사용하기 위한 UserManager 생성"""

@@ -6,6 +6,7 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+##### secrets.json #####
 # secret_file = os.path.join(BASE_DIR, 'secrets.json')
 # with open(secret_file) as f:
 #     secrets = json.loads(f.read())
@@ -17,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #         error_msg = "Set the {} environment variable".format(setting)
 #         raise ImproperlyConfigured(error_msg)
 # SECRET_KEY = get_secret("SECRET_KEY")
+#########################
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -172,6 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
+'''
 ##### django-allauth #####
 AUTHENTICATION_BACKENDS = (
     # Neede dto login by username in Django admin, regardless of 'allauth'
@@ -181,6 +184,7 @@ AUTHENTICATION_BACKENDS = (
 )
 SITE_ID = 1
 ##########################
+'''
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
