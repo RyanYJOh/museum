@@ -174,7 +174,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
-'''
+
 ##### django-allauth #####
 AUTHENTICATION_BACKENDS = (
     # Neede dto login by username in Django admin, regardless of 'allauth'
@@ -184,7 +184,7 @@ AUTHENTICATION_BACKENDS = (
 )
 SITE_ID = 1
 ##########################
-'''
+
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
