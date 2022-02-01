@@ -216,11 +216,11 @@ elif DEBUG == False: ## 운영
 CSRF_FAILURE_VIEW = 'main.views.csrf_failure'
 
 ##### Reset Password #####
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_PORT = '587'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-# SECURE_SSL_REDIRECT = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = '587'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SECURE_SSL_REDIRECT = True
