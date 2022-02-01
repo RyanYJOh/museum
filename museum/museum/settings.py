@@ -205,8 +205,8 @@ DATABASES['default'].update(db_from_env)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME' : 'he2prkoby',
-    'API_KEY' : '638573786883644',
-    'API_SECRET' : 'dKCUMT8QeufNKtKCpXOXBvVDts0',
+    'API_KEY' : get_secret("CLOUDINARY_API_KEY"),
+    'API_SECRET' : get_secret("CLOUDINARY_API_SECRET"),
 }
 if DEBUG == True : ## 로컬
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
