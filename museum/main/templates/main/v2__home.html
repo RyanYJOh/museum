@@ -283,7 +283,7 @@
             <div class="col center">
                 <ul class="list-group list-group-flush">
                     <li class='link list-group-item list-group-item-home' style="text-decoration: line-through; color:grey;"><h5>💡 XXX</h5></li>
-                    <li class='link list-group-item list-group-item-home' style="text-decoration: line-through; color:grey;"><h5>👫 XXXX</h5></li>
+                    <li class='link list-group-item list-group-item-home' onclick="CommunityModal()"><h5>👫 <span class='bolder theme-color'>커뮤니티</span></h5></li>
                     <li class='link list-group-item list-group-item-home' onclick="location.href='/question-square'"><h5>📢 스퀘어</h5></li>
                     <li class='link list-group-item list-group-item-home' style="text-decoration: line-through; color:grey;"><h5>🔔 XXXX</h5></li>
                 </ul>
@@ -606,9 +606,9 @@
         </div> -->
         <div class="modal-body center">💡 XXX</div>
         <div class="bottom-border"></div>
-        <div class="modal-body center">👫 XXXX</div>
+        <div class="modal-body center" onclick="CommunityModal()">👫 <span class='bolder theme-color'>커뮤니티</span></div>
         <div class="bottom-border"></div>
-        <div class="modal-body center" onclick="location.href='/question-square'">📢 <span class="bolder theme-color">스퀘어</span></div>
+        <div class="modal-body center" onclick="location.href='/question-square'">📢 스퀘어</div>
         <div class="bottom-border"></div>
         <div class="modal-body center">🔔 XXXX</div>
       </div>
@@ -940,7 +940,10 @@
         window.alert('이 글의 링크가 복사되었어요.');
     }
 
-    window.onload = NoticeModal();
+    // window.onload = NoticeModal();
+    function CommunityModal() {
+        $('#notice-modal').modal()
+    }
     
 </script>
 
