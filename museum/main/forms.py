@@ -6,7 +6,7 @@ from .models import QuestionsFromSelf, AnswersForFromUs, AnswersForFromSelf, Sav
 class QuestionsFromSelfForm(forms.ModelForm):
     title = forms.CharField(label="", required=False, widget=forms.TextInput( ## Validation은 클라에서 진행
         attrs={
-            'placeholder' : '제목을 입력해주세요.',
+            'placeholder' : '제목은 질문의 형태로',
             # 'style':'font-size:3rem;'
         }))
     image = forms.ImageField(label="", required=False)

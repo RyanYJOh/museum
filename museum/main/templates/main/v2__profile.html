@@ -231,7 +231,7 @@
                             <!-- <svg class=" text-s radio-btn-text bi bi-grid" id='radio-all-text' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#ed6f63" viewBox="0 0 16 16">
                                 <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
                               </svg> -->
-                            <span class="text-m radio-btn-text" id='radio-all-text' style="border-bottom: 2px solid #ed6f63; color: #ed6f63; font-weight: 800;" >모든 글</span>
+                              <span class="text-m radio-btn-text" id='radio-all-text' >모든 글</span>
                         </label>
                     </div>
 
@@ -242,7 +242,7 @@
                             <!-- <svg class="mobile-only text-m radio-btn-text bi bi-bookmark bi bi-star" id='radio-favorite-text' xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ed6f63" viewBox="0 0 16 16">
                                 <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
                               </svg> -->
-                            <span class="text-m radio-btn-text" id='radio-favorite-text' >별표한 글</span>
+                              <span class="text-m radio-btn-text" id='radio-favorite-text' style="border-bottom: 2px solid #ed6f63; color: #ed6f63; font-weight: 800;" >별표한 글</span>
                         </label>
                     </div>
 
@@ -769,13 +769,13 @@
         var checked = document.querySelector('input[name=profile-content-displayed]:checked')
         var checkedSibling = checked.nextElementSibling
         var allRadioBtn = document.querySelectorAll('input[name=profile-content-displayed]')
-        
+        console.log(allRadioBtn)
         allRadioBtn[0].nextElementSibling.setAttribute('style', 'border-bottom: none; color: black; font-weight: 400;');
         allRadioBtn[1].nextElementSibling.setAttribute('style', 'border-bottom: none; color: black; font-weight: 400;');
 
         if (allRadioBtn.length == 3) {
             //console.log('yes')
-            allRadioBtn[2].nextElementSibling.setAttribute('style', 'border-bottom: none; color: black; font-weight: 400;');
+            allRadioBtn[0].nextElementSibling.setAttribute('style', 'border-bottom: none; color: black; font-weight: 400;');
         } else {
             //console.log('no')
         }
@@ -828,7 +828,26 @@
             authorFavoriteFalse[i].style.display = 'none';
             i = i + 1;
         }
-        console.log('showFavorites()')
+        
+    }
+
+    // 초기 로드 될 때
+    function initial_showFavorites() {
+            
+        var allPosts = document.getElementById('my-posts');
+        var bookmarks = document.getElementById('my-bookmarks');
+    
+        bookmarks.style.display = 'none';
+        allPosts.style.display = 'flex';
+    
+        var authorFavoriteFalse = document.getElementsByClassName('author-favorite-False');
+        var lengthOfFalse = authorFavoriteFalse.length
+        
+        var i = 0
+        while (i <= lengthOfFalse) {
+            authorFavoriteFalse[i].style.display = 'none';
+            i = i + 1;
+        }
     }
 
     // Bookmark 기능
@@ -1152,7 +1171,7 @@
     }
 
     window.onload = function() {
-        var checked = document.querySelector('input[name=profile-content-displayed]:checked')
+        initial_showFavorites();
     }
 </script>
 {% endblock %}
