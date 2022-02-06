@@ -544,10 +544,8 @@ def profile(request, username):
     ## 1. UserInfoAdditional
     try:
         this_userinfoadditional = UserInfoAdditional.objects.get(this_user=profile_owner)
-        print('userinfo additional exists')
     except ObjectDoesNotExist:
         this_userinfoadditional = {}
-        print('userinfo additional does not exist')
     ###############################
 
     ## 내 프로필
