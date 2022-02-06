@@ -552,7 +552,7 @@ def profile(request, username):
 
     ## 내 프로필
     if profile_owner == request.user:
-        is_owner = 'True'
+        is_owner = True
 
         owner_info = UserInfo.objects.get(this_user=request.user)
         owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
@@ -610,7 +610,7 @@ def profile(request, username):
     
     ## 타인 프로필
     else:
-        is_owner = 'False'
+        is_owner = False
 
         ## 이 사람의 정답
         owner_ans_us = AnswersForFromUs.objects.filter(author_id=profile_owner, is_shared=True).order_by('-created_at_time').annotate(
