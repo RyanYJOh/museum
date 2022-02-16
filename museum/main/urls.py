@@ -12,10 +12,11 @@ urlpatterns = [
     path('getThisAns/<str:ques_from>/<int:id>', views.detail_modal, name='others-profile'),
 
     ## Us
-    path('question-from-originals', views.create_ans_us, name='question-from-originals'),
+    path('question-from-originals', views.create_ans_us_for_today, name='question-from-originals'),
     path('originals-answer/<int:ans_us_id>', views.detail_ans_us, name='originals-answer-detail'),
     path('originals-answer/edit/<int:ans_us_id>', views.update_ans_us, name="update-answer-from-originals"),
     path('originals-answer/delete/<int:ans_us_id>', views.delete_ans_us, name="delete-answer-from-originals"),
+    path('question-from-originals/<int:ques_id>', views.create_ans_us_not_for_today, name="create-ans-us-not-for-today"),
     
     ## Self
     path('question-from-myself', views.create_ans_self, name="question-from-myself"),
@@ -44,4 +45,7 @@ urlpatterns = [
 
     ## This Question
     path('all-answers/<int:ques_id>', views.this_question, name="all-answers"),
+
+    ## Notice
+    path('news', views.notice, name="notice"),
 ] 

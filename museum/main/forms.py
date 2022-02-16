@@ -25,10 +25,11 @@ class AnswersForFromUsForm(forms.ModelForm):
     ))
     image = forms.ImageField(label="", required=False)
     is_shared = forms.BooleanField(required=False)
+    from_today = forms.BooleanField(required=False)
 
     class Meta:
         model = AnswersForFromUs
-        fields = ('body', 'image', 'is_shared')
+        fields = ('body', 'image', 'is_shared', 'from_today')
 
 class AnswersForFromSelfForm(forms.ModelForm):
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import QuestionsFromUs, QuestionsFromSelf, AnswersForFromSelf, AnswersForFromUs, RandomImages, SavedAnswers, CommentAnsUs, CommentAnsSelf, Likes
+from .models import QuestionsFromUs, QuestionsFromSelf, AnswersForFromSelf, AnswersForFromUs, RandomImages, SavedAnswers, CommentAnsUs, CommentAnsSelf, Likes, Notice
 # Register your models here.
 
 class MainAdmin(admin.ModelAdmin):
@@ -14,3 +14,4 @@ admin.site.register(RandomImages, MainAdmin)
 admin.site.register(CommentAnsUs, MainAdmin)
 admin.site.register(CommentAnsSelf, MainAdmin)
 admin.site.register(Likes, MainAdmin)
+admin.site.register(Notice, MainAdmin)

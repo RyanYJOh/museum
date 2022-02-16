@@ -62,7 +62,7 @@ def nonMemberAnswer(request):
             random_image = RandomImages.objects.get(id=randImg())
             instance.image = random_image.image
             instance.is_shared = data['is_shared']
-            instance.question_id = QuestionsFromUs.objects.get(question_no=1)
+            instance.question_id = data['question_no']
             instance.author_id = request.user
             instance.created_at = data['created_at']
             instance.updated_at = instance.created_at

@@ -42,6 +42,7 @@ class AnswersForFromUs(models.Model):
     is_shared = models.BooleanField(default=True)
     on_magazine = models.BooleanField(default=False)
     author_favorite = models.BooleanField(default=False)
+    from_today_ques = models.BooleanField(default=True)
 
     def __str__(self):
         # return (str(self.question_id.question_no) + ' answered by: ' + str(self.author_id) + ', on '+str(self.created_at))
@@ -125,3 +126,14 @@ class Likes(models.Model):
 
     def __str__(self):
         return (str(self.liker) + ' liked: ' + '"' + str(self.ans_type) + '", ' + str(self.ans_us_ref) + ' or ' + str(self.ans_self_ref))
+
+class Notice(models.Model):
+    objects = models.Manager()
+    label = models.CharField(max_length=10, blank=True)
+    title = models.CharField(max_length=100, blank=False)
+    body = models.TextField(blank=False)
+    image = models.ImageField(null=True, blank=True, upload_to='notice_img')
+    created_at = models.DateField(auto_now_add=False)
+
+    def __str__(self):
+        return ('['+str(self.created_at)+'] '+str(self.title))

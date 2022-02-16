@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, HttpResponseRedirect, HttpRespons
 from django.views.generic import FormView
 from django.contrib.auth.models import User
 from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm, SearchForm, LikesForm
-from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages, Likes
+from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages, Likes, Notice
 from member.models import UserInfo, UserInfoAdditional
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -250,7 +250,9 @@ def main_page(request):
 
     ## [질문 모아보기] 필터를 위해 지금까지 답변된 질문들 가져오기
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
-    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('-question_no')
+    ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('-question_no').annotate(
+        count_answers = Count('answerforfromus')
+    )
 
     ## user authentication
     if request.user.is_authenticated:
@@ -1021,6 +1023,252 @@ def create_ans_us(request):
         context = {**pre_context, **navbar_context}
         return render(request, 'main/C_ans_us.html', context)
 
+def create_ans_us_for_today(request):
+    now = timezone.now()
+    string__today = str(now).split()[0]
+    today = datetime.strptime(string__today, '%Y-%m-%d').date()
+    
+    navbar_context = navbar(request)
+
+    ## 로그인되어있는 경우와 아닌 경우 구분해야 함. 첫번째 질문에 한하여, 로그인 안되어 있어도 일단 답변은 가능. 하지만 곧바로 가입/로그인 유도해야 한다.
+    if request.user.is_authenticated == False:
+        today_ques = QuestionsFromUs.objects.get(question_no=1)
+        is_member = 'False'
+        mode = 'create'
+
+        pre_context = {
+            'today_ques' : today_ques,
+            'is_member' : is_member,
+            'mode' : mode,
+        }
+
+        context = {**navbar_context, **pre_context}
+        return render(request, 'main/C_ans_us.html', context)
+
+    ## 로그인 되어 있는 경우
+    elif request.user.is_authenticated:
+        this_user = request.user
+        is_member = "True"
+        mode = 'create'
+
+        ## 북마크된 답변들 가져오기
+        us_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_us_ref', flat=True)
+        list__us_saved_by_user = list(us_saved_by_user)
+        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_self_ref', flat=True)
+        list__self_saved_by_user = list(self_saved_by_user)
+
+        form = AnswersForFromUsForm(request.POST)
+        ## 이 유저가 답변을 생성한 적이 없는 경우 (initial) => empty queryset
+        if not AnswersForFromUs.objects.filter(author_id=request.user):            
+            ## 첫번째 질문 가져오기
+            today_ques = QuestionsFromUs.objects.get(question_no=1)
+            today_ques_id = today_ques.id
+
+            ## 이 질문에 대한 답변들
+            all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques_id, is_shared=True).order_by('-created_at_time')
+            
+            ## 답변 제출
+            if request.method == 'POST':
+                form = AnswersForFromUsForm(request.POST, request.FILES)
+                if form.is_valid():
+                    instance = form.save(commit=False)
+                    # 이미지 유무 체크
+                    if form.cleaned_data.get('image'):
+                        pass
+                    else:
+                        random_image = RandomImages.objects.get(id=randImg())
+                        instance.image = random_image.image
+
+                    instance.author_id = request.user
+                    instance.question_id = today_ques
+                    instance.from_today = True
+
+                    instance.save()
+                    return redirect('/')
+        
+        ## 첫번째 질문에 답을 한 경우 (두번째 이후인 경우)
+        else:
+            ## 가장 최근 질문의 가장 최근 답변일 가져오기
+            # 1) 이 유저가 '오늘의 질문 받기'를 통해 답변한 답변들 모두 가져오기
+            # answers_created_from_today = AnswersForFromUs.objects.filter(author_id=request.user, from_today_ques=True).values('question_id').order_by('-question_id')
+            answers_created_from_today = AnswersForFromUs.objects.filter(author_id=request.user, from_today_ques=True).order_by('-question_id')
+            list__all_ques_from_today = list(answers_created_from_today) # 딕셔너리가 들어있는 리스트
+            
+            # question_id 중 최댓값, 즉 list__all_ques_from_today의 0번째 인덱스 가져오기
+            latest_ques_id = list__all_ques_from_today[0].question_id.id
+            # 이 질문의 created_at 가져오기
+            latest_created_at = list__all_ques_from_today[0].created_at
+            # 가장 최근 질문의 가장 최근 답변일이 가져와졌다. 이 날짜와 today의 값이 서로 같은지 다른지 확인해줘야 한다.
+            if latest_created_at < today:
+                # 다음 질문 가져오기
+                latest_ques = QuestionsFromUs.objects.get(id=latest_ques_id)
+                today_ques_no = latest_ques.question_no + 1
+                today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+
+                ## 이 질문에 대한 answer가 있는지 확인
+                while True:
+                    if AnswersForFromUs.objects.filter(author_id=request.user, question_id=today_ques.id): # 이미 존재
+                        today_ques_no = today_ques_no+1
+                        today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+                    else: # 그대로 진행
+                        break
+
+                ## 이 질문에 대한 답변들
+                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
+
+                if request.method == "POST":
+                    form = AnswersForFromUsForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        instance = form.save(commit=False)
+                        # 이미지 유무 체크
+                        if form.cleaned_data.get('image'):
+                            pass
+                        else:
+                            random_image = RandomImages.objects.get(id=randImg())
+                            instance.image = random_image.image
+                        instance.author_id = request.user
+                        instance.question_id = today_ques
+                        instance.from_today = True
+                        instance.save()
+
+                        return redirect('/')
+
+            ## 아직 날짜가 지나지 않았을 때 (수정만 가능함)
+            elif latest_created_at == today:
+                ## 오늘의 질문은 latest_ques와 같음
+                latest_ques = QuestionsFromUs.objects.get(id=latest_ques_id)
+                today_ques_no = latest_ques.question_no
+                today_ques = QuestionsFromUs.objects.get(question_no=today_ques_no)
+                next_ques = QuestionsFromUs.objects.get(question_no = today_ques_no+1)
+
+                all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=today_ques.id, is_shared=True).order_by('-created_at_time')
+                my_ans_for_this_ques = AnswersForFromUs.objects.get(question_id=today_ques.id, author_id=this_user)
+                message = "질문은 하루에 1개만 제공됩니다."
+                next_ques_ready = 'False'
+                        
+                pre_context = {
+                    'today_ques' : today_ques,
+                    'all_ans_for_this_ques' : all_ans_for_this_ques,
+                    'my_ans_for_this_ques' : my_ans_for_this_ques,
+                    'message' : message,
+                    'next_ques_ready' : next_ques_ready,
+                    'next_ques' : next_ques,
+                    'list__us_saved_by_user' : list__us_saved_by_user,
+                    'list__self_saved_by_user' : list__self_saved_by_user,
+                    'mode' : mode
+                }
+
+                context = {**pre_context, **navbar_context}
+                return render(request, 'main/C_ans_us.html', context)
+
+        pre_context = {
+            'form' : form,
+            'today_ques' : today_ques,
+            'this_user' : this_user,
+            'all_ans_for_this_ques' : all_ans_for_this_ques,
+            'is_member' : is_member,
+            'list__us_saved_by_user' : list__us_saved_by_user,
+            'list__self_saved_by_user' : list__self_saved_by_user,
+            'mode' : mode
+        }
+
+        context = {**pre_context, **navbar_context}
+        return render(request, 'main/C_ans_us.html', context)
+
+def create_ans_us_not_for_today(request, ques_id):
+    now = timezone.now()
+    string__today = str(now).split()[0]
+    today = datetime.strptime(string__today, '%Y-%m-%d').date()
+    
+    navbar_context = navbar(request)
+
+    this_ques = QuestionsFromUs.objects.get(id=ques_id)
+    ## 이 질문에 대한 답변들
+    all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=this_ques, is_shared=True).order_by('-created_at_time')
+    
+    ## 로그인되어있는 경우와 아닌 경우 구분해야 함. 첫번째 질문에 한하여, 로그인 안되어 있어도 일단 답변은 가능. 하지만 곧바로 가입/로그인 유도해야 한다.
+    if request.user.is_authenticated == False:
+        is_member = 'False'
+        mode = 'create'
+
+        pre_context = {
+            'this_ques' : this_ques,
+            'is_member' : is_member,
+            'mode' : mode,
+        }
+
+        context = {**navbar_context, **pre_context}
+        return render(request, 'main/C_ans_us_not_today.html', context)
+
+    ## 로그인 되어 있는 경우
+    elif request.user.is_authenticated:
+        this_user = request.user
+        is_member = "True"
+        mode = 'create'
+
+        ## 북마크된 답변들 가져오기
+        us_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_us_ref', flat=True)
+        list__us_saved_by_user = list(us_saved_by_user)
+        self_saved_by_user = SavedAnswers.objects.filter(bookmarker=this_user, ans_type='us').values_list('ans_self_ref', flat=True)
+        list__self_saved_by_user = list(self_saved_by_user)
+
+        form = AnswersForFromUsForm(request.POST)
+        
+        if AnswersForFromUs.objects.filter(author_id=request.user, question_id=this_ques): # 이 질문에 대한 답변이 있음
+            all_ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=this_ques.id, is_shared=True).order_by('-created_at_time')
+            my_ans_for_this_ques = AnswersForFromUs.objects.get(question_id=this_ques.id, author_id=this_user)
+            message = "이 질문에 이미 답을 했어요."
+            answerable = False
+                    
+            pre_context = {
+                'this_ques' : this_ques,
+                'all_ans_for_this_ques' : all_ans_for_this_ques,
+                'my_ans_for_this_ques' : my_ans_for_this_ques,
+                'message' : message,
+                'answerable' : answerable,
+                'list__us_saved_by_user' : list__us_saved_by_user,
+                'list__self_saved_by_user' : list__self_saved_by_user,
+                'mode' : mode
+            }
+
+            context = {**pre_context, **navbar_context}
+            return render(request, 'main/C_ans_us_not_today.html', context)
+        
+        else:
+            answerable = True
+        ## 답변 제출
+            if request.method == 'POST':
+                form = AnswersForFromUsForm(request.POST, request.FILES)
+                if form.is_valid():
+                    instance = form.save(commit=False)
+                    # 이미지 유무 체크
+                    if form.cleaned_data.get('image'):
+                        pass
+                    else:
+                        random_image = RandomImages.objects.get(id=randImg())
+                        instance.image = random_image.image
+
+                    instance.author_id = request.user
+                    instance.question_id = QuestionsFromUs.objects.get(id=ques_id) 
+                    instance.from_today = False
+                    instance.save()
+                    return redirect('/')
+    
+        pre_context = {
+            'form' : form,
+            'this_ques' : this_ques,
+            'this_user' : this_user,
+            'all_ans_for_this_ques' : all_ans_for_this_ques,
+            'is_member' : is_member,
+            'list__us_saved_by_user' : list__us_saved_by_user,
+            'list__self_saved_by_user' : list__self_saved_by_user,
+            'mode' : mode
+        }
+
+        context = {**pre_context, **navbar_context}
+        return render(request, 'main/C_ans_us_not_today.html', context)
+
+
 def detail_ans_us(request, ans_us_id):
     navbar_context = navbar(request)
 
@@ -1586,3 +1834,13 @@ class SearchFormView(FormView):
         #     }
 
         return render(self.request, self.template_name, context)
+
+##### 공지사항 #####
+def notice(request):
+    all_notice = Notice.objects.all().order_by('-created_at')
+    
+    context = {
+        'all_notice' : all_notice,
+    }
+
+    return render(request, 'main/notice.html', context)

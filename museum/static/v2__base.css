@@ -569,6 +569,13 @@ button, button:focus, input[type="button"]:focus, button:active, input[type="but
 .alert {
     
 }
+.badge {
+    font-size: 50% !important;
+}
+.badge-alert {
+    color: #fff !important;
+    background-color: #169a8f !important;
+}
 .badge-empty {
     width: 90%;
     height: auto;
