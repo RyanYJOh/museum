@@ -639,14 +639,14 @@
 
         noticeObject = {
             'displayed' : false,
-            'expiresBy' : '2021-12-31',
+            'expiresBy' : '2022-12-31',
         }
         
-        var notice = localStorage.getItem('notice')
+        var notice = localStorage.getItem('notice_modal')
         console.log(notice)
         if (notice == null) {
             console.log('there is no NOTICE')
-            localStorage.setItem('notice', JSON.stringify(noticeObject))
+            localStorage.setItem('notice_modal', JSON.stringify(noticeObject))
         } else {
             noticeParsed = JSON.parse(notice)
             console.log("there IS a notice, and")
@@ -654,7 +654,7 @@
 
             if (today >= expireDate) {
                 console.log('the date has expired')
-                localStorage.removeItem('notice')    
+                localStorage.removeItem('notice_modal')    
             } else if (today < expireDate) {
                 console.log('the date has not been expired, and')
                 if (noticeParsed.displayed == false) {
@@ -662,7 +662,7 @@
                     console.log($('#notice-modal'))
                     $('#notice-modal').modal('show');
                     noticeParsed.displayed = true
-                    localStorage.setItem('notice', JSON.stringify(noticeParsed))
+                    localStorage.setItem('notice_modal', JSON.stringify(noticeParsed))
                 } else if (noticeParsed.displayed ==  true) {
                     console.log('the modal has already been displayed. THE END.')
                 }
@@ -831,7 +831,9 @@
         badge.style.display = 'none'
         console.log('hidden')
     }
+
     window.onload = NoticeBadge();
+    window.onload = NoticeModal();
 </script>
 
 {%endblock%}
