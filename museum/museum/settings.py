@@ -1,23 +1,24 @@
 from pathlib import Path
 import os, json
 from django.core.exceptions import ImproperlyConfigured
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ##### secrets.json #####
-secret_file = os.path.join(BASE_DIR, 'secrets.json')
-with open(secret_file) as f:
-    secrets = json.loads(f.read())
+# secret_file = os.path.join(BASE_DIR, 'secrets.json')
+# with open(secret_file) as f:
+#     secrets = json.loads(f.read())
 
-def get_secret(setting, secrets=secrets):
-    try:
-        return secrets[setting]
-    except KeyError:
-        error_msg = "Set the {} environment variable".format(setting)
-        raise ImproperlyConfigured(error_msg)
-SECRET_KEY = get_secret("SECRET_KEY")
+# def get_secret(setting, secrets=secrets):
+#     try:
+#         return secrets[setting]
+#     except KeyError:
+#         error_msg = "Set the {} environment variable".format(setting)
+#         raise ImproperlyConfigured(error_msg)
+# SECRET_KEY = get_secret("SECRET_KEY")
 #########################
 
 # Quick-start development settings - unsuitable for production
@@ -25,6 +26,7 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-1ypf7l=che+smd(fp^&c7jp#cc6s6*ti#&d8t)mtz756gitv*p')
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True # 로컬
@@ -205,8 +207,8 @@ DATABASES['default'].update(db_from_env)
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME' : 'he2prkoby',
-    'API_KEY' : get_secret("CLOUDINARY_API_KEY"),
-    'API_SECRET' : get_secret("CLOUDINARY_API_SECRET"),
+    'API_KEY' : config("CLOUDINARY_API_KEY"),
+    'API_SECRET' : config("CLOUDINARY_API_SECRET"),
 }
 if DEBUG == True : ## 로컬
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -219,8 +221,8 @@ CSRF_FAILURE_VIEW = 'main.views.csrf_failure'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_PORT = '587'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = get_secret("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = get_secret("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # SECURE_SSL_REDIRECT = True
