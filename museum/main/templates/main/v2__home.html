@@ -281,11 +281,55 @@
     <div class="col-md-3 pc-only">
         <div class="row justify-content-center">
             <div class="col center">
-                <ul class="list-group list-group-flush">
-                    <li class='link list-group-item list-group-item-home' style="text-decoration: line-through; color:grey;"><h5>💡 XXX</h5></li>
-                    <li class='link list-group-item list-group-item-home' onclick="CommunityModal()"><h5>👫 <span class='bolder theme-color'>커뮤니티</span></h5></li>
-                    <li class='link list-group-item list-group-item-home' onclick="location.href='/question-square'"><h5>📢 스퀘어</h5></li>
-                    <li class='link list-group-item list-group-item-home' id='right-list-item-news'><h5>🔔 새 소식 </h5></li> <!-- onclick="location.href='/news'"은 JS > NoticeBadge()에서 -->
+                <ul class="list-group">
+                    <div class="row my-auto">
+                        <div class="col col-6 left text-m bolder">👫 커뮤니티</div>
+                        <div class="col col-6 right text-s my-auto underline">
+                            <a href="https://open.kakao.com/o/grDFiMEd" class="theme-color">구경하기</a>
+                        </div>
+                    </div>
+                    <div class="row list-group-item-home">
+                        <div class="col text-s left">
+                            <p>오리지널스는 오픈 단톡방을 운영하고 있어요. 멋진 사람들과 교류해보세요!<br>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row-h-20"></div>
+                    <div class="row bottom-border"></div>
+                    <div class="row-h-20"></div>
+
+                    <div class="row my-auto">
+                        <div class="col col-6 left text-m bolder">💡 질문 스퀘어</div>
+                        <div class="col col-6 right text-s my-auto underline"><a href="/question-square">더보기</a></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% for s in square %}
+                            <div class="row">
+                                <div class="col text-s left card-body feed-card">
+                                    <div class="row row-topless link" onclick="location.href='/question-square/answers-of/{{s.id}}'">
+                                        <div class="col col-10">Q. {{s.title}}</a></div>
+                                        <div class="col col-2 my-auto">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="row-h-20"></div>
+                    <div class="row bottom-border"></div>
+                    <div class="row-h-20"></div>
+
+                    <div class="row my-auto">
+                        <div class="col col-6 left text-m bolder">🔔 새 소식</div>
+                        <div class="col col-6 right text-s my-auto underline" id='right-list-item-news'>보러 가기</div>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -350,7 +394,6 @@
     </div>
 </div>
 
-
 <!-- 검색 모달 -->
 <div class="modal fade" tabindex="-1" role="dialog" id="search-modal">
     <div class="modal-dialog" role="document">
@@ -378,7 +421,7 @@
     </div>
 </div>
 
-<!-- Floating button -->
+<!-- 모바일 : Floating button -->
 <div class="row mobile-only">
     <div class="col center">
         <div class="fab link text-l ml-auto" onclick="FloatingBtn()">
@@ -389,7 +432,7 @@
     </div>
 </div>
 
-<!-- 더보기 메뉴 모달 -->
+<!-- 모바일 : 더보기 메뉴 모달 -->
 <div class="modal fade " tabindex="-1" role="dialog" id="menu-modal" style="text-align:center">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">

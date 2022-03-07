@@ -2,6 +2,8 @@ from django.forms.widgets import RadioSelect
 from django.shortcuts import render, redirect, HttpResponseRedirect, HttpResponse
 from django.views.generic import FormView
 from django.contrib.auth.models import User
+
+from questionsquare.models import QuestionsFromOthers
 from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm, SearchForm, LikesForm
 from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages, Likes, Notice
 from member.models import UserInfo, UserInfoAdditional
@@ -207,7 +209,7 @@ def d__________main_page(request):
 
     context = {**navbar_context, **pre_context}
     return render(request, 'main/v2__home.html', context)
-
+ 
 def main_page(request):
     navbar_context = navbar(request)
     
@@ -254,6 +256,9 @@ def main_page(request):
         count_answers = Count('answerforfromus')
     )
 
+    ## 스퀘어 질문들 5개 가져오기
+    square = QuestionsFromOthers.objects.all().order_by('-created_at')[:5]
+
     ## user authentication
     if request.user.is_authenticated:
         ## UserInfo 작성했는지 확인
@@ -288,6 +293,7 @@ def main_page(request):
                 'ques_no_answered_sofar' : ques_no_answered_sofar,
                 'all_answers' : all_answers_paginated,
                 'is_search_result' : is_search_result,
+                'square' : square,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
@@ -306,6 +312,7 @@ def main_page(request):
             # 'all_ans_self_paginated' : all_ans_self_paginated,
             'all_answers' : all_answers_paginated,
             'is_search_result' : is_search_result,
+            'square' : square,
         }
 
     context = {**navbar_context, **pre_context}
