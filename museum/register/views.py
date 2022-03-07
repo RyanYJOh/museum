@@ -11,13 +11,14 @@ import random
 
 def register(request):
     if request.method == 'POST':
-        '''
+        
         posted = request.POST.copy()
-        posted['username'] = request.POST['email'].split('@')[0]
+        posted['email'] = request.POST['username']
+        
         request.POST = posted
         form = RegisterForm(posted)
-        '''
-        form = RegisterForm(request.POST)
+        
+        # form = RegisterForm(request.POST)
         if form.is_valid:
             form.save()
             '''
@@ -31,7 +32,7 @@ def register(request):
             
             instance.save()
             '''
-
+            print('REGISTERED!!!!')
             ## 자동 로그인
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')

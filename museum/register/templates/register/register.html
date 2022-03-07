@@ -22,11 +22,11 @@
                             {{form.username|as_crispy_field}}
                         </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col">
                             {{form.email|as_crispy_field}}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row">
                         <div class="col">
                             {{form.password1|as_crispy_field}}
@@ -60,11 +60,15 @@
 
     function changeForm() {
         // label 변경
+        /*
         document.getElementsByTagName('label')[0].innerText = "아이디*";
         document.getElementsByTagName('label')[1].innerText = "이메일*";
         document.getElementsByTagName('label')[2].innerText = "패스워드*";
         document.getElementsByTagName('label')[3].innerText = "패스워드 확인*";
-        
+        */
+        document.getElementsByTagName('label')[0].innerText = "이메일*";
+        document.getElementsByTagName('label')[1].innerText = "패스워드*";
+        document.getElementsByTagName('label')[2].innerText = "패스워드 확인*";
         // label 사이즈 변경
         document.getElementsByTagName('label')[0].classList.add('form-label');
         document.getElementsByTagName('label')[1].classList.add('form-label');
@@ -72,8 +76,8 @@
         document.getElementsByTagName('label')[3].classList.add('form-label');
         
         // placeholder 변경
-        document.getElementById('id_username').placeholder = '이 아이디로 가입돼요';
-        document.getElementById('id_email').placeholder = '이상한 거 안 보낼게요';
+        document.getElementById('id_username').placeholder = '이 아이디로 가입돼요???????'; 
+        //document.getElementById('id_email').placeholder = '이상한 거 안 보낼게요';
         document.getElementById('id_password1').placeholder = '영문+숫자 조합 8자 이상';
         document.getElementById('id_password2').placeholder = '실수하지 말고';
 
