@@ -222,7 +222,6 @@ def main_page(request):
         is_search_result=True
 
         search_context = home_search(search_form)
-        print('SEARCH RESULT : ', search_context)
         all_ans_us = search_context['all_ans_us']
         all_ans_self = search_context['all_ans_self']
 
@@ -561,7 +560,7 @@ def profile(request, username):
     try:
         this_userinfoadditional = UserInfoAdditional.objects.get(this_user=profile_owner)
     except ObjectDoesNotExist:
-        this_userinfoadditional = {}
+        return redirect('/member/edit-userinfo/'+username)
     ###############################
 
     ## 내 프로필
@@ -570,15 +569,15 @@ def profile(request, username):
 
         owner_info = UserInfo.objects.get(this_user=request.user)
         owner_ans_us = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
-            count_comments = Count('commentansus'), ## annotate은 댓글 갯수 가져오는 용도.
-            count_likes = Count('likesUs')
-        )
-
-        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
-            count_comments = Count('commentansself'), ## annotate은 댓글 갯수 가져오는 용도.
-            count_likes = Count('likesSelf')
+            count_comments = Count('commentansus', distinct=True), ## annotate은 댓글 갯수 가져오는 용도.
+            count_likes = Count('likesUs', distinct=True)
         )
         
+        owner_ans_self = AnswersForFromSelf.objects.filter(author_id=request.user).order_by('-created_at_time').annotate(
+            count_comments = Count('commentansself', distinct=True), ## annotate은 댓글 갯수 가져오는 용도.
+            count_likes = Count('likesSelf', distinct=True)
+        )
+
         ## 문제는, 서로 다른 모델의 queryset을 합쳐서(merge) 보여줘야 한다는 것.
         ## See : https://howchoo.com/django/combine-two-querysets-with-different-models
         ## 근데 아래 방법으로 하면 performance가 현저히 낮아진다고 함. 특히 queryset이 커짐에 따라.
@@ -588,9 +587,9 @@ def profile(request, username):
         )
 
         ## Pagination -> 일단 hold
-        # paginator_answers = Paginator(all_answers, 10)
-        # page_all_answers = request.GET.get('page')
-        # all_answers_paginated = paginator_answers.get_page(page_all_answers)
+        paginator_answers = Paginator(all_answers, 10)
+        page_all_answers = request.GET.get('page')
+        all_answers_paginated = paginator_answers.get_page(page_all_answers)
         
         ## 북마크한 글
         us_saved_by_user = SavedAnswers.objects.filter(bookmarker=request.user, ans_type='us').values_list('ans_us_ref', flat=True)
@@ -610,7 +609,7 @@ def profile(request, username):
             'owner_info' : owner_info,
             'owner_ans_us' : owner_ans_us,
             'owner_ans_self' : owner_ans_self,
-            'all_answers' : all_answers,
+            'all_answers' : all_answers_paginated,
             'is_owner' : is_owner,
             'list__us_saved_by_user' : list__us_saved_by_user,
             'list__self_saved_by_user' : list__self_saved_by_user,

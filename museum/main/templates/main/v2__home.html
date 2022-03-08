@@ -79,6 +79,7 @@
 </div>
 
 <div class="row">
+    <!-- 피드 -->
     <div class="col-xs-12 col-md-9">
         <div class="row fade-in" style='display:flex;'>
             {% for u in all_answers %}
@@ -152,6 +153,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="row row-interactions">
+                            <!-- 오리지널스가 던지는 질문 -->
                             {% if u.type == 'us' %}
                             <div class="col-6 left">
                                 <!-- Likes -->
@@ -173,9 +175,10 @@
                             </div>
                             <div class="col-6 right">
                                 <!-- To Detail -->
-                                <svg onclick="ToDetailUs(id)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" id="ans-click-id-{{u.id}}" viewBox="0 0 16 16">
+                                <a id="ans-click-id-{{u.id}}" onclick="ToDetailUs(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
                                   </svg>
+                                </a>
                                   &nbsp;&nbsp;&nbsp;&nbsp;
                                 <!-- Share -->
                                 <a id='share-originals-{{u.id}}' onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
@@ -196,6 +199,7 @@
                                 </a>
                                 {% endif %}
                             </div>
+                            <!-- 나에게 던지는 질문 -->
                             {% elif u.type == 'self' %}
                             <div class="col-6 left">
                                 <!-- Likes -->
@@ -219,9 +223,10 @@
                             </div>
                             <div class="col-6 right">
                                 <!-- To Detail -->
-                                <svg onclick="ToDetailSelf(id)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" id="ans-click-id-{{u.id}}" viewBox="0 0 16 16">
+                                <a id="ans-click-id-{{u.id}}" onclick="ToDetailSelf(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
                                   </svg>
+                                </a>
                                   &nbsp;&nbsp;&nbsp;&nbsp;
                                 <!-- Share -->
                                 <a id="share-self-{{u.id}}" onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
@@ -278,6 +283,7 @@
             </div>
         </div>
     </div>
+    <!-- 우측 바 -->
     <div class="col-md-3 pc-only">
         <div class="row justify-content-center">
             <div class="col center">
