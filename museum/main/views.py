@@ -257,7 +257,9 @@ def main_page(request):
     )
 
     ## 스퀘어 질문들 5개 가져오기
-    square = QuestionsFromOthers.objects.all().order_by('-created_at')[:5]
+    square = QuestionsFromOthers.objects.all().order_by('-created_at')[:5].annotate(
+        count_answers = Count('answersforfromothers'), ## annotate은 댓글 갯수 가져오는 용도.
+    )
 
     ## user authentication
     if request.user.is_authenticated:
@@ -342,6 +344,9 @@ def main_page_filtered(request, question_no):
     list__ques_id_answered_sofar = list(all_ans_us.values_list('question_id', flat=True))
     ques_no_answered_sofar = QuestionsFromUs.objects.filter(id__in=list__ques_id_answered_sofar).values('question_no', 'title').order_by('question_no')
     
+    ## 스퀘어 질문들 5개 가져오기
+    square = QuestionsFromOthers.objects.all().order_by('-created_at')[:5]
+
     ## user authentication
     if request.user.is_authenticated:
         ## UserInfo 작성했는지 확인
@@ -367,6 +372,7 @@ def main_page_filtered(request, question_no):
                 'ques_no_answered_sofar' : ques_no_answered_sofar,
                 'all_ans_us_paginated' : all_ans_us_paginated,
                 'all_ans_self_paginated' : all_ans_self_paginated,
+                'square' : square,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
@@ -383,6 +389,7 @@ def main_page_filtered(request, question_no):
             'ques_no_answered_sofar' : ques_no_answered_sofar,
             'all_ans_us_paginated' : all_ans_us_paginated,
             'all_ans_self_paginated' : all_ans_self_paginated,
+            'square' : square,
         }
 
     context = {**navbar_context, **pre_context}
