@@ -350,7 +350,7 @@
                     <div class="row-h-20"></div>
 
                     <div class="row my-auto">
-                        <div class="col col-6 left text-m bolder" id='right-list-item-news'>🔔 새 소식</div>
+                        <div class="col col-6 left text-m bolder" id='right-list-item-news'>🔔 새 소식&nbsp;</div>
                         <div class="col col-6 right text-s my-auto underline"><a href="/news">보러 가기</a></div>
                     </div>
                 </ul>
@@ -766,7 +766,7 @@
         
         var notice = localStorage.getItem('notice')
         var noticeParsed = JSON.parse(notice)   
-        console.log(notice)
+        console.log('notice :', notice)
         if (notice == null) {
             console.log('there is no NOTICE')
             localStorage.setItem('notice', JSON.stringify(noticeObject))
@@ -886,11 +886,12 @@
     
     function ShowBadge() {
         var listNews = document.getElementById('right-list-item-news');
+        console.log('listNews', listNews)
         var badge = document.createElement('span')
         badge.setAttribute('class', 'badge badge-alert')
         badge.setAttribute('id', 'news-badge')
         badge.innerText = 'New'
-        listNews.firstChild.appendChild(badge)
+        listNews.appendChild(badge)
         console.log(listNews.firstChild)
     }
     
