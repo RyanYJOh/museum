@@ -139,7 +139,7 @@
                 <br>
                 <!-- Body 영역 -->
                 <div class="row">
-                    <div class="col home-body textbunch truncate-home p-home">
+                    <div class="col home-body textbunch truncate-home p-home" id="p-{{u.type}}-{{u.id}}">
                         {% if u.type == 'self' %}
                             {% if u.subtitle %}
                             <span class='bolder'>{{u.subtitle}}</span><br><br>
@@ -174,6 +174,13 @@
                                 &nbsp;<span class="text-s">{{u.count_comments}}</span>
                             </div>
                             <div class="col-6 right">
+                                <!-- 더보기 -->
+                                <span onclick="SeeMoreToggle('us', {{u.id}})" id="see-more-chevron-us-{{u.id}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </span> 
+                                &nbsp;&nbsp;&nbsp;
                                 <!-- To Detail -->
                                 <a id="ans-click-id-{{u.id}}" onclick="ToDetailUs(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
@@ -181,11 +188,11 @@
                                 </a>
                                   &nbsp;&nbsp;&nbsp;&nbsp;
                                 <!-- Share -->
-                                <a id='share-originals-{{u.id}}' onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
+                                <!-- <a id='share-originals-{{u.id}}' onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
                                     <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
                                   </svg>
                                 </a>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp; -->
                                 <!-- Bookmarks -->
                                 {% if u.id in list__us_saved_by_user %}
                                 <a onclick="BookmarkUs(id)" id='us-ans-id-{{u.id}}'><svg class="icon-cursor bi bi-bookmark-fill" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -222,6 +229,13 @@
                                 &nbsp;<span class="text-s">{{u.count_comments}}</span>
                             </div>
                             <div class="col-6 right">
+                                <!-- 더보기 -->
+                                <span onclick="SeeMoreToggle('self', {{u.id}})" id="see-more-chevron-self-{{u.id}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                                    </svg>
+                                </span> 
+                                &nbsp;&nbsp;&nbsp;
                                 <!-- To Detail -->
                                 <a id="ans-click-id-{{u.id}}" onclick="ToDetailSelf(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-arrows-fullscreen" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
@@ -229,11 +243,11 @@
                                 </a>
                                   &nbsp;&nbsp;&nbsp;&nbsp;
                                 <!-- Share -->
-                                <a id="share-self-{{u.id}}" onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
+                                <!-- <a id="share-self-{{u.id}}" onclick="Share(id)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="icon-cursor bi bi-share" viewBox="0 0 16 16">
                                     <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
                                 </svg>
                                 </a>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;
+                                  &nbsp;&nbsp;&nbsp;&nbsp; -->
                                 <!-- Bookmarks -->
                                 {% if u.id in list__self_saved_by_user %}
                                 <a onclick="BookmarkSelf(id)" id='bookmark-self-ans-id-{{u.id}}'><svg  class="icon-cursor bi bi-bookmark-fill" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -255,6 +269,7 @@
             <div class="row-h-20"></div>
             {% endfor %}
 
+            <!-- Pagination -->
             <div class="col-12 center">
                 <div class="row-h-20"></div>
                 {% if all_answers.has_previous %}
@@ -797,6 +812,7 @@
         location.href=`/originals-answer/${thisId}`
         
     }
+    
     function ToDetailSelf(id) {
         var thisId = id.split('id-')[1];
         TrackClicksSelf(id);
@@ -877,12 +893,46 @@
         listNews.firstChild.appendChild(badge)
         console.log(listNews.firstChild)
     }
+    
     function HideBadge() {
         var badge = document.getElementById('news-badge')
         badge.style.display = 'none'
         console.log('hidden')
     }
 
+    function SeeMoreToggle(type, id) {
+        console.log('type : ', type, 'id : ', id)
+        var this_p = document.getElementById(`p-${type}-${id}`);
+        var this_icon = document.getElementById(`see-more-chevron-${type}-${id}`)
+        console.log('this_p : ', this_p);
+        console.log('this_icon :', this_icon)
+
+        var chevron_icon = this_icon.children[0]
+        var chevron_icon_path = chevron_icon.getElementsByTagName('path')[0] 
+        console.log(chevron_icon)
+        console.log(chevron_icon_path)
+        
+        if (this_p.classList.contains('p-home')) {
+            // 만약 classList에 p-home이 있으면
+            this_p.classList.remove('p-home');
+            this_p.classList.add('p-home-unfolded');
+
+            chevron_icon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+            chevron_icon.getElementsByTagName('path')[0].removeAttribute('d');
+            chevron_icon.getElementsByTagName('path')[0].setAttribute('d', 'M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z');
+            
+
+        } else if (this_p.classList.contains('p-home-unfolded')) {
+            // 만약 classList에 p-home-unfolded가 있으면
+            this_p.classList.remove('p-home-unfolded');
+            this_p.classList.add('p-home');
+
+            chevron_icon.classList.replace('bi-chevron-up', 'bi-chevron-down');
+            chevron_icon.getElementsByTagName('path')[0].removeAttribute('d');
+            chevron_icon.getElementsByTagName('path')[0].setAttribute('d', 'M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z');   
+        }
+        
+    }
     window.onload = NoticeBadge();
     window.onload = NoticeModal();
 </script>

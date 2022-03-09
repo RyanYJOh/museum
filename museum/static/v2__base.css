@@ -183,13 +183,22 @@ input[type=password] {
 
 .p-home {
     overflow:hidden;
-    max-height: 10rem;
+    /* max-height: 10rem; */
     -webkit-box-orient: vertical;
     display: block;
     display: -webkit-box;
     overflow: hidden !important;
     text-overflow: ellipsis;
     -webkit-line-clamp: 6;
+}
+.p-home-unfolded {
+    overflow:hidden;
+    /* max-height: 10rem; */
+    -webkit-box-orient: vertical;
+    display: block;
+    display: -webkit-box;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 .p-detail {
     /* font-size : 0.9rem; */
