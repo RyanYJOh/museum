@@ -44,7 +44,7 @@ urlpatterns = [
     path('search', views.home_search, name="search"),
 
     ## This Question
-    path('all-answers/<int:ques_id>', views.this_question, name="all-answers"),
+    path('all-answers/<int:ques_no>', views.this_question, name="all-answers"),
 
     ## Notice
     path('news', views.notice, name="notice"),

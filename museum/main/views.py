@@ -693,11 +693,12 @@ def about(request):
     context = {**navbar_context, **pre_context}
     return render(request, 'main/about.html', context)
 
-def this_question(request, ques_id):
+def this_question(request, ques_no):
     navbar_context = navbar(request)
 
-    ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=ques_id, is_shared=True).order_by('-created_at_time')
-    this_question = QuestionsFromUs.objects.get(id=ques_id)
+    this_question = QuestionsFromUs.objects.get(question_no=ques_no)
+    ans_for_this_ques = AnswersForFromUs.objects.filter(question_id=this_question, is_shared=True).order_by('-created_at_time')
+    
 
     ## 답변 있는지 여부 먼저 체크해야됨.
     if ans_for_this_ques:
