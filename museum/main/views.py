@@ -282,6 +282,7 @@ def main_page(request):
             self_question_possible = 'True'
 
             pre_context = {
+                'request_user' : request.user.id,
                 'search_form' : search_form,
                 'current_user' : current_user,
                 'self_question_possible' : self_question_possible,
@@ -304,6 +305,7 @@ def main_page(request):
         self_question_possible = 'False'
 
         pre_context = {
+            'request_user' : 0,
             'all_ans_us' : all_ans_us,
             'all_ans_self' : all_ans_self,
             'current_user' : current_user,

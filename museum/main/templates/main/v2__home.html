@@ -27,7 +27,7 @@
             </div>
             <div class="col-3 center">
                 <span class="text-s">또는,</span>&nbsp;&nbsp;
-                <button class="btn btn-primary" id="btn-ques-home" onclick="amplitude.getInstance().logEvent('today-question');location.href='/question-from-originals'">오늘의 질문 받기</button>
+                <button class="btn btn-primary" id="btn-ques-home" onclick="amp_TodayQuestion();location.href='/question-from-originals'">오늘의 질문 받기</button>
             </div>
         </div>
         <div class="row mobile-only">
@@ -474,6 +474,15 @@
 
 <script>
 
+    function amp_TodayQuestion() {
+        var event = 'today_question';
+        var eventProperty = {
+            'user_id' : '{{request_user}}',
+            'real_name' : '{{current_user.real_name}}'
+        }
+        amplitude.getInstance().logEvent(event, eventProperty);
+    }
+
     function BookmarkUs(id) {
         if ('{{navbar_authenticated}}' === 'True') {
             // ajax로 POST
@@ -819,7 +828,7 @@
         location.href=`/self-answer/${thisId}`
     }
 
-    // 사용 안 함
+    /*
     function DetailModal(from, postId) {
         console.log(from)
         $.ajax({
@@ -861,7 +870,8 @@
         var currentUrl = '/' + from + '-answer' + '/' + postId
         //window.open(currentUrl, "_self");
     }
-
+    */
+    
     function SearchModal() {
         $('#search-modal').modal()
     }
