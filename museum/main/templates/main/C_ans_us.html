@@ -86,7 +86,7 @@
         {% else %}
         <form method="POST" class="form-group" enctype='multipart/form-data'> {% csrf_token %}
             <div class="row">
-                    <div class="col right text-s">일단 비워둔 채로 저장만 해도 괜찮아요.</div>
+                <div class="col right text-s">일단 비워둔 채로 저장만 해도 괜찮아요.</div>
             </div>
             <div class="row row-topless">
                 <div class="col text-m">
@@ -116,48 +116,41 @@
 <div class="row-h-40 pc-only"></div>
 <div class="row-h-20 mobile-only"></div>
 
-<div class="row fade-in">
-    {% for a in all_ans_for_this_ques %}
-    <div class="col-12 col-md-4">
-        <div class="row align-middle">
-            <div class="col card card-body grid-card">
-                <a href="/originals-answer/{{a.id}}" id="click-id-{{a.id}}" onclick="TrackClicks(id)">
-                    <div class="row list-img-container-row">
-                        <div class="col list-img-container-col">
-                            <img class="question-img-list" src='{{a.image.url}}'/>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="text-s textbunch truncate">{{a.body}}</div>
-                        </div>
-                    </div>
-                </a>
-                <div class="row">
-                    <div class="col-10 my-auto text-s left">
-                        <a href='/profile/{{a.author_id.username}}'><img class='profile-img-list' src='{{a.author_id.userinfo.profile_image.url}}'/>&nbsp;&nbsp;&nbsp;{{a.author_id.userinfo.real_name}}</a>
-                    </div>
-                    <div class="col-2 my-auto text-center">
-                        {% if a in list__us_saved_by_user %}
-                        <div class='bookmark-us' id='us-ans-id-{{a.id}}' onclick="BookmarkUs(id)">
-                            <svg class="bookmark-icon bi bi-bookmark-fill"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-                            </svg>
-                        </div>
-                        {% else %}
-                        <div class='bookmark-us' id='us-ans-id-{{a.id}}' onclick="BookmarkUs(id)">
-                            <svg class = 'bookmark-icon bi bi-bookmark' xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                            </svg>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
+<!-- 답변 리스트 영역 -->
+<div class="row">
+    <div class="col text-m bolder">
+        다른 사람들은..
+    </div>
+</div>
+{% for a in all_ans_for_this_ques %}
+<div class="row fade-in card-section link" onclick="location.href='/originals-answer/{{a.id}}'">
+    <div class="col">
+        <div class="row">
+            <div class="col-5 col-md-4 text-s left my-auto">
+                <a href="/profile/{{a.author_id.username}}"><img class=" profile-img-list" src="{{a.author_id.userinfo.profile_image.url}}">&nbsp;&nbsp;&nbsp;{{a.author_id.userinfo.real_name}}</a>
+            </div>
+            <div class="col-7 col-md-8 text-s right my-auto">
+                {{a.created_at}}
             </div>
         </div>
+        <div class="row-h-20"></div>
+        {% if a.image %}
+        <!-- 일단 이미지는 스킵. 화면 설계 필요 -->
+        <div class="row">
+            <div class="col textbunch text-s">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col text-s">
+                {{a.body|linebreaks}}
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endfor%}
 </div>
+{% endfor %}
 
 <script>
 // Bookmark 기능
