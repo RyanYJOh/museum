@@ -162,7 +162,7 @@ def view_ans_others(request, ques_id):
             'exists' : True,
             'this_questioner' : this_questioner,
         }
-    else:
+    else: 
         pre_context = {
             'exists' : False,
             'this_questioner' : this_questioner,
