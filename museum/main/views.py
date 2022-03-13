@@ -562,7 +562,10 @@ def profile(request, username):
     try:
         this_userinfoadditional = UserInfoAdditional.objects.get(this_user=profile_owner)
     except ObjectDoesNotExist:
-        return redirect('/member/edit-userinfo/'+username)
+        # return redirect('/member/edit-userinfo/'+username)
+        this_userinfoadditional = {
+            
+        }
     ###############################
 
     ## 내 프로필
