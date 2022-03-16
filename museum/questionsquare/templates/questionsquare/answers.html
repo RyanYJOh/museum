@@ -8,7 +8,9 @@
 {%block extrahead%}
 <meta property="og:title" content="{{this_question.title}}">
 <meta property="og:description" content="{{this_question.desc}}">
+{% if this_question.image %}
 <meta property="og:image" content="{{this_question.image.url}}">
+{% endif %}
 {% endblock%}
 
 {% block content %}
