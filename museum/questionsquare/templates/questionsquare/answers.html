@@ -1,9 +1,15 @@
 {% extends 'main/base.html' %}
 {% load crispy_forms_tags %}
-{% block title %} 오리지널스 {% endblock %}
+{% block title %} {{this_question.title}} {% endblock %}
 
 {% block css %}
 {% endblock %}
+
+{%block extrahead%}
+<meta property="og:title" content="{{this_question.title}}">
+<meta property="og:description" content="{{this_question.desc}}">
+<meta property="og:image" content="{{this_question.image.url}}">
+{% endblock%}
 
 {% block content %}
 <div class="row-h-80"></div>
