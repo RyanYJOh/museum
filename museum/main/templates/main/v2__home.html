@@ -398,7 +398,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-l">커뮤니티에 참여하세요!</h5>
+          <h5 class="modal-title text-l">미니 간담회를 엽니다!</h5>
           <span type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" fill="#000"/>
@@ -406,13 +406,24 @@
               </svg></span>
             </span>
         </div>
-        <div class="modal-body">
-            <p class="text-m">
-                오리지널스는 오픈 단톡방을 운영하고 있어요. 다른 사람들의 생각을 통해 자기다움을 찾을 수 있답니다. <br><br> <span class="bolder">멋진 사람들과 교류해보세요.</span>
+        <div class="modal-body text-m">
+            <p>
+                요즘 저는 오리지널스의 넥스트 스텝을 (아주 많이) 고민하고 있습니다. 그러던 중 제 머릿속에서만 벌어지는 고민은 무의미하다는 생각이 들었고, 실제로 오리지널스를 쓰고 계신/쓰셨던 분들의 얘기를 듣는 자리를 마련하기로 했습니다.
+            </p>
+            <p>
+                ✅ 날짜 및 시간 : 4월 2일 토요일, 낮 2시부터 4시 정도 (시간은 약간 달라질 수 있습니다)<br>
+                ✅ 장소 : 강남구 테헤란로 503 하이브로 빌딩 10층 (패스트 파이브 삼성 3호점)<br>
+                ✅ 인원 : 5~6분 정도를 생각하고 있습니다.<br>
+            </p>
+            <p>
+                ✅ 내용 : 제가 지금 오리지널스의 넥스트 스텝에 대해 생각하고 있는 것들 공유드리고, 여러분이 오리지널스를 어떻게 경험하시는지, 기대하시는 건 무엇인지, 어떤 가치를 느끼고 있는지/느끼지 못하는지 등 폭넓고 러프하게 나눌 예정입니다.
+            </p>
+            <p>
+                아래 버튼을 클릭해 신청해주세요!
             </p>
         </div>
         <div class="modal-footer center">
-            <button type="button" class="btn btn-secondary" onclick="location.href='https://open.kakao.com/o/grDFiMEd'" data-dismiss="modal">오픈 단톡방 참여하기</button>
+            <button type="button" class="btn btn-secondary" onclick="location.href='https://forms.gle/uSahQNKmwDrEGW7u8" data-dismiss="modal">오픈 단톡방 참여하기</button>
         </div>
       </div>
     </div>
@@ -714,8 +725,8 @@
         var today = new Date(string__today);
 
         noticeObject = {
+            'id' : 1,
             'displayed' : false,
-            'expiresBy' : '2022-12-31',
         }
         
         var notice = localStorage.getItem('notice_modal')
@@ -723,25 +734,27 @@
         if (notice == null) {
             console.log('there is no NOTICE')
             localStorage.setItem('notice_modal', JSON.stringify(noticeObject))
+
+            $('#notice-modal').modal('show');
         } else {
             noticeParsed = JSON.parse(notice)
             console.log("there IS a notice, and")
-            var expireDate = new Date(noticeParsed.expiresBy);
+            //var expireDate = new Date(noticeParsed.expiresBy);
 
-            if (today >= expireDate) {
-                console.log('the date has expired')
-                localStorage.removeItem('notice_modal')    
-            } else if (today < expireDate) {
-                console.log('the date has not been expired, and')
-                if (noticeParsed.displayed == false) {
-                    console.log('there should be a modal displayed')
-                    console.log($('#notice-modal'))
-                    $('#notice-modal').modal('show');
-                    noticeParsed.displayed = true
-                    localStorage.setItem('notice_modal', JSON.stringify(noticeParsed))
-                } else if (noticeParsed.displayed ==  true) {
-                    console.log('the modal has already been displayed. THE END.')
+            if (noticeParsed.id == 1) {
+                console.log('the most recent modal has already been displayed.')
+                // localStorage.removeItem('notice_modal')    
+            } else {
+                console.log('the modal has not been displayed, and')
+                
+                newNoticeObject = {
+                    'id' : 1,
+                    'displayed' : true,
                 }
+                localStorage.setItem('notice_modal', JSON.stringify(newNoticeObject))
+
+                $('#notice-modal').modal('show');
+
             }
         }
         // Expire 날짜 지났으면 자동 삭제
@@ -947,7 +960,7 @@
     }
     
     window.onload = NoticeBadge();
-    window.onload = NoticeModal();
+    // window.onload = NoticeModal();
 </script>
 
 {%endblock%}
