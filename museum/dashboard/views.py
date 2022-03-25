@@ -3,6 +3,7 @@ from django.db.models.aggregates import Avg
 from django.shortcuts import render, redirect, HttpResponse
 from datetime import date, datetime
 from main.models import AnswersForFromSelf, AnswersForFromUs, SavedAnswers, QuestionsFromUs
+from questionsquare.models import AnswersForFromOthers
 from .models import Clicks
 from .forms import ClicksForm
 from member.models import UserInfo
@@ -140,16 +141,17 @@ def dashboard(request):
         countBookmarkByOther = list__userTypes.count('Other')
         totalBookmarks = countBookmarkByAdam + countBookmarkByBrian + countBookmarkByClaire + countBookmarkByOther
 
-        ## 공개 Vs 미공개 컨텐츠 수
+        ## 공개 Vs 미공개 컨텐츠 수 + 질문 스퀘어 컨텐츠 수
         
         allSelfsSharedFalse = AnswersForFromSelf.objects.filter(is_shared=False).exclude(author_id__in=list__staffId).count()
         allSelfsSharedTrue = AnswersForFromSelf.objects.filter(is_shared=True).exclude(author_id__in=list__staffId).count()
         allUssSharedFalse = AnswersForFromUs.objects.filter(is_shared=False).exclude(author_id__in=list__staffId).count()
         allUssSharedTrue = AnswersForFromUs.objects.filter(is_shared=True).exclude(author_id__in=list__staffId).count()
+        allSquare = AnswersForFromOthers.objects.all().exclude(author_id__in=list__staffId).count()
 
         sharedFalse = allSelfsSharedFalse + allUssSharedFalse
         sharedTrue = allSelfsSharedTrue + allUssSharedTrue
-        totalAnswers = sharedFalse + sharedTrue
+        totalAnswers = sharedFalse + sharedTrue + allSquare
 
         ## Persona type별 클릭수 <- 여기서만 persona Other 제외 하..
         personaOther = UserInfo.objects.filter(persona_type = 'Staff').values('this_user')
@@ -249,6 +251,7 @@ def dashboard(request):
 
             'sharedFalse' : sharedFalse,
             'sharedTrue' : sharedTrue,
+            'allSquare' : allSquare,
             'totalAnswers' : totalAnswers,
 
             'totalClicks' : totalClicks,
