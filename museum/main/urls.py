@@ -48,4 +48,7 @@ urlpatterns = [
 
     ## Notice
     path('news', views.notice, name="notice"),
+
+    ## Crys Registration
+    path('?email=<str:email>&name=<str:name>/', views.CrysRegistration, name='crys-registration'),
 ] 

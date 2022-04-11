@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from questionsquare.models import QuestionsFromOthers
 from .forms import CommentAnsUsForm, CommentAnsSelfForm, QuestionsFromSelfForm, AnswersForFromUsForm, AnswersForFromSelfForm, SavedAnswersForm, SearchForm, LikesForm
-from .models import CommentAnsUs, CommentAnsSelf, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages, Likes, Notice
+from .models import CommentAnsUs, CommentAnsSelf, CrysRegistration, QuestionsFromSelf, QuestionsFromUs, AnswersForFromSelf, AnswersForFromUs, SavedAnswers, RandomImages, Likes, Notice
 from member.models import UserInfo, UserInfoAdditional
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -1863,3 +1863,12 @@ def notice(request):
     }
 
     return render(request, 'main/notice.html', context)
+
+############## crystalize registration #######
+def crys(request, email, name):
+    CrysRegistration.objects.create(
+        email = email,
+        name = name
+    )
+
+    return name
