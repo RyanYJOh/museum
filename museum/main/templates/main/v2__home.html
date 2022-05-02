@@ -13,6 +13,19 @@
 {% block content %}
 <div class="row-h-40"></div>
 
+{% if latest_ques_no %}
+<div class="row">
+    <div class="col">
+        <div class="progress">
+            <div class="progress-bar" id="ques-progress-bar" role="progressbar" aria-valuenow="{{latest_ques_no}}" aria-valuemin="0" aria-valuemax="150" style="width: 60%;">
+                <span class="sr-only">{{latest_ques_no}} / 150개</span>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endif %}
+
 <div class="row">
     <div class="col card card-body feed-card">
         <div class="row pc-only">
@@ -485,6 +498,11 @@
 </div>
 
 <script>
+    // progressbar
+    function progressBar() {
+        var progressBarWidth = Math.round((parseInt('{{latest_ques_no}}') / 150) * 100)
+        document.getElementById('ques-progress-bar').setAttribute('style', `width: ${progressBarWidth}%;`)
+    }
 
     function amp_TodayQuestion() {
         var event = 'today_question';
@@ -960,6 +978,7 @@
     }
     
     window.onload = NoticeBadge();
+    window.onload = progressBar();
     // window.onload = NoticeModal();
 </script>
 

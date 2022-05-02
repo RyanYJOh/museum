@@ -281,6 +281,9 @@ def main_page(request):
             ## 나에게 던지는 질문 가능 (로그인 됨)
             self_question_possible = 'True'
 
+            ## 가장 latest 질문 -> for progressbar
+            latest_ques_no = AnswersForFromUs.objects.filter(author_id=request.user).order_by('-question_id')[0].question_id.question_no
+
             pre_context = {
                 'request_user' : request.user.id,
                 'search_form' : search_form,
@@ -296,6 +299,7 @@ def main_page(request):
                 'all_answers' : all_answers_paginated,
                 'is_search_result' : is_search_result,
                 'square' : square,
+                'latest_ques_no' : latest_ques_no,
             }
         except ObjectDoesNotExist:
             return redirect('member/userinfo')
